@@ -1,0 +1,15 @@
+# route_class 판정 규칙 — before 스코프 (design.md §7.2)
+# 규칙은 코드가 아니라 데이터다. expect_count가 규칙 부패를 자가 감지한다.
+# era 키 없는 규칙 조회는 KeyError — before 규칙의 after 이식은 기계적으로 불가.
+era: before
+rules:
+  - {class: express,   rule: 'fullmatch:\d{4}',      expect_bases: 14}   # 5000번대 ⊂ 4자리 (감사 재현 [RS§4])
+  - {class: ulju,      rule: 'fullmatch:울주\d{2}',   expect_bases: 10, within: general}
+  - {class: support,   rule: 'contains:지원',         expect_bases: 6,  scope_out: true}
+  - {class: limousine, rule: 'equals:김해공항',        expect_bases: 1,  scope_out: true}
+  - {class: general,   rule: fallback,                expect_bases: 160}
+# 검증: general(160)+ulju(10)=170, +express 14 = 정규 184, +support 6 +limousine 1 = catalog 191
+accounting:
+  regular_bases: 184        # general+ulju+express
+  catalog_bases: 191        # + support 6 + limousine 1
+portability: forbidden      # 규칙의 era 이식 금지 (after 4자리=26개 실측이 즉시 반증)

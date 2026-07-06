@@ -1,0 +1,21 @@
+# raw 입력 sha256 동결 (모든 실행의 0번 체크 — verification.md §2.2)
+# 동결일: 2026-07-04. 이 파일은 동결층이다 — 수치 수정 금지(추가 전용).
+# 재베이스라인 2026-07-07: data/ 원시 CSV를 parquet으로 무손실 변환(dtype=str 내용 보존,
+#   왕복 셀 단위 동일 확인)하며 해당 4개 항목의 경로·해시를 parquet 기준으로 갱신했다.
+#   drift가 아니라 의도된 포맷 이관이다(원 CSV 내용은 그대로, 컨테이너만 변경).
+# 불일치 = data_drift(사람 에스컬레이션 — 클린룸 위반 가능성),
+# 일치 상태의 로더 계약 실패 = loader_bug. 두 원인이 기계적으로 분리된다.
+meta:
+  captured: 2026-07-04
+  tool: sha256sum
+  note: "verification.md §2.2의 7종(schedule/bus_route/stops before·after + variant_tags)
+         + data/ 완전 동결을 위한 road.graphml 1건"
+files:
+  data/ulsan_route_schedule_before.parquet: d799df7fd3b5aad0d78febefda76bc69c84c9a6483a5546a39244b5d65701a97
+  data/ulsan_route_schedule_after.csv: 77de6c5f43fbb6f2f6f113c40c1a901b973a24670e268ee36f34daf9e87e4998
+  data/ulsan_bus_route_before.parquet: 32a894b485970def334e43fa4b2a308c2433e9b15392e868ea339e866488433a
+  data/ulsan_bus_route_after.csv: 0e1cfaca211c622033703d329ca3e906a141eeda87a9e90c14d5d30d7e51dee0
+  data/ulsan_stops_before.parquet: e671b6e0a52c429edff195f7f52ebd249648b81af900eca1b8c5429df61d3d61
+  data/ulsan_stops_after.parquet: e4fb8dec91f3e22d70acf9d907486cf6ddb4693ce3d3efdab5e84a18505cac48
+  reference/variant_tagging/variant_tags.csv: d1d6fe984eaf23953facc9323a4a2a3c21cd2fb6adf7f8c19fb0645ad571fa6b
+  data/ulsan_road.graphml: 278ee007dcac6f95bccf5c11d2f765b730f4fa10fc185d4cb8e57cc01f77f04f

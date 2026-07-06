@@ -1,0 +1,184 @@
+{
+ "route": "956",
+ "route_type": "General",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 3,
+ "direction_groups": {
+  "망양 이편한세상 방면": [
+   "BR_TAGO_USB196109563",
+   "BR_TAGO_USB196109565"
+  ],
+  "남창고등학교 방면": [
+   "BR_TAGO_USB196109564"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_TAGO_USB196109563",
+   "route_name": "956(망양 이편한세상 방면)",
+   "dir_label": "망양 이편한세상 방면",
+   "n_stops": 28,
+   "frequency": 21,
+   "is_loop": true,
+   "first_raw": "남부노인복지관",
+   "last_raw": "남부노인복지관",
+   "first_norm": "남부노인복지관",
+   "last_norm": "남부노인복지관",
+   "stop_names_raw": [
+    "남부노인복지관",
+    "울산온천",
+    "온양하나로마트",
+    "대안현대아파트앞",
+    "대안사거리",
+    "남창고등학교앞",
+    "남창",
+    "남창입구",
+    "온양체육공원",
+    "외고산옹기마을",
+    "덕신입구",
+    "LX하우시스",
+    "망양마을",
+    "망양이편한세상",
+    "망양이편한세상",
+    "망양마을",
+    "LX하우시스",
+    "덕신입구",
+    "외고산옹기마을",
+    "온양체육공원",
+    "온양읍행정복지센터",
+    "남창",
+    "남창고등학교앞",
+    "대안사거리",
+    "대안현대아파트앞",
+    "온양하나로마트",
+    "울산온천",
+    "남부노인복지관"
+   ],
+   "stop_ids": [
+    "BS_TAGO_USB196025410",
+    "BS_TAGO_USB196025408",
+    "BS_TAGO_USB196025420",
+    "BS_TAGO_USB196031536",
+    "BS_TAGO_USB196031520",
+    "BS_TAGO_USB196031518",
+    "BS_TAGO_USB196031516",
+    "BS_TAGO_USB196031514",
+    "BS_TAGO_USB196034524",
+    "BS_TAGO_USB196031512",
+    "BS_TAGO_USB196031510",
+    "BS_TAGO_USB196022318",
+    "BS_TAGO_USB196022322",
+    "BS_TAGO_USB196023336",
+    "BS_TAGO_USB196023335",
+    "BS_TAGO_USB196022323",
+    "BS_TAGO_USB196022319",
+    "BS_TAGO_USB196031509",
+    "BS_TAGO_USB196031511",
+    "BS_TAGO_USB196031523",
+    "BS_TAGO_USB196031513",
+    "BS_TAGO_USB196031515",
+    "BS_TAGO_USB196031517",
+    "BS_TAGO_USB196031519",
+    "BS_TAGO_USB196031535",
+    "BS_TAGO_USB196025419",
+    "BS_TAGO_USB196025407",
+    "BS_TAGO_USB196025409"
+   ]
+  },
+  {
+   "route_id": "BR_TAGO_USB196109564",
+   "route_name": "956(남창고등학교 방면)",
+   "dir_label": "남창고등학교 방면",
+   "n_stops": 3,
+   "frequency": 3,
+   "is_loop": false,
+   "first_raw": "망양이편한세상",
+   "last_raw": "남창고등학교",
+   "first_norm": "망양이편한세상",
+   "last_norm": "남창고등학교",
+   "stop_names_raw": [
+    "망양이편한세상",
+    "온양읍행정복지센터",
+    "남창고등학교"
+   ],
+   "stop_ids": [
+    "BS_TAGO_USB196023335",
+    "BS_TAGO_USB196031513",
+    "BS_TAGO_USB196031533"
+   ]
+  },
+  {
+   "route_id": "BR_TAGO_USB196109565",
+   "route_name": "956(망양 이편한세상 방면)",
+   "dir_label": "망양 이편한세상 방면",
+   "n_stops": 14,
+   "frequency": 2,
+   "is_loop": false,
+   "first_raw": "남부노인복지관",
+   "last_raw": "망양이편한세상",
+   "first_norm": "남부노인복지관",
+   "last_norm": "망양이편한세상",
+   "stop_names_raw": [
+    "남부노인복지관",
+    "울산온천",
+    "온양하나로마트",
+    "대안현대아파트앞",
+    "대안사거리",
+    "남창고등학교앞",
+    "남창",
+    "남창입구",
+    "온양체육공원",
+    "외고산옹기마을",
+    "덕신입구",
+    "LX하우시스",
+    "망양마을",
+    "망양이편한세상"
+   ],
+   "stop_ids": [
+    "BS_TAGO_USB196025410",
+    "BS_TAGO_USB196025408",
+    "BS_TAGO_USB196025420",
+    "BS_TAGO_USB196031536",
+    "BS_TAGO_USB196031520",
+    "BS_TAGO_USB196031518",
+    "BS_TAGO_USB196031516",
+    "BS_TAGO_USB196031514",
+    "BS_TAGO_USB196034524",
+    "BS_TAGO_USB196031512",
+    "BS_TAGO_USB196031510",
+    "BS_TAGO_USB196022318",
+    "BS_TAGO_USB196022322",
+    "BS_TAGO_USB196023336"
+   ]
+  }
+ ],
+ "pairs": [
+  {
+   "a": "BR_TAGO_USB196109563",
+   "b": "BR_TAGO_USB196109564",
+   "name_jaccard": 0.125,
+   "seam_a_to_b": false,
+   "seam_b_to_a": false,
+   "reverse_pair": false,
+   "relationship": "divergent"
+  },
+  {
+   "a": "BR_TAGO_USB196109563",
+   "b": "BR_TAGO_USB196109565",
+   "name_jaccard": 0.933,
+   "seam_a_to_b": true,
+   "seam_b_to_a": false,
+   "reverse_pair": false,
+   "relationship": "b_short_turn_of_a"
+  },
+  {
+   "a": "BR_TAGO_USB196109564",
+   "b": "BR_TAGO_USB196109565",
+   "name_jaccard": 0.062,
+   "seam_a_to_b": false,
+   "seam_b_to_a": true,
+   "reverse_pair": false,
+   "relationship": "divergent"
+  }
+ ]
+}

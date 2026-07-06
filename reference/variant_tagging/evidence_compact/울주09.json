@@ -1,0 +1,61 @@
+{
+ "route": "울주09",
+ "route_type": "General",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 1,
+ "direction_groups": {
+  "(none)": [
+   "BR_ACC0_26510090"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_ACC0_26510090",
+   "route_name": "울주09",
+   "dir_label": "(none)",
+   "n_stops": 33,
+   "frequency": 6,
+   "is_loop": true,
+   "first_raw": "두동면주민센터",
+   "last_raw": "두동면주민센터",
+   "first_norm": "두동면주민센터",
+   "last_norm": "두동면주민센터",
+   "stop_names_raw": [
+    "두동면주민센터",
+    "홍골",
+    "박제상유적지입구",
+    "두동양지",
+    "당지",
+    "당지마을",
+    "화전교회",
+    "박제상유적지",
+    "옷밭",
+    "칠조회관",
+    "비조",
+    "중비조",
+    "이전마을",
+    "밤골마을",
+    "율림",
+    "범서중학교앞",
+    "문수고등학교",
+    "범서중학교앞",
+    "율림",
+    "밤골마을",
+    "이전마을",
+    "중비조",
+    "비조",
+    "칠조회관",
+    "옷밭",
+    "박제상유적지",
+    "화전교회",
+    "당지마을",
+    "당지",
+    "두동양지",
+    "박제상유적지입구",
+    "홍골",
+    "두동면주민센터"
+   ]
+  }
+ ],
+ "pairs": []
+}

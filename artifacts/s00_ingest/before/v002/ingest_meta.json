@@ -1,0 +1,43 @@
+{
+  "schedule": {
+    "bom_ok": true,
+    "columns_ok": true,
+    "raw_rows": 427527,
+    "allnull_rows": 48,
+    "partial_null_rows": 0,
+    "allnull_contiguous": true,
+    "valid_rows": 427479,
+    "dup_full_rows": 0,
+    "dup_key_rows": 0,
+    "trip_ids": 7625,
+    "pattern_ids": 487,
+    "route_name_functional_violations": 0,
+    "stop_name_functional_violations": 0,
+    "route_id_regex_mismatch": 0,
+    "stop_id_regex_mismatch": 0,
+    "trip_id_format_mismatch": 0,
+    "time_format_mismatch": 0
+  },
+  "bus_route": {
+    "bom_ok": true,
+    "columns_ok": true,
+    "rows": 21402,
+    "route_names": 400,
+    "non_dong_null": 0,
+    "token_count_mismatch": 0,
+    "unique_name_coord": 3409
+  },
+  "variant_tags": {
+    "raw_shape": [
+      481,
+      18
+    ],
+    "source_verified_equiv_violations": 0
+  },
+  "join": {
+    "n_alias": 1,
+    "n_fail": 0,
+    "resolved_max_dist_m": 0.907690186643401,
+    "resolved_stop_nunique": 3409
+  }
+}

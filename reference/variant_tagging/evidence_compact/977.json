@@ -1,0 +1,139 @@
+{
+ "route": "977",
+ "route_type": "General",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 3,
+ "direction_groups": {
+  "수필아파트 순환": [
+   "BR_TAGO_USB193109773",
+   "BR_TAGO_USB193109775",
+   "BR_TAGO_USB193109774"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_TAGO_USB193109773",
+   "route_name": "977(수필아파트 순환)",
+   "dir_label": "수필아파트 순환",
+   "n_stops": 26,
+   "frequency": 24,
+   "is_loop": false,
+   "first_raw": "동문굿모닝힐",
+   "last_raw": "수필아파트",
+   "first_norm": "동문굿모닝힐",
+   "last_norm": "수필아파트",
+   "stop_names_raw": [
+    "동문굿모닝힐",
+    "문수산더샵후문",
+    "문수산더샵정문",
+    "장검중학교",
+    "한라2차아파트",
+    "신세대아파트",
+    "무거동주민센터앞",
+    "홈플러스앞",
+    "신복로터리",
+    "울산대학교후문",
+    "울산대학교앞",
+    "울산과학대학앞",
+    "문수중학교",
+    "옥현주공3단지",
+    "옥현중학교",
+    "옥현주공2단지",
+    "옥현주공1단지",
+    "쇠정사거리",
+    "홈플러스앞",
+    "무거동주민센터앞",
+    "신세대아파트",
+    "한라2차아파트",
+    "장검중학교",
+    "문수산더샵정문",
+    "문수산더샵후문",
+    "수필아파트"
+   ]
+  },
+  {
+   "route_id": "BR_TAGO_USB193109775",
+   "route_name": "977(수필아파트 순환)",
+   "dir_label": "수필아파트 순환",
+   "n_stops": 14,
+   "frequency": 1,
+   "is_loop": false,
+   "first_raw": "동문굿모닝힐",
+   "last_raw": "옥현주공3단지",
+   "first_norm": "동문굿모닝힐",
+   "last_norm": "옥현주공3단지",
+   "stop_names_raw": [
+    "동문굿모닝힐",
+    "문수산더샵후문",
+    "문수산더샵정문",
+    "장검중학교",
+    "한라2차아파트",
+    "신세대아파트",
+    "무거동주민센터앞",
+    "홈플러스앞",
+    "신복로터리",
+    "울산대학교후문",
+    "울산대학교앞",
+    "울산과학대학앞",
+    "문수중학교",
+    "옥현주공3단지"
+   ]
+  },
+  {
+   "route_id": "BR_TAGO_USB193109774",
+   "route_name": "977(수필아파트 순환)",
+   "dir_label": "수필아파트 순환",
+   "n_stops": 13,
+   "frequency": 1,
+   "is_loop": false,
+   "first_raw": "옥현주공3단지",
+   "last_raw": "수필아파트",
+   "first_norm": "옥현주공3단지",
+   "last_norm": "수필아파트",
+   "stop_names_raw": [
+    "옥현주공3단지",
+    "옥현중학교",
+    "옥현주공2단지",
+    "옥현주공1단지",
+    "쇠정사거리",
+    "홈플러스앞",
+    "무거동주민센터앞",
+    "신세대아파트",
+    "한라2차아파트",
+    "장검중학교",
+    "문수산더샵정문",
+    "문수산더샵후문",
+    "수필아파트"
+   ]
+  }
+ ],
+ "pairs": [
+  {
+   "a": "BR_TAGO_USB193109773",
+   "b": "BR_TAGO_USB193109775",
+   "name_jaccard": 0.737,
+   "seam_a_to_b": false,
+   "seam_b_to_a": false,
+   "reverse_pair": false,
+   "relationship": "b_short_turn_of_a"
+  },
+  {
+   "a": "BR_TAGO_USB193109773",
+   "b": "BR_TAGO_USB193109774",
+   "name_jaccard": 0.684,
+   "seam_a_to_b": false,
+   "seam_b_to_a": false,
+   "reverse_pair": false,
+   "relationship": "b_short_turn_of_a"
+  },
+  {
+   "a": "BR_TAGO_USB193109775",
+   "b": "BR_TAGO_USB193109774",
+   "name_jaccard": 0.421,
+   "seam_a_to_b": true,
+   "seam_b_to_a": false,
+   "reverse_pair": false,
+   "relationship": "divergent"
+  }
+ ]
+}

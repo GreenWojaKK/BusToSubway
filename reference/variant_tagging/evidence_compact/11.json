@@ -1,0 +1,84 @@
+{
+ "route": "11",
+ "route_type": "General",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 2,
+ "direction_groups": {
+  "우정선경아파트 방면": [
+   "BR_TAGO_USB192100112"
+  ],
+  "동덕현대아파트 방면": [
+   "BR_TAGO_USB192100111"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_TAGO_USB192100112",
+   "route_name": "11(우정선경아파트 방면)",
+   "dir_label": "우정선경아파트 방면",
+   "n_stops": 15,
+   "frequency": 38,
+   "is_loop": false,
+   "first_raw": "동덕현대아파트",
+   "last_raw": "우정선경1차아파트",
+   "first_norm": "동덕현대아파트",
+   "last_norm": "우정선경1차아파트",
+   "stop_names_raw": [
+    "동덕현대아파트",
+    "동광약국",
+    "복산1동행정복지센터앞",
+    "울산교회앞",
+    "중앙동행정복지센터",
+    "문화의거리",
+    "국민은행앞",
+    "목살골목입구",
+    "일신스토어",
+    "향교삼거리",
+    "동명그린빌",
+    "평화빌라",
+    "우정아이파크",
+    "우정성당",
+    "우정선경1차아파트"
+   ]
+  },
+  {
+   "route_id": "BR_TAGO_USB192100111",
+   "route_name": "11(동덕현대아파트 방면)",
+   "dir_label": "동덕현대아파트 방면",
+   "n_stops": 14,
+   "frequency": 38,
+   "is_loop": false,
+   "first_raw": "우정선경1차아파트",
+   "last_raw": "동덕현대아파트",
+   "first_norm": "우정선경1차아파트",
+   "last_norm": "동덕현대아파트",
+   "stop_names_raw": [
+    "우정선경1차아파트",
+    "우정선경아파트",
+    "향교삼거리",
+    "목살골목",
+    "성남동매일마트",
+    "국민은행사거리",
+    "성남프라자",
+    "소방서사거리",
+    "박병원",
+    "현대자동차앞",
+    "구역전시장",
+    "울산고등학교",
+    "복산아이파크",
+    "동덕현대아파트"
+   ]
+  }
+ ],
+ "pairs": [
+  {
+   "a": "BR_TAGO_USB192100112",
+   "b": "BR_TAGO_USB192100111",
+   "name_jaccard": 0.115,
+   "seam_a_to_b": true,
+   "seam_b_to_a": true,
+   "reverse_pair": true,
+   "relationship": "divergent"
+  }
+ ]
+}

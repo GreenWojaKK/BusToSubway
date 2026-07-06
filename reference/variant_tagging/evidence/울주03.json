@@ -1,0 +1,82 @@
+{
+ "route": "울주03",
+ "route_type": "General",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 1,
+ "direction_groups": {
+  "(none)": [
+   "BR_ACC0_26510030"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_ACC0_26510030",
+   "route_name": "울주03",
+   "dir_label": "(none)",
+   "n_stops": 26,
+   "frequency": 8,
+   "is_loop": true,
+   "first_raw": "울산과학기술원",
+   "last_raw": "울산과학기술원",
+   "first_norm": "울산과학기술원",
+   "last_norm": "울산과학기술원",
+   "stop_names_raw": [
+    "울산과학기술원",
+    "울산과학기술원정문",
+    "울산과학기술원입구",
+    "사연",
+    "사일",
+    "욱실",
+    "선바위",
+    "선바위입구",
+    "선바위교",
+    "구영리입구",
+    "천상1교사거리",
+    "구 점촌교입구",
+    "현대2차아파트",
+    "일신아파트앞",
+    "현대3차아파트앞",
+    "한신아파트앞",
+    "우미린2차 푸르지오2차",
+    "우미린1차아파트",
+    "굿모닝힐",
+    "선바위",
+    "욱실",
+    "사일",
+    "사연",
+    "울산과학기술원입구",
+    "울산과학기술원정문",
+    "울산과학기술원"
+   ],
+   "stop_ids": [
+    "BS_TAGO_USB196040234",
+    "BS_TAGO_USB196040231",
+    "BS_TAGO_USB196040229",
+    "BS_TAGO_USB196040203",
+    "BS_TAGO_USB196020746",
+    "BS_TAGO_USB196020742",
+    "BS_TAGO_USB196020739",
+    "BS_TAGO_USB196020741",
+    "BS_TAGO_USB196040245",
+    "BS_TAGO_USB196040243",
+    "BS_TAGO_USB196040213",
+    "BS_TAGO_USB196020430",
+    "BS_TAGO_USB196020403",
+    "BS_TAGO_USB196020406",
+    "BS_TAGO_USB196020408",
+    "BS_TAGO_USB196020410",
+    "BS_TAGO_USB196020416",
+    "BS_TAGO_USB196020422",
+    "BS_TAGO_USB196020424",
+    "BS_TAGO_USB196020740",
+    "BS_TAGO_USB196020742",
+    "BS_TAGO_USB196020746",
+    "BS_TAGO_USB196040228",
+    "BS_TAGO_USB196040230",
+    "BS_TAGO_USB196040232",
+    "BS_TAGO_USB196040233"
+   ]
+  }
+ ],
+ "pairs": []
+}

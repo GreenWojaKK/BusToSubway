@@ -1,0 +1,143 @@
+{
+ "route": "10",
+ "route_type": "General",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 3,
+ "direction_groups": {
+  "풍암마을 방면": [
+   "BR_TAGO_USB192100101",
+   "BR_TAGO_USB192100103"
+  ],
+  "성안청구 방면": [
+   "BR_TAGO_USB192100102"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_TAGO_USB192100101",
+   "route_name": "10(풍암마을 방면)",
+   "dir_label": "풍암마을 방면",
+   "n_stops": 22,
+   "frequency": 7,
+   "is_loop": false,
+   "first_raw": "성안청구아파트",
+   "last_raw": "풍암마을",
+   "first_norm": "성안청구아파트",
+   "last_norm": "풍암마을",
+   "stop_names_raw": [
+    "성안청구아파트",
+    "내약사마을입구",
+    "약사골사거리",
+    "약사아이파크",
+    "약사중학교",
+    "선우시장",
+    "삼성아파트앞",
+    "울산MBC",
+    "계비고개",
+    "복산1동행정복지센터앞",
+    "북정아파트앞",
+    "성안입구",
+    "향교앞",
+    "우정선경아파트앞",
+    "태화시장.우정선경2차",
+    "축산농협",
+    "울산교육청",
+    "점주가든",
+    "길촌마을입구",
+    "귀신고래바위",
+    "당수나무",
+    "풍암마을"
+   ]
+  },
+  {
+   "route_id": "BR_TAGO_USB192100102",
+   "route_name": "10(성안청구 방면)",
+   "dir_label": "성안청구 방면",
+   "n_stops": 24,
+   "frequency": 6,
+   "is_loop": false,
+   "first_raw": "풍암마을",
+   "last_raw": "성안청구",
+   "first_norm": "풍암마을",
+   "last_norm": "성안청구",
+   "stop_names_raw": [
+    "풍암마을",
+    "당수나무",
+    "귀신고래바위",
+    "길촌마을입구",
+    "점주가든",
+    "울산교육청",
+    "축산농협",
+    "태화시장.우정선경2차",
+    "우정선경아파트",
+    "향교앞",
+    "성안입구",
+    "북정아파트앞",
+    "복산1동행정복지센터앞",
+    "구역전시장",
+    "울산MBC",
+    "홈플러스중구점",
+    "삼성아파트앞",
+    "선우시장",
+    "약사중학교",
+    "약사아이파크",
+    "약사골사거리",
+    "내약사마을입구",
+    "약사동",
+    "성안청구"
+   ]
+  },
+  {
+   "route_id": "BR_TAGO_USB192100103",
+   "route_name": "10(풍암마을 방면)",
+   "dir_label": "풍암마을 방면",
+   "n_stops": 9,
+   "frequency": 1,
+   "is_loop": false,
+   "first_raw": "우정선경아파트앞",
+   "last_raw": "풍암마을",
+   "first_norm": "우정선경아파트앞",
+   "last_norm": "풍암마을",
+   "stop_names_raw": [
+    "우정선경아파트앞",
+    "태화시장.우정선경2차",
+    "축산농협",
+    "울산교육청",
+    "점주가든",
+    "길촌마을입구",
+    "귀신고래바위",
+    "당수나무",
+    "풍암마을"
+   ]
+  }
+ ],
+ "pairs": [
+  {
+   "a": "BR_TAGO_USB192100101",
+   "b": "BR_TAGO_USB192100102",
+   "name_jaccard": 0.704,
+   "seam_a_to_b": true,
+   "seam_b_to_a": false,
+   "reverse_pair": false,
+   "relationship": "divergent"
+  },
+  {
+   "a": "BR_TAGO_USB192100101",
+   "b": "BR_TAGO_USB192100103",
+   "name_jaccard": 0.409,
+   "seam_a_to_b": false,
+   "seam_b_to_a": false,
+   "reverse_pair": false,
+   "relationship": "b_short_turn_of_a"
+  },
+  {
+   "a": "BR_TAGO_USB192100102",
+   "b": "BR_TAGO_USB192100103",
+   "name_jaccard": 0.32,
+   "seam_a_to_b": false,
+   "seam_b_to_a": true,
+   "reverse_pair": false,
+   "relationship": "divergent"
+  }
+ ]
+}

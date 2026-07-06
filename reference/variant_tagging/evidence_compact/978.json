@@ -1,0 +1,56 @@
+{
+ "route": "978",
+ "route_type": "General",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 1,
+ "direction_groups": {
+  "율리 순환": [
+   "BR_TAGO_USB194109783"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_TAGO_USB194109783",
+   "route_name": "978(율리 순환)",
+   "dir_label": "율리 순환",
+   "n_stops": 28,
+   "frequency": 22,
+   "is_loop": true,
+   "first_raw": "율리공영차고지",
+   "last_raw": "율리공영차고지종점",
+   "first_norm": "율리공영",
+   "last_norm": "율리공영",
+   "stop_names_raw": [
+    "율리공영차고지",
+    "우신고등학교입구",
+    "문수중학교",
+    "옥현주공3단지",
+    "옥현중학교",
+    "옥현주공2단지",
+    "성광여고앞",
+    "옥현주공아파트앞",
+    "삼호중학교앞",
+    "삼호시영아파트",
+    "삼호주공아파트후문",
+    "정광사약수터앞",
+    "정광사입구",
+    "정광사",
+    "정광사약수터앞",
+    "삼호주공아파트후문",
+    "삼호시영아파트",
+    "삼호중학교앞",
+    "옥현주공아파트앞",
+    "성광여고앞",
+    "옥현주공2단지앞",
+    "옥현중학교",
+    "옥현주공3단지",
+    "문수중학교",
+    "우신고등학교입구",
+    "문수경기장입구",
+    "문수실버복지관",
+    "율리공영차고지종점"
+   ]
+  }
+ ],
+ "pairs": []
+}

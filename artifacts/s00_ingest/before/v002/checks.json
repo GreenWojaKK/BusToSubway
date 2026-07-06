@@ -1,0 +1,640 @@
+[
+  {
+    "check_id": "C-S00-B-000",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "mismatch_files": []
+    },
+    "expected": {
+      "mismatch_files": []
+    },
+    "source": "reference/prior_baseline/raw_hashes.yaml",
+    "failure_means": [
+      "data_drift"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S00-B-001",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "schedule_bom_ok": true,
+      "schedule_columns_ok": true,
+      "bus_route_bom_ok": true,
+      "bus_route_columns_ok": true
+    },
+    "expected": {
+      "schedule_bom_ok": true,
+      "schedule_columns_ok": true,
+      "bus_route_bom_ok": true,
+      "bus_route_columns_ok": true
+    },
+    "source": "audit/schedule_before.md §1; routes_stops.md §1",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "stops·variant_tags의 BOM/컬럼은 각 로더가 로딩 시 assert"
+  },
+  {
+    "check_id": "C-S00-B-002",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "raw_rows": 427527,
+      "allnull_rows": 48,
+      "allnull_contiguous": true,
+      "partial_null_rows": 0,
+      "dup_full_rows": 0,
+      "artifact_rows": 427479,
+      "artifact_nulls": 0
+    },
+    "expected": {
+      "raw_rows": 427527,
+      "allnull_rows": 48,
+      "allnull_contiguous": true,
+      "partial_null_rows": 0,
+      "dup_full_rows": 0,
+      "artifact_rows": 427479,
+      "artifact_nulls": 0
+    },
+    "source": "audit/schedule_before.md §1, §7.1",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S00-B-003",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "dup_rows": 0,
+      "key": [
+        "trip_id",
+        "seq"
+      ]
+    },
+    "expected": {
+      "dup_rows": 0
+    },
+    "source": "audit/schedule_before.md §2",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S00-B-004",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "trips": 7625,
+      "patterns": 487,
+      "route_names": 398,
+      "bases": 190,
+      "stops": 3397
+    },
+    "expected": {
+      "trips": 7625,
+      "patterns": 487,
+      "route_names": 398,
+      "bases": 190,
+      "stops": 3397
+    },
+    "source": "audit/schedule_before.md §2",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S00-B-005",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "trip_id_format_bad": 0,
+      "pattern_to_route_name_violations": 0
+    },
+    "expected": {
+      "trip_id_format_bad": 0,
+      "pattern_to_route_name_violations": 0
+    },
+    "source": "audit/schedule_before.md §2",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S00-B-006",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "pattern_id_bad": 0,
+      "stop_id_bad": 0
+    },
+    "expected": {
+      "pattern_id_bad": 0,
+      "stop_id_bad": 0
+    },
+    "source": "audit/schedule_before.md §10",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S00-B-007",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "time_format_mismatch": 0,
+      "out_of_window": 0,
+      "dep_lt_arr": 0,
+      "monotonic_violations": 0,
+      "first_stop_arr_ne_dep": 0,
+      "trips": 7625
+    },
+    "expected": {
+      "time_format_mismatch": 0,
+      "out_of_window": 0,
+      "dep_lt_arr": 0,
+      "monotonic_violations": 0,
+      "first_stop_arr_ne_dep": 0,
+      "trips": 7625
+    },
+    "source": "audit/schedule_before.md §4",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S00-B-008",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "rows": 31,
+      "lineages": [
+        "ACC0"
+      ]
+    },
+    "expected": {
+      "rows": 31,
+      "lineages": [
+        "ACC0"
+      ]
+    },
+    "source": "audit/schedule_before.md §4",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": true,
+    "note": "이상치 31행이 사라져도(0건) FAIL — 검증기의 눈"
+  },
+  {
+    "check_id": "C-S00-B-009",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "trips": 18,
+      "offset": 8,
+      "gap": 10,
+      "non_acc0": 0
+    },
+    "expected": {
+      "trips": 18,
+      "offset": 8,
+      "gap": 10,
+      "non_acc0": 0
+    },
+    "source": "audit/schedule_before.md §5",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": true,
+    "note": ""
+  },
+  {
+    "check_id": "C-S00-B-010",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "tago_multi": 0,
+      "multi_count": 6,
+      "multi_by_base": {
+        "울주01": 3,
+        "울주02": 2,
+        "울주04": 3,
+        "울주05": 5,
+        "울주08": 2,
+        "울주09": 2
+      }
+    },
+    "expected": {
+      "tago_multi": 0,
+      "multi_count": 6,
+      "multi_by_base": {
+        "울주01": 3,
+        "울주02": 2,
+        "울주04": 3,
+        "울주05": 5,
+        "울주08": 2,
+        "울주09": 2
+      }
+    },
+    "source": "audit/schedule_before.md §3, §6",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S00-B-011",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "dangling": 0,
+      "unused_total": 12,
+      "unused_by_lineage": {
+        "KTDB": 8,
+        "TAGO": 4
+      },
+      "unused_tago_names": [
+        "내고산",
+        "외고산마을입구",
+        "중고산",
+        "중고산마을입구"
+      ]
+    },
+    "expected": {
+      "dangling": 0,
+      "unused_total": 12,
+      "unused_by_lineage": {
+        "KTDB": 8,
+        "TAGO": 4
+      },
+      "unused_tago_names": [
+        "내고산",
+        "외고산마을입구",
+        "중고산",
+        "중고산마을입구"
+      ]
+    },
+    "source": "audit/schedule_before.md §8; routes_stops.md §5",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S00-B-012",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "stop_rows": 3409,
+      "stop_id_dup": 0,
+      "schedule_stop_name_functional_violations": 0,
+      "bus_route_unique_name_coord": 3409
+    },
+    "expected": {
+      "stop_rows": 3409,
+      "stop_id_dup": 0,
+      "schedule_stop_name_functional_violations": 0,
+      "bus_route_unique_name_coord": 3409
+    },
+    "source": "routes_stops.md §1, §5",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S00-B-013",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "n_alias": 1,
+      "n_fail": 0,
+      "resolved_max_dist_m": 0.907690186643401,
+      "resolved_stop_nunique": 3409
+    },
+    "expected": {
+      "n_alias": 1,
+      "n_fail": 0,
+      "resolved_max_dist_m": "<= 1.0",
+      "resolved_stop_nunique": 3409
+    },
+    "source": "routes_stops.md §5",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": true,
+    "note": "alias = 양우내안에→양우내안애 1건 (실측 최근접 max 0.91m)"
+  },
+  {
+    "check_id": "C-S00-B-014",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "rows": 21402,
+      "dup_key": 0,
+      "seq_noncontiguous_routes": 0,
+      "route_names": 400,
+      "union_only": [
+        "50(내고산 방면)",
+        "김해공항"
+      ],
+      "schedule_only": []
+    },
+    "expected": {
+      "rows": 21402,
+      "dup_key": 0,
+      "seq_noncontiguous_routes": 0,
+      "route_names": 400,
+      "union_only": [
+        "50(내고산 방면)",
+        "김해공항"
+      ],
+      "schedule_only": []
+    },
+    "source": "routes_stops.md §1, §3; schedule_before.md §8",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S00-B-015",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "token_count_mismatch": 0,
+      "cells_total": 17675,
+      "cells_one_sided": 0,
+      "cells_equal": 17661,
+      "cells_mismatch": 14,
+      "mismatch_outside_33": 0
+    },
+    "expected": {
+      "token_count_mismatch": 0,
+      "cells_total": 17675,
+      "cells_one_sided": 0,
+      "cells_equal": 17661,
+      "cells_mismatch": 14,
+      "mismatch_outside_33": 0
+    },
+    "source": "routes_stops.md §3, §9",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "불일치 14셀 = 33(현대백화점 순환) 계열 — 파일 자체 결함의 박제 (실측 분해: 33 11셀 + 337 3셀, base 전부 '33' 시작)"
+  },
+  {
+    "check_id": "C-S00-B-016",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "rows": 481,
+      "pattern_id_dup": 0,
+      "role_dist": {
+        "anomaly": 2,
+        "branch": 14,
+        "circular": 103,
+        "detour": 51,
+        "duplicate": 2,
+        "extension": 10,
+        "main": 187,
+        "short_turn": 112
+      },
+      "frequency_mismatch": 0,
+      "base_dangling": 0,
+      "main_with_base": 92,
+      "main_base_nonself": 0,
+      "circular_with_base": 37,
+      "circular_self": 34,
+      "agent_verified_equiv_violations": 0,
+      "n_stops_evidence_mismatch": 0
+    },
+    "expected": {
+      "rows": 481,
+      "pattern_id_dup": 0,
+      "role_dist": {
+        "anomaly": 2,
+        "branch": 14,
+        "circular": 103,
+        "detour": 51,
+        "duplicate": 2,
+        "extension": 10,
+        "main": 187,
+        "short_turn": 112
+      },
+      "frequency_mismatch": 0,
+      "base_dangling": 0,
+      "main_with_base": 92,
+      "main_base_nonself": 0,
+      "circular_with_base": 37,
+      "circular_self": 34,
+      "agent_verified_equiv_violations": 0,
+      "n_stops_evidence_mismatch": 0
+    },
+    "source": "variant_tags.md §1, §2, §3",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "main 자기참조 92 == 'no base' 표기 변형 — 정규화는 s01 소속, circular 자기참조 34 보존이 379의 성립 조건"
+  },
+  {
+    "check_id": "C-S00-B-017",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "files": 184,
+      "routes": 184,
+      "file_route_diff": 0,
+      "sum_n_variants": 481,
+      "stop_ids_missing": 0
+    },
+    "expected": {
+      "files": 184,
+      "routes": 184,
+      "file_route_diff": 0,
+      "sum_n_variants": 481,
+      "stop_ids_missing": 0
+    },
+    "source": "variant_tags.md §5",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "P-S00-B-001",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "nan": 0,
+      "zero": 0,
+      "outside_korea": 0,
+      "outside_ulsan_bbox": 2,
+      "outside_names": [
+        "국내선",
+        "국제선청사"
+      ]
+    },
+    "expected": {
+      "nan": 0,
+      "zero": 0,
+      "outside_korea": 0,
+      "outside_ulsan_bbox": 2,
+      "outside_names": [
+        "국내선",
+        "국제선청사"
+      ]
+    },
+    "source": "routes_stops.md §6",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "† 감사 실측 범위 — BLOCK 유지 (bbox 밖 2건은 오류가 아니라 실재 시외 정류장: 김해공항 국제선청사·국내선)"
+  },
+  {
+    "check_id": "D-S00-B-001",
+    "check_class": "DIFF",
+    "severity": "SIGNAL",
+    "status": "MATCH",
+    "observed": {
+      "express": 14,
+      "general": 170,
+      "schedule_base_minus_support": 184,
+      "union_base_minus_support_minus_limousine": 184
+    },
+    "expected": {
+      "express": 14,
+      "general": 170,
+      "schedule_base_minus_support": 184,
+      "union_base_minus_support_minus_limousine": 184
+    },
+    "source": "prior_baseline; routes_stops.md §4; schedule_before.md §3",
+    "failure_means": [
+      "convention_mismatch",
+      "baseline_stale",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "General 170 = 숫자 1~3자리 160 + 울주 10 (울주 마을버스 포함이 전제)"
+  }
+]

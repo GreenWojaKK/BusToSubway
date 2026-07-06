@@ -1,0 +1,121 @@
+{
+ "route": "407",
+ "route_type": "General",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 2,
+ "direction_groups": {
+  "태화강역 방면": [
+   "BR_TAGO_USB196104071"
+  ],
+  "율리 방면": [
+   "BR_TAGO_USB196104072"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_TAGO_USB196104071",
+   "route_name": "407(태화강역 방면)",
+   "dir_label": "태화강역 방면",
+   "n_stops": 33,
+   "frequency": 35,
+   "is_loop": false,
+   "first_raw": "율리공영차고지",
+   "last_raw": "태화강역(종점)",
+   "first_norm": "율리공영",
+   "last_norm": "태화강역",
+   "stop_names_raw": [
+    "율리공영차고지",
+    "울산구치소입구",
+    "문수경기장",
+    "우신고등학교입구",
+    "울산과학대학앞",
+    "울산대학교앞",
+    "울산대학교후문",
+    "신복로터리",
+    "삼호중학교앞",
+    "삼호시영아파트",
+    "삼호주공아파트후문",
+    "정광사약수터앞",
+    "정광사",
+    "태화강전망대",
+    "크로바아파트앞",
+    "십리대밭교",
+    "태화루사거리",
+    "성남동",
+    "강변공영주차장",
+    "풍적맨션",
+    "학성배수장앞",
+    "옥성초등학교앞",
+    "학성공원",
+    "반구1동주민센터앞",
+    "학남",
+    "강변벽산아파트앞",
+    "보람병원입구",
+    "고속버스터미널앞",
+    "현대문화아파트1차",
+    "울산도서관",
+    "한화꿈에그린",
+    "이마트앞",
+    "태화강역(종점)"
+   ]
+  },
+  {
+   "route_id": "BR_TAGO_USB196104072",
+   "route_name": "407(율리 방면)",
+   "dir_label": "율리 방면",
+   "n_stops": 33,
+   "frequency": 33,
+   "is_loop": false,
+   "first_raw": "태화강역",
+   "last_raw": "율리공영차고지종점",
+   "first_norm": "태화강역",
+   "last_norm": "율리공영",
+   "stop_names_raw": [
+    "태화강역",
+    "태화강역",
+    "이마트앞",
+    "울산세무서",
+    "공구월드앞",
+    "고속버스터미널/외식명가 삼산정",
+    "보람병원입구",
+    "강변벽산아파트앞",
+    "학남",
+    "반구1동주민센터앞",
+    "학성공원",
+    "옥성초등학교앞",
+    "학성배수장",
+    "풍적맨션",
+    "성남동",
+    "태화루사거리",
+    "십리대밭교",
+    "크로바아파트앞",
+    "태화강전망대",
+    "정광사",
+    "정광사약수터앞",
+    "삼호주공아파트후문",
+    "삼호시영아파트",
+    "삼호중학교앞",
+    "신복로터리",
+    "울산대학교후문",
+    "울산대학교앞",
+    "울산과학대학앞",
+    "우신고등학교입구",
+    "문수경기장",
+    "울산구치소입구",
+    "울산구치소입구",
+    "율리공영차고지종점"
+   ]
+  }
+ ],
+ "pairs": [
+  {
+   "a": "BR_TAGO_USB196104071",
+   "b": "BR_TAGO_USB196104072",
+   "name_jaccard": 0.73,
+   "seam_a_to_b": true,
+   "seam_b_to_a": true,
+   "reverse_pair": true,
+   "relationship": "divergent"
+  }
+ ]
+}

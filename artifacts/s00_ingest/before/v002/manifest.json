@@ -1,0 +1,102 @@
+{
+  "stage": "s00_ingest",
+  "scope": "before",
+  "version": "v002",
+  "created_at": "2026-07-07T03:04:27+09:00",
+  "code_ref": "dirty+fb30892585e9",
+  "params": {
+    "scopes": [
+      "before",
+      "after"
+    ]
+  },
+  "params_hash": "sha256:19500004f7d58e787246c38fc240eabf52fde66066ccf70401802e41b118fe4f",
+  "content_key": "sha256:22c1c8d7ee0dfb8b9a9e63fc2f1e721a50a81ab45ed9929e2c40e3bf6e555dd4",
+  "inputs": [
+    {
+      "file": "data/ulsan_bus_route_before.parquet",
+      "sha256": "32a894b485970def334e43fa4b2a308c2433e9b15392e868ea339e866488433a"
+    },
+    {
+      "file": "data/ulsan_route_schedule_before.parquet",
+      "sha256": "d799df7fd3b5aad0d78febefda76bc69c84c9a6483a5546a39244b5d65701a97"
+    },
+    {
+      "file": "data/ulsan_stops_before.parquet",
+      "sha256": "e671b6e0a52c429edff195f7f52ebd249648b81af900eca1b8c5429df61d3d61"
+    },
+    {
+      "file": "reference/prior_baseline/baseline.yaml",
+      "sha256": "d50f8ce6b9fd2d844b4bb822bfc19b54751bb1d4d48fa1fb86cc375610d2a31c"
+    },
+    {
+      "file": "reference/prior_baseline/known_deviations.yaml",
+      "sha256": "75c77eedc11f7ac6ca8b076d372ef0a5266593406f7ab59d4e2ed502357d1c4b"
+    },
+    {
+      "file": "reference/prior_baseline/raw_hashes.yaml",
+      "sha256": "2f4d12bc1f41516d6df24fbcb9c9b23264f355e516f22920e35213e3b0960284"
+    },
+    {
+      "file": "reference/variant_tagging/evidence",
+      "sha256": "741d9de2b5ef5ec62baca641125f83b42e32e6aa7e667d35d9d51448008c2b17"
+    },
+    {
+      "file": "reference/variant_tagging/variant_tags.csv",
+      "sha256": "d1d6fe984eaf23953facc9323a4a2a3c21cd2fb6adf7f8c19fb0645ad571fa6b"
+    },
+    {
+      "file": "src/bts/config/overrides/name_aliases.csv",
+      "sha256": "bd44e00abe3c238d6dcc6590586559871861ef35c7044c4314b6e655af1d9569"
+    },
+    {
+      "file": "src/bts/config/params.yaml",
+      "sha256": "f45997783cce9b404c149fc8ea14aa7390e756b95ccc69ced676245c817e9f28"
+    }
+  ],
+  "outputs": {
+    "ingest_meta.json": {
+      "rows": null,
+      "sha256": "sha256:333e95380960188118ae79d6303a146138d0fd56bfd021e66ecfa85a3f0a52b1"
+    },
+    "route_union.parquet": {
+      "rows": 21402,
+      "sha256": "sha256:3c4309ddd3000a2fb051e418b50117fc6c0414327fd3e9484d8c4559f0704867"
+    },
+    "stop_times.parquet": {
+      "rows": 427479,
+      "sha256": "sha256:b3e34db11995d2d1e4a92883acdc5094d1344356198583b3c2c578a02d992ca5"
+    },
+    "stops.parquet": {
+      "rows": 3409,
+      "sha256": "sha256:563abb36e974adf4af14eca191ea34c06afb1fea53f66f9c1bf551b0bb574a83"
+    },
+    "trips.parquet": {
+      "rows": 7625,
+      "sha256": "sha256:e6d4dcdd7183d685093e25f68c3e59ffe30452267e8e9e6c7a5f79ae7afeeb5c"
+    },
+    "variant_tags.parquet": {
+      "rows": 481,
+      "sha256": "sha256:890b72459c31a60ce21f4df9f933b866d7384f5564d993e6060bf1159db556d8"
+    }
+  },
+  "checks_summary": {
+    "CONTRACT": "pass",
+    "PHYSICAL": {
+      "pass": 0,
+      "fail": 0,
+      "skip": 0
+    },
+    "DIFF": {
+      "match": 1,
+      "explained": 0,
+      "unexplained": 0
+    }
+  },
+  "acks": [],
+  "reviewed_by": null,
+  "needs_review": false,
+  "caveats": [],
+  "upstream_unexplained": [],
+  "status": "promoted"
+}

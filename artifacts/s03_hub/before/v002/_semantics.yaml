@@ -1,0 +1,16 @@
+# s03_hub / before — 독자(reader-side) 표현 가이드 (design.md §8, ADR-010)
+layer: lspace_hub
+stage: s03_hub
+scope: before
+universe: general_before
+allowed_statements:
+  - "이 place는 General L-space에서 D=k다"
+  - "이 place는 채택 임계에서 CROSSING/TERMINAL/NONE으로 판정되었다 (params 상대적)"
+  - "D=0은 이 universe(backbone × General)의 L-space가 그 place를 볼 수 없다는 증거 부재다"
+forbidden_statements:
+  - "D=0인 place는 환승 가치가 없다"
+  - "NONE = 환승 불가"
+  - "hub_class는 universe·params와 무관한 절대 판정이다"
+notes:
+  - "hub_class는 params·universe 상대적 판정이다 — 교정 수단은 hub_overrides(사용자 판단)"
+  - "미커버 노선의 변형(circular-with-base)은 배제가 아니라 보존이며 시간층(s05)의 몫이다"

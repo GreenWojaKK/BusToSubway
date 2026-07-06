@@ -1,0 +1,102 @@
+{
+ "route": "1703",
+ "route_type": "Express",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 2,
+ "direction_groups": {
+  "우성스마트시티 방면": [
+   "BR_TAGO_USB193117031"
+  ],
+  "태화강역 방면": [
+   "BR_TAGO_USB193117032"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_TAGO_USB193117031",
+   "route_name": "1703(우성스마트시티 방면)",
+   "dir_label": "우성스마트시티 방면",
+   "n_stops": 24,
+   "frequency": 16,
+   "is_loop": false,
+   "first_raw": "태화강역",
+   "last_raw": "우성스마트시티뷰",
+   "first_norm": "태화강역",
+   "last_norm": "우성스마트시티뷰",
+   "stop_names_raw": [
+    "태화강역",
+    "태화강역",
+    "농수산물도매시장앞",
+    "시외고속버스터미널/신세계안과의원",
+    "참바른병원",
+    "좋은의사들안과병원",
+    "번영사거리",
+    "하나이비인후과병원",
+    "강남초등학교",
+    "롯데마트",
+    "공업탑",
+    "신정고등학교/학성고등학교",
+    "옥동초등학교",
+    "옥동행정복지센터.울산대공원정문",
+    "법원",
+    "옥동중학교앞",
+    "성광여고앞",
+    "옥현주공아파트앞",
+    "신복로터리",
+    "범서읍행정복지센터",
+    "울산역",
+    "울산전시컨벤션센터",
+    "동문굿모닝힐",
+    "우성스마트시티뷰"
+   ]
+  },
+  {
+   "route_id": "BR_TAGO_USB193117032",
+   "route_name": "1703(태화강역 방면)",
+   "dir_label": "태화강역 방면",
+   "n_stops": 23,
+   "frequency": 16,
+   "is_loop": false,
+   "first_raw": "우성스마트시티뷰",
+   "last_raw": "태화강역(종점)",
+   "first_norm": "우성스마트시티뷰",
+   "last_norm": "태화강역",
+   "stop_names_raw": [
+    "우성스마트시티뷰",
+    "동문굿모닝힐",
+    "울산전시컨벤션센터",
+    "울산역",
+    "범서읍행정복지센터",
+    "신복로터리",
+    "옥현주공아파트앞",
+    "성광여고앞",
+    "옥동중학교앞",
+    "법원",
+    "옥동초등학교",
+    "학성고등학교.서여자중학교",
+    "신정고등학교",
+    "공업탑",
+    "롯데마트",
+    "강남초등학교",
+    "달동현대아파트앞",
+    "번영사거리",
+    "목화예식장앞",
+    "참바른병원",
+    "시외고속버스터미널/신세계안과의원",
+    "농수산물도매시장앞",
+    "태화강역(종점)"
+   ]
+  }
+ ],
+ "pairs": [
+  {
+   "a": "BR_TAGO_USB193117031",
+   "b": "BR_TAGO_USB193117032",
+   "name_jaccard": 0.704,
+   "seam_a_to_b": true,
+   "seam_b_to_a": true,
+   "reverse_pair": true,
+   "relationship": "divergent"
+  }
+ ]
+}

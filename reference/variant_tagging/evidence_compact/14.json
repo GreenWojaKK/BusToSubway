@@ -1,0 +1,91 @@
+{
+ "route": "14",
+ "route_type": "General",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 2,
+ "direction_groups": {
+  "함월구민운동장 방면": [
+   "BR_TAGO_USB192100142"
+  ],
+  "박병원앞 방면": [
+   "BR_TAGO_USB192100141"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_TAGO_USB192100142",
+   "route_name": "14(함월구민운동장 방면)",
+   "dir_label": "함월구민운동장 방면",
+   "n_stops": 19,
+   "frequency": 45,
+   "is_loop": false,
+   "first_raw": "박병원",
+   "last_raw": "함월구민운동장",
+   "first_norm": "박병원",
+   "last_norm": "함월구민운동장",
+   "stop_names_raw": [
+    "박병원",
+    "중앙동행정복지센터",
+    "복산초등학교",
+    "성안입구",
+    "궁도장",
+    "경찰청",
+    "라이온스앞",
+    "편의점앞",
+    "시립요양원",
+    "장애인종합복지관",
+    "애니원 고등학교",
+    "성안청구아파트입구",
+    "성안청구아파트",
+    "방통대 후문",
+    "신안골드빌",
+    "G마트",
+    "국토정보공사",
+    "성안금호아파트",
+    "함월구민운동장"
+   ]
+  },
+  {
+   "route_id": "BR_TAGO_USB192100141",
+   "route_name": "14(박병원앞 방면)",
+   "dir_label": "박병원앞 방면",
+   "n_stops": 17,
+   "frequency": 45,
+   "is_loop": false,
+   "first_raw": "함월구민운동장",
+   "last_raw": "박병원",
+   "first_norm": "함월구민운동장",
+   "last_norm": "박병원",
+   "stop_names_raw": [
+    "함월구민운동장",
+    "성안금호아파트",
+    "국토정보공사",
+    "백양사",
+    "경찰청",
+    "궁도장",
+    "성안고가하부도로",
+    "성안입구",
+    "향교앞",
+    "우정선경아파트앞",
+    "우정시장",
+    "강원마트",
+    "목살골목",
+    "양사초등학교",
+    "울산시립미술관",
+    "소방서사거리",
+    "박병원"
+   ]
+  }
+ ],
+ "pairs": [
+  {
+   "a": "BR_TAGO_USB192100142",
+   "b": "BR_TAGO_USB192100141",
+   "name_jaccard": 0.241,
+   "seam_a_to_b": true,
+   "seam_b_to_a": true,
+   "reverse_pair": true,
+   "relationship": "divergent"
+  }
+ ]
+}

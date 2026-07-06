@@ -1,0 +1,527 @@
+[
+  {
+    "check_id": "C-S03-B-001",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "metrics_rows": 1868,
+      "places_rows": 1868,
+      "missing_places": 0,
+      "alien_places": 0,
+      "place_id_dup": 0
+    },
+    "expected": {
+      "metrics_rows": 1868,
+      "places_rows": 1868,
+      "missing_places": 0,
+      "alien_places": 0,
+      "place_id_dup": 0
+    },
+    "source": "verification.md §5.6 (D≥3 사전 필터가 시골을 배제한 교훈의 구조화)",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S03-B-002",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "violating_rows": 0,
+      "gate": 3
+    },
+    "expected": {
+      "violating_rows": 0
+    },
+    "source": "verification.md §5.6; ADR-008 (L* 게이트 항등)",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S03-B-003",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "rows": 1868,
+      "metrics_rows": 1868,
+      "rule_recompute_mismatch": 0,
+      "non_override_class_mismatch": 0,
+      "override_rows_unnumbered": 0
+    },
+    "expected": {
+      "rows": 1868,
+      "metrics_rows": 1868,
+      "rule_recompute_mismatch": 0,
+      "non_override_class_mismatch": 0,
+      "override_rows_unnumbered": 0
+    },
+    "source": "verification.md §5.6 (판정 = params 순수 함수 — 재계산 대조)",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S03-B-004",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "violating_rows": 0
+    },
+    "expected": {
+      "violating_rows": 0
+    },
+    "source": "verification.md §5.6; ADR-009 (1 <= A <= D for D>=1)",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S03-B-005",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "self_loops": 0,
+      "unsorted_pairs": 0,
+      "dup_pairs": 0,
+      "fk_dangling_rows": 0,
+      "out_of_universe_routes": [],
+      "n_out_of_universe_routes": 0,
+      "n_universe_routes": 170
+    },
+    "expected": {
+      "self_loops": 0,
+      "unsorted_pairs": 0,
+      "dup_pairs": 0,
+      "fk_dangling_rows": 0,
+      "out_of_universe_routes": [],
+      "n_out_of_universe_routes": 0,
+      "n_universe_routes": 170
+    },
+    "source": "stage2_place_hub_spec.md §5.7; ADR-010 (universe 준수)",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S03-B-006",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "violating_rows": 0,
+      "k_max": 10
+    },
+    "expected": {
+      "violating_rows": 0
+    },
+    "source": "stage2_place_hub_spec.md §5.7 (정의역 항등)",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S03-B-007",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "rows": 14,
+      "missing_variants": [],
+      "n_adopted_rows": 1,
+      "adopted_combo_ok": true,
+      "adopted_counts_ok": true,
+      "recomputed": {
+        "n_crossing": 298,
+        "n_terminal": 6,
+        "n_hub_qualified": 304
+      }
+    },
+    "expected": {
+      "rows": 14,
+      "missing_variants": [],
+      "n_adopted_rows": 1,
+      "adopted_combo_ok": true,
+      "adopted_counts_ok": true,
+      "recomputed": {
+        "n_crossing": 298,
+        "n_terminal": 6,
+        "n_hub_qualified": 304
+      }
+    },
+    "source": "stage2_place_hub_spec.md §5.4 (정의 감도 의무 — 1급 산출물)",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S03-B-008",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "override_rows": 0,
+      "applied_rows": 0,
+      "dangling_place_ids": [],
+      "bad_hub_class": [],
+      "qual_bad_hub_class": []
+    },
+    "expected": {
+      "override_rows": 0,
+      "applied_rows": 0,
+      "dangling_place_ids": [],
+      "bad_hub_class": [],
+      "qual_bad_hub_class": []
+    },
+    "source": "stage2_place_hub_spec.md §5.3 (빈 override면 vacuous PASS)",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S03-B-009",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "parts": {
+        "CROSSING": 298,
+        "TERMINAL": 6,
+        "NONE": 1564
+      },
+      "sum": 1868,
+      "places": 1868,
+      "both_true": 0,
+      "thresholds_disjoint": true
+    },
+    "expected": {
+      "parts": {
+        "CROSSING": 298,
+        "TERMINAL": 6,
+        "NONE": 1564
+      },
+      "sum": 1868,
+      "places": 1868,
+      "both_true": 0,
+      "thresholds_disjoint": true
+    },
+    "source": "stage2_place_hub_spec.md §5.7 (accounting)",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S03-B-010",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "parts": {
+        "mixed_nonbackbone": 16,
+        "no_pattern": 7,
+        "non_backbone_variant_only": 76,
+        "out_of_universe_only": 8,
+        "uncovered_circular_only": 199
+      },
+      "sum": 306
+    },
+    "expected": {
+      "total": 306
+    },
+    "source": "stage2_place_hub_spec.md §5.5; ADR-010 (공백 회계)",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "P-S03-B-001",
+    "check_class": "PHYSICAL",
+    "severity": "WARN",
+    "status": "PASS",
+    "observed": {
+      "over_threshold_edges": 0,
+      "max_gap_m": 12434.7,
+      "threshold_m": 15000.0
+    },
+    "expected": {
+      "over_threshold_edges": 0
+    },
+    "source": "stage2_place_hub_spec.md §5.7 (미실측 임계 — WARN, ADR-007 계보)",
+    "failure_means": [
+      "logic_bug",
+      "param_sensitivity"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "위반 = 사상/시퀀스 결함 수준 도약 신호 — 수용이면 --ack"
+  },
+  {
+    "check_id": "D-S03-B-001",
+    "check_class": "DIFF",
+    "severity": "SIGNAL",
+    "status": "EXPLAINED",
+    "observed": 304,
+    "expected": 498,
+    "source": "prior_baseline",
+    "failure_means": [
+      "convention_mismatch",
+      "baseline_stale",
+      "logic_bug",
+      "param_sensitivity"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "KD-0008 (hypothesis) — docs/investigations/DIFF-0003-hub-signals.md"
+  },
+  {
+    "check_id": "D-S03-B-002",
+    "check_class": "DIFF",
+    "severity": "SIGNAL",
+    "status": "EXPLAINED",
+    "observed": 298,
+    "expected": 490,
+    "source": "prior_baseline",
+    "failure_means": [
+      "convention_mismatch",
+      "baseline_stale",
+      "logic_bug",
+      "param_sensitivity"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "KD-0009 (hypothesis) — docs/investigations/DIFF-0003-hub-signals.md"
+  },
+  {
+    "check_id": "D-S03-B-003",
+    "check_class": "DIFF",
+    "severity": "SIGNAL",
+    "status": "EXPLAINED",
+    "observed": 6,
+    "expected": 8,
+    "source": "prior_baseline",
+    "failure_means": [
+      "convention_mismatch",
+      "baseline_stale",
+      "logic_bug",
+      "param_sensitivity"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "KD-0010 (hypothesis) — docs/investigations/DIFF-0003-hub-signals.md"
+  },
+  {
+    "check_id": "D-S03-B-004",
+    "check_class": "DIFF",
+    "severity": "SIGNAL",
+    "status": "EXPLAINED",
+    "observed": 1200,
+    "expected": 976,
+    "source": "prior_baseline",
+    "failure_means": [
+      "convention_mismatch",
+      "baseline_stale",
+      "logic_bug",
+      "param_sensitivity"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "KD-0011 (hypothesis) — docs/investigations/DIFF-0003-hub-signals.md | 분모 우주 상이(선행 기준 1,759 vs 본 설계 place 전량) — 비율 보정 해석 필수 (spec §5.8-3, ADR-010)"
+  },
+  {
+    "check_id": "D-S03-B-005",
+    "check_class": "DIFF",
+    "severity": "SIGNAL",
+    "status": "EXPLAINED",
+    "observed": 847,
+    "expected": 925,
+    "source": "prior_baseline",
+    "failure_means": [
+      "convention_mismatch",
+      "baseline_stale",
+      "logic_bug",
+      "param_sensitivity"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "KD-0012 (hypothesis) — docs/investigations/DIFF-0003-hub-signals.md | 분모 우주 상이(선행 기준 1,759 vs 본 설계 place 전량) — 비율 보정 해석 필수 (spec §5.8-3, ADR-010)"
+  },
+  {
+    "check_id": "D-S03-B-006",
+    "check_class": "DIFF",
+    "severity": "SIGNAL",
+    "status": "EXPLAINED",
+    "observed": {
+      "D": 8,
+      "A": 3,
+      "L": 10
+    },
+    "expected": {
+      "D": 9,
+      "A": 2,
+      "L": 10
+    },
+    "source": "prior_baseline",
+    "failure_means": [
+      "convention_mismatch",
+      "baseline_stale",
+      "logic_bug",
+      "param_sensitivity"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "KD-0013 (hypothesis) — docs/investigations/DIFF-0003-hub-signals.md | 동명 place 후보 1개 (분리 place 대응 술어 — spec §5.7)"
+  },
+  {
+    "check_id": "D-S03-B-007",
+    "check_class": "DIFF",
+    "severity": "SIGNAL",
+    "status": "EXPLAINED",
+    "observed": {
+      "D": 6,
+      "A": 3,
+      "L": 0
+    },
+    "expected": {
+      "D": 9,
+      "A": 2,
+      "L": 3
+    },
+    "source": "prior_baseline",
+    "failure_means": [
+      "convention_mismatch",
+      "baseline_stale",
+      "logic_bug",
+      "param_sensitivity"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "KD-0014 (hypothesis) — docs/investigations/DIFF-0003-hub-signals.md | 동명 place 후보 1개 (분리 place 대응 술어 — spec §5.7)"
+  },
+  {
+    "check_id": "D-S03-B-008",
+    "check_class": "DIFF",
+    "severity": "SIGNAL",
+    "status": "MATCH",
+    "observed": {
+      "D": 5,
+      "A": 2,
+      "L": 0
+    },
+    "expected": {
+      "D": 5,
+      "A": 2,
+      "L": 0
+    },
+    "source": "prior_baseline",
+    "failure_means": [
+      "convention_mismatch",
+      "baseline_stale",
+      "logic_bug",
+      "param_sensitivity"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "동명 place 후보 3개 (분리 place 대응 술어 — spec §5.7)"
+  },
+  {
+    "check_id": "D-S03-B-009",
+    "check_class": "DIFF",
+    "severity": "SIGNAL",
+    "status": "EXPLAINED",
+    "observed": {
+      "D": 5,
+      "A": 3,
+      "L": 0
+    },
+    "expected": {
+      "D": 5,
+      "A": 2,
+      "L": 0
+    },
+    "source": "prior_baseline",
+    "failure_means": [
+      "convention_mismatch",
+      "baseline_stale",
+      "logic_bug",
+      "param_sensitivity"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "KD-0015 (hypothesis) — docs/investigations/DIFF-0003-hub-signals.md | 동명 place 후보 2개 (분리 place 대응 술어 — spec §5.7)"
+  }
+]

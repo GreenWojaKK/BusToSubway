@@ -1,0 +1,400 @@
+{
+ "route": "50",
+ "route_type": "General",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 7,
+ "direction_groups": {
+  "대운산 방면": [
+   "BR_TAGO_USB196100505",
+   "BR_TAGO_USB196100501"
+  ],
+  "남창 방면": [
+   "BR_TAGO_USB196100502",
+   "BR_TAGO_USB196100506",
+   "BR_TAGO_USB196100504",
+   "BR_TAGO_USB196100508"
+  ],
+  "동원아파트 방면": [
+   "BR_TAGO_USB196100507"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_TAGO_USB196100505",
+   "route_name": "50(대운산 방면)",
+   "dir_label": "대운산 방면",
+   "n_stops": 18,
+   "frequency": 6,
+   "is_loop": false,
+   "first_raw": "남창",
+   "last_raw": "대운산",
+   "first_norm": "남창",
+   "last_norm": "대운산",
+   "stop_names_raw": [
+    "남창",
+    "남창고등학교앞",
+    "대안사거리",
+    "동호아파트앞",
+    "럭키아파트앞",
+    "온양농협앞",
+    "솔밭마을",
+    "온양하나로마트",
+    "온양하나로마트",
+    "솔밭마을",
+    "온양농협앞",
+    "럭키아파트앞",
+    "울주군립도서관",
+    "위드아파트",
+    "하대양달",
+    "하대음달",
+    "상대마을",
+    "대운산"
+   ]
+  },
+  {
+   "route_id": "BR_TAGO_USB196100501",
+   "route_name": "50(대운산 방면)",
+   "dir_label": "대운산 방면",
+   "n_stops": 14,
+   "frequency": 6,
+   "is_loop": false,
+   "first_raw": "남창",
+   "last_raw": "대운산",
+   "first_norm": "남창",
+   "last_norm": "대운산",
+   "stop_names_raw": [
+    "남창",
+    "남창고등학교앞",
+    "대안사거리",
+    "동호아파트앞",
+    "럭키아파트앞",
+    "온양농협앞",
+    "온양농협앞",
+    "럭키아파트앞",
+    "울주군립도서관",
+    "위드아파트",
+    "하대양달",
+    "하대음달",
+    "상대마을",
+    "대운산"
+   ]
+  },
+  {
+   "route_id": "BR_TAGO_USB196100502",
+   "route_name": "50(남창 방면)",
+   "dir_label": "남창 방면",
+   "n_stops": 14,
+   "frequency": 6,
+   "is_loop": false,
+   "first_raw": "대운산",
+   "last_raw": "남창",
+   "first_norm": "대운산",
+   "last_norm": "남창",
+   "stop_names_raw": [
+    "대운산",
+    "상대마을",
+    "하대음달",
+    "하대양달",
+    "위드아파트",
+    "울주군립도서관",
+    "럭키아파트앞",
+    "온양농협앞",
+    "온양농협앞",
+    "럭키아파트앞",
+    "동호아파트앞",
+    "대안사거리",
+    "남창고등학교앞",
+    "남창"
+   ]
+  },
+  {
+   "route_id": "BR_TAGO_USB196100506",
+   "route_name": "50(남창 방면)",
+   "dir_label": "남창 방면",
+   "n_stops": 18,
+   "frequency": 5,
+   "is_loop": false,
+   "first_raw": "대운산",
+   "last_raw": "남창",
+   "first_norm": "대운산",
+   "last_norm": "남창",
+   "stop_names_raw": [
+    "대운산",
+    "상대마을",
+    "하대음달",
+    "하대양달",
+    "위드아파트",
+    "울주군립도서관",
+    "럭키아파트앞",
+    "온양농협앞",
+    "솔밭마을",
+    "온양하나로마트",
+    "온양하나로마트",
+    "솔밭마을",
+    "온양농협앞",
+    "럭키아파트앞",
+    "동호아파트앞",
+    "대안사거리",
+    "남창고등학교앞",
+    "남창"
+   ]
+  },
+  {
+   "route_id": "BR_TAGO_USB196100504",
+   "route_name": "50(남창 방면)",
+   "dir_label": "남창 방면",
+   "n_stops": 5,
+   "frequency": 4,
+   "is_loop": false,
+   "first_raw": "중고산",
+   "last_raw": "남창",
+   "first_norm": "중고산",
+   "last_norm": "남창",
+   "stop_names_raw": [
+    "중고산",
+    "중고산마을입구",
+    "외고산마을입구",
+    "온양읍행정복지센터",
+    "남창"
+   ]
+  },
+  {
+   "route_id": "BR_TAGO_USB196100507",
+   "route_name": "50(동원아파트 방면)",
+   "dir_label": "동원아파트 방면",
+   "n_stops": 12,
+   "frequency": 1,
+   "is_loop": false,
+   "first_raw": "남창",
+   "last_raw": "동백아파트앞",
+   "first_norm": "남창",
+   "last_norm": "동백아파트앞",
+   "stop_names_raw": [
+    "남창",
+    "남창입구",
+    "온양체육공원",
+    "외고산옹기마을",
+    "소방서앞",
+    "무궁화아파트",
+    "한국제지사택",
+    "LS사택",
+    "온산농협",
+    "온산우체국앞",
+    "울산기술공업고등학교",
+    "동백아파트앞"
+   ]
+  },
+  {
+   "route_id": "BR_TAGO_USB196100508",
+   "route_name": "50(남창 방면)",
+   "dir_label": "남창 방면",
+   "n_stops": 7,
+   "frequency": 1,
+   "is_loop": false,
+   "first_raw": "동원아파트앞",
+   "last_raw": "남창",
+   "first_norm": "동원아파트앞",
+   "last_norm": "남창",
+   "stop_names_raw": [
+    "동원아파트앞",
+    "울산기술공업고등학교앞",
+    "덕신초등학교앞",
+    "외고산옹기마을",
+    "온양체육공원",
+    "온양읍행정복지센터",
+    "남창"
+   ]
+  }
+ ],
+ "pairs": [
+  {
+   "a": "BR_TAGO_USB196100505",
+   "b": "BR_TAGO_USB196100501",
+   "name_jaccard": 0.857,
+   "seam_a_to_b": false,
+   "seam_b_to_a": false,
+   "reverse_pair": false,
+   "relationship": "b_subset_detour_of_a"
+  },
+  {
+   "a": "BR_TAGO_USB196100505",
+   "b": "BR_TAGO_USB196100502",
+   "name_jaccard": 0.857,
+   "seam_a_to_b": true,
+   "seam_b_to_a": true,
+   "reverse_pair": true,
+   "relationship": "b_subset_unordered_of_a"
+  },
+  {
+   "a": "BR_TAGO_USB196100505",
+   "b": "BR_TAGO_USB196100506",
+   "name_jaccard": 1.0,
+   "seam_a_to_b": true,
+   "seam_b_to_a": true,
+   "reverse_pair": true,
+   "relationship": "identical_set"
+  },
+  {
+   "a": "BR_TAGO_USB196100505",
+   "b": "BR_TAGO_USB196100504",
+   "name_jaccard": 0.056,
+   "seam_a_to_b": false,
+   "seam_b_to_a": true,
+   "reverse_pair": false,
+   "relationship": "divergent"
+  },
+  {
+   "a": "BR_TAGO_USB196100505",
+   "b": "BR_TAGO_USB196100507",
+   "name_jaccard": 0.04,
+   "seam_a_to_b": false,
+   "seam_b_to_a": false,
+   "reverse_pair": false,
+   "relationship": "divergent"
+  },
+  {
+   "a": "BR_TAGO_USB196100505",
+   "b": "BR_TAGO_USB196100508",
+   "name_jaccard": 0.05,
+   "seam_a_to_b": false,
+   "seam_b_to_a": true,
+   "reverse_pair": false,
+   "relationship": "divergent"
+  },
+  {
+   "a": "BR_TAGO_USB196100501",
+   "b": "BR_TAGO_USB196100502",
+   "name_jaccard": 1.0,
+   "seam_a_to_b": true,
+   "seam_b_to_a": true,
+   "reverse_pair": true,
+   "relationship": "identical_set"
+  },
+  {
+   "a": "BR_TAGO_USB196100501",
+   "b": "BR_TAGO_USB196100506",
+   "name_jaccard": 0.857,
+   "seam_a_to_b": true,
+   "seam_b_to_a": true,
+   "reverse_pair": true,
+   "relationship": "a_subset_unordered_of_b"
+  },
+  {
+   "a": "BR_TAGO_USB196100501",
+   "b": "BR_TAGO_USB196100504",
+   "name_jaccard": 0.062,
+   "seam_a_to_b": false,
+   "seam_b_to_a": true,
+   "reverse_pair": false,
+   "relationship": "divergent"
+  },
+  {
+   "a": "BR_TAGO_USB196100501",
+   "b": "BR_TAGO_USB196100507",
+   "name_jaccard": 0.043,
+   "seam_a_to_b": false,
+   "seam_b_to_a": false,
+   "reverse_pair": false,
+   "relationship": "divergent"
+  },
+  {
+   "a": "BR_TAGO_USB196100501",
+   "b": "BR_TAGO_USB196100508",
+   "name_jaccard": 0.056,
+   "seam_a_to_b": false,
+   "seam_b_to_a": true,
+   "reverse_pair": false,
+   "relationship": "divergent"
+  },
+  {
+   "a": "BR_TAGO_USB196100502",
+   "b": "BR_TAGO_USB196100506",
+   "name_jaccard": 0.857,
+   "seam_a_to_b": false,
+   "seam_b_to_a": false,
+   "reverse_pair": false,
+   "relationship": "a_subset_detour_of_b"
+  },
+  {
+   "a": "BR_TAGO_USB196100502",
+   "b": "BR_TAGO_USB196100504",
+   "name_jaccard": 0.062,
+   "seam_a_to_b": false,
+   "seam_b_to_a": false,
+   "reverse_pair": false,
+   "relationship": "divergent"
+  },
+  {
+   "a": "BR_TAGO_USB196100502",
+   "b": "BR_TAGO_USB196100507",
+   "name_jaccard": 0.043,
+   "seam_a_to_b": true,
+   "seam_b_to_a": false,
+   "reverse_pair": false,
+   "relationship": "divergent"
+  },
+  {
+   "a": "BR_TAGO_USB196100502",
+   "b": "BR_TAGO_USB196100508",
+   "name_jaccard": 0.056,
+   "seam_a_to_b": false,
+   "seam_b_to_a": false,
+   "reverse_pair": false,
+   "relationship": "divergent"
+  },
+  {
+   "a": "BR_TAGO_USB196100506",
+   "b": "BR_TAGO_USB196100504",
+   "name_jaccard": 0.056,
+   "seam_a_to_b": false,
+   "seam_b_to_a": false,
+   "reverse_pair": false,
+   "relationship": "divergent"
+  },
+  {
+   "a": "BR_TAGO_USB196100506",
+   "b": "BR_TAGO_USB196100507",
+   "name_jaccard": 0.04,
+   "seam_a_to_b": true,
+   "seam_b_to_a": false,
+   "reverse_pair": false,
+   "relationship": "divergent"
+  },
+  {
+   "a": "BR_TAGO_USB196100506",
+   "b": "BR_TAGO_USB196100508",
+   "name_jaccard": 0.05,
+   "seam_a_to_b": false,
+   "seam_b_to_a": false,
+   "reverse_pair": false,
+   "relationship": "divergent"
+  },
+  {
+   "a": "BR_TAGO_USB196100504",
+   "b": "BR_TAGO_USB196100507",
+   "name_jaccard": 0.062,
+   "seam_a_to_b": true,
+   "seam_b_to_a": false,
+   "reverse_pair": false,
+   "relationship": "divergent"
+  },
+  {
+   "a": "BR_TAGO_USB196100504",
+   "b": "BR_TAGO_USB196100508",
+   "name_jaccard": 0.2,
+   "seam_a_to_b": false,
+   "seam_b_to_a": false,
+   "reverse_pair": false,
+   "relationship": "divergent"
+  },
+  {
+   "a": "BR_TAGO_USB196100507",
+   "b": "BR_TAGO_USB196100508",
+   "name_jaccard": 0.188,
+   "seam_a_to_b": false,
+   "seam_b_to_a": true,
+   "reverse_pair": false,
+   "relationship": "divergent"
+  }
+ ]
+}

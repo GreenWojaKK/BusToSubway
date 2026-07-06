@@ -1,0 +1,15 @@
+﻿variant_id,mask_mode,dominance,k_max,arm_theta_deg,n_crossing,n_terminal,n_hub_qualified,is_adopted
+masked_global|weak|k5|theta45,masked_global,weak,5,45.0,298,6,304,False
+masked_global|weak|k10|theta45,masked_global,weak,10,45.0,298,6,304,True
+masked_global|weak|k15|theta45,masked_global,weak,15,45.0,298,6,304,False
+masked_global|strict|k5|theta45,masked_global,strict,5,45.0,298,5,303,False
+masked_global|strict|k10|theta45,masked_global,strict,10,45.0,298,5,303,False
+masked_global|strict|k15|theta45,masked_global,strict,15,45.0,298,5,303,False
+subgraph|weak|k5|theta45,subgraph,weak,5,45.0,298,9,307,False
+subgraph|weak|k10|theta45,subgraph,weak,10,45.0,298,9,307,False
+subgraph|weak|k15|theta45,subgraph,weak,15,45.0,298,9,307,False
+subgraph|strict|k5|theta45,subgraph,strict,5,45.0,298,7,305,False
+subgraph|strict|k10|theta45,subgraph,strict,10,45.0,298,7,305,False
+subgraph|strict|k15|theta45,subgraph,strict,15,45.0,298,7,305,False
+masked_global|weak|k10|theta30,masked_global,weak,10,30.0,400,0,400,False
+masked_global|weak|k10|theta60,masked_global,weak,10,60.0,207,10,217,False

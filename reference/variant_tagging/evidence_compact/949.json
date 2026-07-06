@@ -1,0 +1,109 @@
+{
+ "route": "949",
+ "route_type": "General",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 2,
+ "direction_groups": {
+  "농소 방면": [
+   "BR_TAGO_USB195109493",
+   "BR_TAGO_USB195109494"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_TAGO_USB195109493",
+   "route_name": "949(농소 방면)",
+   "dir_label": "농소 방면",
+   "n_stops": 26,
+   "frequency": 13,
+   "is_loop": true,
+   "first_raw": "농소공영차고지",
+   "last_raw": "농소공영차고지",
+   "first_norm": "농소공영",
+   "last_norm": "농소공영",
+   "stop_names_raw": [
+    "농소공영차고지",
+    "농소공영차고지",
+    "차일마을",
+    "농소운동장",
+    "농소1동행정복지센터",
+    "농소중학교",
+    "시장2리",
+    "신천",
+    "한라신천지타운",
+    "농소2동주민센터",
+    "일지리버아파트",
+    "천곡마을입구",
+    "천곡회관앞",
+    "천곡",
+    "천곡회관앞",
+    "천곡마을입구",
+    "일지리버아파트",
+    "농소2동주민센터",
+    "한라신천지타운앞",
+    "신천",
+    "시장2리",
+    "농소중학교",
+    "농소1동행정복지센터",
+    "농소운동장",
+    "차일마을",
+    "농소공영차고지"
+   ]
+  },
+  {
+   "route_id": "BR_TAGO_USB195109494",
+   "route_name": "949(농소 방면)",
+   "dir_label": "농소 방면",
+   "n_stops": 30,
+   "frequency": 4,
+   "is_loop": true,
+   "first_raw": "농소공영차고지",
+   "last_raw": "농소공영차고지",
+   "first_norm": "농소공영",
+   "last_norm": "농소공영",
+   "stop_names_raw": [
+    "농소공영차고지",
+    "농소공영차고지",
+    "차일마을",
+    "농소운동장",
+    "농소1동행정복지센터",
+    "농소중학교",
+    "시장2리",
+    "신천",
+    "한라신천지타운",
+    "농소2동주민센터",
+    "일지리버아파트",
+    "천곡마을입구",
+    "천곡회관앞",
+    "천곡",
+    "선창골못",
+    "관문성입구",
+    "선창골못",
+    "천곡",
+    "천곡회관앞",
+    "천곡마을입구",
+    "일지리버아파트",
+    "농소2동주민센터",
+    "한라신천지타운앞",
+    "신천",
+    "시장2리",
+    "농소중학교",
+    "농소1동행정복지센터",
+    "농소운동장",
+    "차일마을",
+    "농소공영차고지"
+   ]
+  }
+ ],
+ "pairs": [
+  {
+   "a": "BR_TAGO_USB195109493",
+   "b": "BR_TAGO_USB195109494",
+   "name_jaccard": 0.875,
+   "seam_a_to_b": true,
+   "seam_b_to_a": true,
+   "reverse_pair": true,
+   "relationship": "a_subset_detour_of_b"
+  }
+ ]
+}

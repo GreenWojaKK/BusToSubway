@@ -1,0 +1,48 @@
+{
+ "route": "981",
+ "route_type": "General",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 1,
+ "direction_groups": {
+  "대안입구 방면": [
+   "BR_TAGO_USB195109813"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_TAGO_USB195109813",
+   "route_name": "981(대안입구 방면)",
+   "dir_label": "대안입구 방면",
+   "n_stops": 20,
+   "frequency": 17,
+   "is_loop": true,
+   "first_raw": "대안입구",
+   "last_raw": "대안입구",
+   "first_norm": "대안입구",
+   "last_norm": "대안입구",
+   "stop_names_raw": [
+    "대안입구",
+    "푸르지오1차",
+    "푸르지오1차",
+    "강동서희스타힐스",
+    "강동초등학교",
+    "강동중학교",
+    "푸르지오2차",
+    "산음",
+    "북정자",
+    "아진비치아파트",
+    "정자",
+    "활어직판장",
+    "산음",
+    "푸르지오2차",
+    "강동중학교",
+    "강동초등학교",
+    "강동서희스타힐스",
+    "푸르지오1차",
+    "푸르지오1차",
+    "대안입구"
+   ]
+  }
+ ],
+ "pairs": []
+}

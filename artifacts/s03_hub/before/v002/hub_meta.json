@@ -1,0 +1,22 @@
+{
+  "scope": "before",
+  "universe": "general_before",
+  "n_universe_routes": 170,
+  "n_lspace_routes": 137,
+  "n_places": 1868,
+  "n_edges": 2182,
+  "degree_dist": {
+    "0": 306,
+    "1": 47,
+    "2": 847,
+    "3+": 668
+  },
+  "n_crossing": 298,
+  "n_terminal": 6,
+  "n_hub_qualified": 304,
+  "n_overrides_applied": 0,
+  "sensitivity_hub_range": [
+    217,
+    400
+  ]
+}

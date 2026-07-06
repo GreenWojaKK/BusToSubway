@@ -1,0 +1,152 @@
+{
+ "route": "52",
+ "route_type": "General",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 3,
+ "direction_groups": {
+  "온양서희스타힐스 순환": [
+   "BR_TAGO_USB196100523"
+  ],
+  "온산중고등학교 방면": [
+   "BR_TAGO_USB196100524"
+  ],
+  "온남초등학교 방면": [
+   "BR_TAGO_USB196100525"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_TAGO_USB196100523",
+   "route_name": "52(온양서희스타힐스 순환)",
+   "dir_label": "온양서희스타힐스 순환",
+   "n_stops": 39,
+   "frequency": 10,
+   "is_loop": true,
+   "first_raw": "온양서희스타힐스",
+   "last_raw": "온양서희스타힐스",
+   "first_norm": "온양서희스타힐스",
+   "last_norm": "온양서희스타힐스",
+   "stop_names_raw": [
+    "온양서희스타힐스",
+    "온남초등학교",
+    "우주아파트",
+    "대우아파트",
+    "솔밭마을",
+    "온양농협앞",
+    "럭키아파트앞",
+    "동호아파트앞",
+    "대안사거리",
+    "남창고등학교앞",
+    "남창",
+    "남창입구",
+    "남창중학교",
+    "동상회관",
+    "보람병원",
+    "덕신대교",
+    "금솔주유소",
+    "진영프리텔앞",
+    "덕신소공원",
+    "온산우체국앞",
+    "소방서앞",
+    "장수나무",
+    "금솔주유소",
+    "덕신대교",
+    "보람병원",
+    "동상주유소",
+    "동상회관",
+    "남창중학교",
+    "온양읍행정복지센터",
+    "남창",
+    "남창고등학교앞",
+    "대안사거리",
+    "동호아파트앞",
+    "럭키아파트앞",
+    "온양농협앞",
+    "솔밭마을",
+    "우주아파트",
+    "온남초등학교",
+    "온양서희스타힐스"
+   ]
+  },
+  {
+   "route_id": "BR_TAGO_USB196100524",
+   "route_name": "52(온산중고등학교 방면)",
+   "dir_label": "온산중고등학교 방면",
+   "n_stops": 21,
+   "frequency": 1,
+   "is_loop": false,
+   "first_raw": "온양서희스타힐스",
+   "last_raw": "온산중학교",
+   "first_norm": "온양서희스타힐스",
+   "last_norm": "온산중학교",
+   "stop_names_raw": [
+    "온양서희스타힐스",
+    "온남초등학교",
+    "우주아파트",
+    "대우아파트",
+    "솔밭마을",
+    "온양농협앞",
+    "럭키아파트앞",
+    "동호아파트앞",
+    "대안사거리",
+    "남창고등학교앞",
+    "남창",
+    "남창입구",
+    "남창중학교",
+    "동상회관",
+    "보람병원",
+    "덕신대교",
+    "금솔주유소",
+    "진영프리텔앞",
+    "덕신소공원",
+    "온산읍 행정복지센터",
+    "온산중학교"
+   ]
+  },
+  {
+   "route_id": "BR_TAGO_USB196100525",
+   "route_name": "52(온남초등학교 방면)",
+   "dir_label": "온남초등학교 방면",
+   "n_stops": 2,
+   "frequency": 1,
+   "is_loop": false,
+   "first_raw": "온양서희스타힐스",
+   "last_raw": "온남초등학교",
+   "first_norm": "온양서희스타힐스",
+   "last_norm": "온남초등학교",
+   "stop_names_raw": [
+    "온양서희스타힐스",
+    "온남초등학교"
+   ]
+  }
+ ],
+ "pairs": [
+  {
+   "a": "BR_TAGO_USB196100523",
+   "b": "BR_TAGO_USB196100524",
+   "name_jaccard": 0.731,
+   "seam_a_to_b": true,
+   "seam_b_to_a": false,
+   "reverse_pair": false,
+   "relationship": "divergent"
+  },
+  {
+   "a": "BR_TAGO_USB196100523",
+   "b": "BR_TAGO_USB196100525",
+   "name_jaccard": 0.083,
+   "seam_a_to_b": true,
+   "seam_b_to_a": false,
+   "reverse_pair": false,
+   "relationship": "b_short_turn_of_a"
+  },
+  {
+   "a": "BR_TAGO_USB196100524",
+   "b": "BR_TAGO_USB196100525",
+   "name_jaccard": 0.095,
+   "seam_a_to_b": false,
+   "seam_b_to_a": false,
+   "reverse_pair": false,
+   "relationship": "b_short_turn_of_a"
+  }
+ ]
+}

@@ -1,0 +1,104 @@
+# 설명된 편차 대장 (verification.md §2.3) — 부패 감지 내장
+# EXPLAINED 성립 조건: 대장 등재 AND observed == measured(고정값).
+# measured에서 재이탈하면 자동으로 UNEXPLAINED 강등된다(설명의 부패 감지).
+# status: hypothesis | confirmed — 감사가 가설만 남긴 항목을 confirmed로 올리려면 규명 문서가 필요하다.
+deviations:
+  - id: KD-0001
+    check: D-S01-B-004            # circular trips
+    prior: 2271
+    measured: 2275                # ★ 고정 — 재실행에서 이 값을 벗어나면 UNEXPLAINED로 자동 강등
+    status: hypothesis
+    doc: docs/investigations/DIFF-0001-variant-role-trips.md
+    note: "어떤 단일 자연 분할도 선행 구현 수치 재현 불가 실측(audit/variant_tags.md §6) — 후단 재판정/스냅샷 버전차 가설"
+  - id: KD-0002
+    check: D-S01-B-005            # short_turn trips
+    prior: 227
+    measured: 319
+    status: hypothesis
+    doc: docs/investigations/DIFF-0001-variant-role-trips.md
+  - id: KD-0003
+    check: D-S01-B-006            # branch trips
+    prior: 31
+    measured: 33
+    status: hypothesis
+    doc: docs/investigations/DIFF-0001-variant-role-trips.md
+  - id: KD-0004
+    check: D-S01-B-007            # trip 귀속 — 선행 구현의 100%는 지원 57 trips의 별도 귀속 전제
+    prior: 1.0
+    measured: 1.0
+    status: confirmed
+    doc: docs/decisions/ADR-001-support-attribution.md
+    note: "role=support 신설 + parent_route 귀속으로 100% 재현 — 방식 차이만 기록"
+  # --- 추가 2026-07-04 (Stage 2 s02_place 첫 실행 규명 — DIFF-0002, 추가 전용) ---
+  - id: KD-0005
+    check: D-S02-B-001            # place 총수 — 정본(이름 blocking + 150m 분리) vs 선행 구현 1,759
+    prior: 1759
+    measured: 1868                # ★ 첫 실행(v001) 관측 고정 — +109 == Σ(n_clusters_of_name−1) 전액 설명
+    status: hypothesis
+    doc: docs/investigations/DIFF-0002-place-total.md
+    note: "선행 구현 place=이름 전량 병합(거리 무관) 가설 — 정본 알고리즘(분리) 유지, baseline 1759 동결"
+  - id: KD-0006
+    check: D-S02-B-002            # diag_under_merge 행수 — 반경/측도 의존 신호
+    prior: 84
+    measured: 123                 # 상한 null(전량 보고)·최근접 stop 쌍 측도 기준 측정 고정
+    status: hypothesis
+    doc: docs/investigations/DIFF-0002-place-total.md
+  - id: KD-0007
+    check: D-S02-B-003            # diag_alias 행수 @30m — 1건 차(반경 경계/측도 정의 의존)
+    prior: 32
+    measured: 31
+    status: hypothesis
+    doc: docs/investigations/DIFF-0002-place-total.md
+  # --- 추가 2026-07-04 (Stage 2 s03_hub 첫 실행 규명 — DIFF-0003, 추가 전용) ---
+  # baseline 대응 항목(decomposition·spot)은 memory_sourced 신호다. 498은 sensitivity 의무
+  # 격자(14행, 217~400) 전 변형에서 미재현 — 괴리는 구조적(convention_mismatch 주 가설).
+  # D-S03-B-008(태화로터리)은 MATCH — 등재 불요(부분 검증 성공, DIFF-0003 §3-4).
+  - id: KD-0008
+    check: D-S03-B-001            # HUB_QUALIFIED — 채택 정의(masked_global·weak·K10·θ45) 304
+    prior: 498
+    measured: 304                 # ★ 첫 실행(v001) 관측 고정 — 격자 전 변형 [217, 400], 498 미재현
+    status: hypothesis
+    doc: docs/investigations/DIFF-0003-hub-signals.md
+    note: "선행 구현 공간층 그래프 규약 상이(주 가설) — 정본 L-space(backbone×General) 유지, baseline 498 동결"
+  - id: KD-0009
+    check: D-S03-B-002            # CROSSING (D>=3 & A>=3)
+    prior: 490
+    measured: 298
+    status: hypothesis
+    doc: docs/investigations/DIFF-0003-hub-signals.md
+  - id: KD-0010
+    check: D-S03-B-003            # TERMINAL (D>=5 & A<=2 & L*>=5) — 신호 8은 subgraph 7/9 사이
+    prior: 8
+    measured: 6
+    status: hypothesis
+    doc: docs/investigations/DIFF-0003-hub-signals.md
+  - id: KD-0011
+    check: D-S03-B-004            # D<=2 place 수 — 분모 우주 상이(1,759 vs 1,868), 비율 보정 해석
+    prior: 976
+    measured: 1200
+    status: hypothesis
+    doc: docs/investigations/DIFF-0003-hub-signals.md
+  - id: KD-0012
+    check: D-S03-B-005            # D==2 place 수 — 동일 분모 주의
+    prior: 925
+    measured: 847
+    status: hypothesis
+    doc: docs/investigations/DIFF-0003-hub-signals.md
+  - id: KD-0013
+    check: D-S03-B-006            # 스팟 구언양버스터미널 — L=10(K cap) 일치, D −1·A +1
+    prior: {D: 9, A: 2, L: 10}
+    measured: {D: 8, A: 3, L: 10}
+    status: hypothesis
+    doc: docs/investigations/DIFF-0003-hub-signals.md
+  - id: KD-0014
+    check: D-S03-B-007            # 스팟 고속버스터미널앞 — D 자체 상이(그래프 구조 괴리 파생 가설)
+    prior: {D: 9, A: 2, L: 3}
+    measured: {D: 6, A: 3, L: 0}
+    status: hypothesis
+    doc: docs/investigations/DIFF-0003-hub-signals.md
+  - id: KD-0015
+    check: D-S03-B-009            # 스팟 신복로터리 — A만 +1 (θ 경계 또는 기억 오차)
+    prior: {D: 5, A: 2, L: 0}
+    measured: {D: 5, A: 3, L: 0}
+    status: hypothesis
+    doc: docs/investigations/DIFF-0003-hub-signals.md

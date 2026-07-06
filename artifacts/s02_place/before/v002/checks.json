@@ -1,0 +1,332 @@
+[
+  {
+    "check_id": "C-S02-B-001",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "map_rows": 3409,
+      "stops_rows": 3409,
+      "stop_id_dup": 0,
+      "null_rows": 0
+    },
+    "expected": {
+      "map_rows": 3409,
+      "stops_rows": 3409,
+      "stop_id_dup": 0,
+      "null_rows": 0
+    },
+    "source": "routes_stops.md §1,§5; stage2_place_hub_spec.md §4.5",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "stop 소실 0 — place는 stop을 대체하지 않는다 (design.md §2.3)"
+  },
+  {
+    "check_id": "C-S02-B-002",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "cross_name_auto_merged": 0,
+      "n_names_gt1_unflagged": 0
+    },
+    "expected": {
+      "cross_name_auto_merged": 0,
+      "n_names_gt1_unflagged": 0
+    },
+    "source": "verification.md §5.5 (고정 규칙: 이름은 blocking key)",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "위반 = cross-name union 경로 유입 — override(merge) 경유만 허용"
+  },
+  {
+    "check_id": "C-S02-B-003",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "recompute_mismatch": 0,
+      "checked": 1868
+    },
+    "expected": {
+      "recompute_mismatch": 0,
+      "checked": 1868
+    },
+    "source": "design.md §5 s02 (콘텐츠 파생 결정적 id)",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S02-B-004",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "disconnected_places": 0,
+      "same_name_pairs_within_linkage": 0,
+      "checked_places": 1868
+    },
+    "expected": {
+      "disconnected_places": 0,
+      "same_name_pairs_within_linkage": 0,
+      "checked_places": 1868
+    },
+    "source": "verification.md §5.5 (single-linkage ≤ linkage_max_m 재검증)",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S02-B-005",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "applied_rows": 0,
+      "override_rows": 0,
+      "schema": [
+        "row_no",
+        "action",
+        "place_a",
+        "place_b",
+        "result_place_id",
+        "n_stops_merged",
+        "reason",
+        "source"
+      ],
+      "bad_actions": [],
+      "unresolved_result_ids": []
+    },
+    "expected": {
+      "applied_rows": 0,
+      "override_rows": 0,
+      "schema": [
+        "row_no",
+        "action",
+        "place_a",
+        "place_b",
+        "result_place_id",
+        "n_stops_merged",
+        "reason",
+        "source"
+      ],
+      "bad_actions": [],
+      "unresolved_result_ids": []
+    },
+    "source": "stage2_place_hub_spec.md §4.2 (전건 회계 — 조용한 부패 금지)",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S02-B-006",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "1": 333,
+      "2": 1298,
+      "3+": 128
+    },
+    "expected": {
+      "1": 333,
+      "2": 1298,
+      "3+": 128
+    },
+    "source": "routes_stops.md §5 + stage2_place_hub_spec.md §4.5 정오",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S02-B-007",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "under_merge_exists": true,
+      "alias_exists": true,
+      "um_schema_ok": true,
+      "um_fk_dangling": 0,
+      "um_name_mismatch_rows": 0,
+      "al_schema_ok": true,
+      "al_fk_dangling": 0,
+      "al_same_name_rows": 0
+    },
+    "expected": {
+      "under_merge_exists": true,
+      "alias_exists": true,
+      "um_schema_ok": true,
+      "al_schema_ok": true,
+      "um_fk_dangling": 0,
+      "al_fk_dangling": 0,
+      "um_name_mismatch_rows": 0,
+      "al_same_name_rows": 0
+    },
+    "source": "stage2_place_hub_spec.md §4.3 (구조 검증 규칙)",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S02-B-008",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "regex_mismatch": 0,
+      "place_id_dup": 0,
+      "sum_n_stops": 3409,
+      "stops_rows": 3409,
+      "map_fk_dangling": 0,
+      "place_name_mismatch": 0,
+      "n_stops_mismatch": 0,
+      "n_names_mismatch": 0,
+      "geometry_recompute_mismatch": 0
+    },
+    "expected": {
+      "regex_mismatch": 0,
+      "place_id_dup": 0,
+      "sum_n_stops": 3409,
+      "stops_rows": 3409,
+      "map_fk_dangling": 0,
+      "place_name_mismatch": 0,
+      "n_stops_mismatch": 0,
+      "n_names_mismatch": 0,
+      "geometry_recompute_mismatch": 0
+    },
+    "source": "stage2_place_hub_spec.md §4.4, §4.5 (구조 검증 규칙 — accounting 포함)",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "P-S02-B-001",
+    "check_class": "PHYSICAL",
+    "severity": "WARN",
+    "status": "PASS",
+    "observed": {
+      "over_threshold_places": 0,
+      "max_span_m": 233.8,
+      "threshold_m": 300.0
+    },
+    "expected": {
+      "over_threshold_places": 0
+    },
+    "source": "verification.md §5.5 (미실측 임계 — WARN)",
+    "failure_means": [
+      "logic_bug",
+      "param_sensitivity"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "FAIL 시 병합 과확장/좌표 오염 우선 의심 — 수용이면 --ack"
+  },
+  {
+    "check_id": "D-S02-B-001",
+    "check_class": "DIFF",
+    "severity": "SIGNAL",
+    "status": "EXPLAINED",
+    "observed": 1868,
+    "expected": 1759,
+    "source": "prior_baseline",
+    "failure_means": [
+      "convention_mismatch",
+      "baseline_stale",
+      "logic_bug",
+      "param_sensitivity"
+    ],
+    "action_hint": "같은 이름 분리 97종 표본: ['S-oil정문', 'SK후문앞', '가정마을', '갈티마을입구', '극동스타클래스', '꽃바위아파트', '나사리', '농수산물종합유통센터후문', '달동사거리', '달동주공아파트앞']",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "KD-0005 (hypothesis) — docs/investigations/DIFF-0002-place-total.md | 분리 잉여가 전액 설명됨: obs-baseline=109, Σ(n_clusters_of_name-1)=109 (diag_under_merge 자동 대조)"
+  },
+  {
+    "check_id": "D-S02-B-002",
+    "check_class": "DIFF",
+    "severity": "SIGNAL",
+    "status": "EXPLAINED",
+    "observed": 123,
+    "expected": 84,
+    "source": "prior_baseline",
+    "failure_means": [
+      "convention_mismatch",
+      "baseline_stale",
+      "logic_bug",
+      "param_sensitivity"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "KD-0006 (hypothesis) — docs/investigations/DIFF-0002-place-total.md"
+  },
+  {
+    "check_id": "D-S02-B-003",
+    "check_class": "DIFF",
+    "severity": "SIGNAL",
+    "status": "EXPLAINED",
+    "observed": 31,
+    "expected": 32,
+    "source": "prior_baseline",
+    "failure_means": [
+      "convention_mismatch",
+      "baseline_stale",
+      "logic_bug",
+      "param_sensitivity"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "KD-0007 (hypothesis) — docs/investigations/DIFF-0002-place-total.md"
+  }
+]

@@ -1,0 +1,99 @@
+# BTS 전 임계값·파라미터 (design.md 원칙 7 — 코드 내 수치 리터럴 금지)
+# 이 파일은 해시되는 입력이다: 변경 = params_hash 변경 → 해당 스테이지부터 하류 자동 무효화.
+
+time:
+  # service_s ∈ [service_min_h*3600, service_max_h*3600) — design.md §2.4
+  service_min_h: 4
+  service_max_h: 26
+  # after 시간층: 날짜부가 익일이면 +86400 wrap (to_service_s가 자동 처리)
+  kst_utc_offset_h: 9
+
+join:
+  # 표준 name→stop 해소(design.md §2.6): 같은 이름 내 최근접 좌표 임계 (실측 max 0.91m)
+  max_dist_m: 1.0
+
+normalize:
+  # v1: strip 수준의 보수적 규칙 — 스펙 변경은 검증 규칙 리뷰 대상 (design.md §5 s02)
+  version: v1
+
+manifest:
+  version_digits: 3          # vNNN
+  debug_sample_limit: 200    # _debug/<check_id>_sample.csv 상한 행수
+
+diff:
+  default_tol: 0             # DIFF 판정 기본 허용 오차 (체크별로 재정의)
+  stub_dir: docs/internal/investigations
+
+lint:
+  # 규범 어휘 금칙어 — 컬럼명·지표 사전에 등재 불가 (design.md §8: 기술/판정 분리)
+  forbidden_terms:
+    - 비합리
+    - 불합리
+    - 과다
+    - 과잉
+    - 비효율
+    - 부적절
+    - should
+    - must_
+    - irrational
+    - excessive
+    - unreasonable
+    - inefficient
+    - wasteful
+
+raw_contracts:
+  # 감사 실측 로더 불변식 수치 (출처: reference/audit/*.md — 튜닝 대상 아님)
+  stops_before:
+    rows: 3409
+    lat_min: 35.17            # [RS§6] before 좌표 실측 범위
+    lat_max: 35.72
+    lon_min: 128.94
+    lon_max: 129.48
+  stops_after:
+    rows: 3224
+    lat_min: 35.17            # after는 bbox 밖 0건 실측 [RS§6]
+    lat_max: 35.72
+    lon_min: 128.94
+    lon_max: 129.48
+
+stages:
+  s00_ingest:
+    scopes: [before, after]
+  s01_canonical:
+    scopes: [before, after]
+    # 역할 파생 집합 (design.md §5 s01 ⑥)
+    canonical_roles: [main, circular_baseless, short_turn, branch]
+    backbone_roles: [main, circular_baseless]
+    base_ref_max_depth: 4    # 재귀 해소 depth 가드
+    # P-S01-B-001 인접 stop gap 임계 — 첫 실행 캘리브레이션 확정 (ADR-007):
+    # 실측 max 19,441m(급행 1147 고속도로 구간), >3,000m 91세그먼트 전부 실세계 개연
+    # (급행 52 · 일반 국도 35 · 울주 DRT 순회 시퀀스 4) → 초기 제안 3,000m 기각, 20,000m 등재.
+    # 위반 = 조인/시퀀스 결함 수준의 비정상 도약 신호.
+    adjacent_gap_max_m: 20000
+  s02_place:
+    scopes: [before, after]
+    linkage_max_m: 150.0         # 같은 정규화 이름 안 single-linkage 임계 (고정 규칙 상수)
+    diag_alias_max_m: 30.0       # diag_alias 진단 반경 — [CAL] 31쌍@30m ≈ 선행 기준 신호 32
+    diag_under_merge_max_m: null # diag_under_merge 상한(null=전량 보고) — 선행 기준 84는 반경 의존 신호
+    span_warn_m: 300.0           # P-S02-*-001 (WARN — 미실측 임계; [CAL] max 233.8/261.9m)
+  s03_hub:
+    scopes: [before]
+    universe: general_before    # route_class ∈ {general, ulju} == 170 (s04와 동일 규약, spec §7.2)
+    arm_theta_deg: 45.0         # ADR-009 — 방위각 원형 gap 군집 절단각
+    lifetime:                   # ADR-008
+      mask_mode: masked_global  # {masked_global, subgraph} — hub 자격은 masked 계열(이식 제약)
+      dominance: weak           # {weak(>=), strict(>)}
+      k_max: 10
+    lstar_gate_min_degree: 3    # L* = L if D>=3 else 0 (저 degree tie 아티팩트 게이트)
+    thresholds:                 # 자격 순수 함수의 임계 전부 (재판정 = params 변경만)
+      crossing_min_degree: 3
+      crossing_min_arms: 3
+      terminal_min_degree: 5
+      terminal_max_arms: 2
+      terminal_min_lstar: 5
+    lspace_edge_max_m: 15000    # P-S03-B-001 (WARN — ADR-007 계보; 울주08 DRT 인공 도약 12,396m 포함)
+    sensitivity_grid:           # spec §5.8 sensitivity.csv 의무 격자
+      mask_mode: [masked_global, subgraph]
+      dominance: [weak, strict]
+      k_max: [5, 10, 15]
+      arm_theta_deg: [30.0, 45.0, 60.0]

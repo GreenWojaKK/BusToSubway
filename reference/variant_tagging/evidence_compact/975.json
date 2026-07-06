@@ -1,0 +1,70 @@
+{
+ "route": "975",
+ "route_type": "General",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 1,
+ "direction_groups": {
+  "에쓰오일사택방면": [
+   "BR_TAGO_USB193109753"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_TAGO_USB193109753",
+   "route_name": "975(에쓰오일사택방면)",
+   "dir_label": "에쓰오일사택방면",
+   "n_stops": 42,
+   "frequency": 24,
+   "is_loop": true,
+   "first_raw": "에쓰오일사택",
+   "last_raw": "에쓰오일사택",
+   "first_norm": "에쓰오일사택",
+   "last_norm": "에쓰오일사택",
+   "stop_names_raw": [
+    "에쓰오일사택",
+    "넝쿨아파트",
+    "문수로2차아이파크",
+    "산업은행앞",
+    "축협앞",
+    "남부신협앞",
+    "신정시장앞",
+    "한국케이블방송앞",
+    "중앙공원",
+    "센트럴하이츠",
+    "강남고등학교",
+    "남경노블랜드",
+    "울산병원",
+    "극동스타클래스",
+    "남구문화원앞",
+    "남울산우체국",
+    "삼산현대아파트앞",
+    "남부소방서앞",
+    "남구보건소앞",
+    "대현중학교",
+    "현대백화점",
+    "시외고속버스터미널/신세계안과의원",
+    "고속버스터미널앞",
+    "현대백화점정문",
+    "대현중학교",
+    "남구보건소앞",
+    "남부소방서앞",
+    "삼산현대아파트앞",
+    "남울산우체국",
+    "남구문화원앞",
+    "세이브존",
+    "남경노블랜드",
+    "강남고등학교",
+    "센트럴하이츠",
+    "중앙공원",
+    "남부교회",
+    "한국케이블공사앞",
+    "신정시장앞",
+    "남부신협앞",
+    "축협앞",
+    "문수로2차아이파크",
+    "에쓰오일사택"
+   ]
+  }
+ ],
+ "pairs": []
+}

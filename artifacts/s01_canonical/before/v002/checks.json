@@ -1,0 +1,665 @@
+[
+  {
+    "check_id": "C-S01-B-001",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "patterns": 487,
+      "nondrt_rep_mismatch": 0,
+      "drt_count": 6,
+      "drt_non_acc0": 0,
+      "drt_evidence_mismatch": 0,
+      "drt_union_mismatch": 0,
+      "tags_nstops_mismatch": 0
+    },
+    "expected": {
+      "patterns": 487,
+      "nondrt_rep_mismatch": 0,
+      "drt_count": 6,
+      "drt_non_acc0": 0,
+      "drt_evidence_mismatch": 0,
+      "drt_union_mismatch": 0,
+      "tags_nstops_mismatch": 0
+    },
+    "source": "variant_tags.md §1, §4, §5",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "울주01 실측: evidence 52엔트리/distinct 44 == schedule 합집합 44"
+  },
+  {
+    "check_id": "C-S01-B-002",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "tags_unmatched": 0,
+      "support_ids": [
+        "BR_TAGO_USB103000132",
+        "BR_TAGO_USB103002362",
+        "BR_TAGO_USB103002363",
+        "BR_TAGO_USB103002364",
+        "BR_TAGO_USB103008023",
+        "BR_TAGO_USB103009242"
+      ],
+      "support_trips": 57
+    },
+    "expected": {
+      "tags_unmatched": 0,
+      "support_ids": [
+        "BR_TAGO_USB103000132",
+        "BR_TAGO_USB103002362",
+        "BR_TAGO_USB103002363",
+        "BR_TAGO_USB103002364",
+        "BR_TAGO_USB103008023",
+        "BR_TAGO_USB103009242"
+      ],
+      "support_trips": 57
+    },
+    "source": "variant_tags.md §4",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S01-B-003",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "main_raw_selfref": 92,
+      "main_base_ref_notna": 0,
+      "circular_selfref_preserved": 34,
+      "rechained": 4,
+      "derived_resolved_dangling": 0,
+      "derived_resolved_noncanonical": 0
+    },
+    "expected": {
+      "main_raw_selfref": 92,
+      "main_base_ref_notna": 0,
+      "circular_selfref_preserved": 34,
+      "rechained": 4,
+      "derived_resolved_dangling": 0,
+      "derived_resolved_noncanonical": 0
+    },
+    "source": "variant_tags.md §3",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "전 role base==self→NaN 정규화 금지 — circular 자기참조 34 보존이 canonical 379의 성립 조건 (design.md §13 치명 지적)"
+  },
+  {
+    "check_id": "C-S01-B-004",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "parts": {
+        "branch": 14,
+        "circular_baseless": 66,
+        "main": 187,
+        "short_turn": 112
+      },
+      "total": 379,
+      "canonical_rows_file": 379,
+      "in_canonical_flag_mismatch": 0
+    },
+    "expected": {
+      "parts": {
+        "branch": 14,
+        "circular_baseless": 66,
+        "main": 187,
+        "short_turn": 112
+      },
+      "total": 379,
+      "canonical_rows_file": 379,
+      "in_canonical_flag_mismatch": 0
+    },
+    "source": "variant_tags.md §6",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "선정식 = role=='circular' & base_pattern_id_raw.isna() (66행). 전 role self→NaN이면 413≠379로 깨진다"
+  },
+  {
+    "check_id": "C-S01-B-005",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "parts": {
+        "canonical": 379,
+        "excl_anomaly": 2,
+        "excl_circular_with_base": 37,
+        "excl_detour": 51,
+        "excl_duplicate": 2,
+        "excl_extension": 10,
+        "support": 6
+      },
+      "sum": 487
+    },
+    "expected": {
+      "parts": {
+        "canonical": 379,
+        "excl_anomaly": 2,
+        "excl_circular_with_base": 37,
+        "excl_detour": 51,
+        "excl_duplicate": 2,
+        "excl_extension": 10,
+        "support": 6
+      },
+      "sum": 487
+    },
+    "source": "variant_tags.md §2, §3",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "제외 role은 배제가 아니라 보존 — 시간층이 사용한다"
+  },
+  {
+    "check_id": "C-S01-B-006",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "tagged_patterns": 481,
+      "support_patterns": 6,
+      "tagged_trips": 7568,
+      "support_trips": 57,
+      "sum_trips": 7625,
+      "ta_rows": 7625,
+      "ta_trip_unique": 7625
+    },
+    "expected": {
+      "tagged_patterns": 481,
+      "support_patterns": 6,
+      "tagged_trips": 7568,
+      "support_trips": 57,
+      "sum_trips": 7625,
+      "ta_rows": 7625,
+      "ta_trip_unique": 7625
+    },
+    "source": "variant_tags.md §4",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S01-B-007",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "routes": 184,
+      "routes_without_main_or_circular": 0,
+      "route_dg_main_gt1": 0
+    },
+    "expected": {
+      "routes": 184,
+      "routes_without_main_or_circular": 0,
+      "route_dg_main_gt1": 0
+    },
+    "source": "variant_tags.md §2",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S01-B-008",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "fk_dangling": 0,
+      "tagged_dup_patterns": 55,
+      "tagged_closure_patterns": 8
+    },
+    "expected": {
+      "fk_dangling": 0,
+      "tagged_dup_patterns": 55,
+      "tagged_closure_patterns": 8
+    },
+    "source": "variant_tags.md §5",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": true,
+    "note": "시퀀스 내 stop 중복 55패턴이 사라져도(0건) FAIL — 검증기의 눈"
+  },
+  {
+    "check_id": "C-S01-B-009",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "rows": 4,
+      "route_groups": [
+        "22|977",
+        "22|977",
+        "527|537|808",
+        "941|948"
+      ],
+      "vt_duplicate_routes": [
+        "323"
+      ],
+      "overlap_with_vt_duplicate": []
+    },
+    "expected": {
+      "rows": 4,
+      "route_groups": [
+        "22|977",
+        "22|977",
+        "527|537|808",
+        "941|948"
+      ],
+      "vt_duplicate_routes": [
+        "323"
+      ],
+      "overlap_with_vt_duplicate": []
+    },
+    "source": "schedule_before.md §6; variant_tags.md §2",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "노드 제거 금지 — s04는 쌍에 is_duplicate_pair 플래그만 단다"
+  },
+  {
+    "check_id": "C-S01-B-010",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "rows": 191,
+      "class_dist": {
+        "express": 14,
+        "general": 160,
+        "limousine": 1,
+        "support": 6,
+        "ulju": 10
+      },
+      "general_incl_ulju": 170,
+      "no_schedule": [
+        "김해공항"
+      ]
+    },
+    "expected": {
+      "rows": 191,
+      "class_dist": {
+        "express": 14,
+        "general": 160,
+        "limousine": 1,
+        "support": 6,
+        "ulju": 10
+      },
+      "general_incl_ulju": 170,
+      "no_schedule": [
+        "김해공항"
+      ]
+    },
+    "source": "routes_stops.md §4",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "C-S01-B-011",
+    "check_class": "CONTRACT",
+    "severity": "BLOCK",
+    "status": "PASS",
+    "observed": {
+      "circular_not_loop": 3,
+      "main_loop": 11
+    },
+    "expected": {
+      "circular_not_loop": 3,
+      "main_loop": 11
+    },
+    "source": "variant_tags.md §2",
+    "failure_means": [
+      "loader_bug",
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": true,
+    "note": "is_loop만으로 circular 판정 불가 — 예외가 사라져도 FAIL"
+  },
+  {
+    "check_id": "P-S01-B-001",
+    "check_class": "PHYSICAL",
+    "severity": "WARN",
+    "status": "PASS",
+    "observed": {
+      "over_threshold_segments": 0,
+      "max_gap_m": 19441.2,
+      "threshold_m": 20000
+    },
+    "expected": {
+      "over_threshold_segments": 0
+    },
+    "source": "verification.md §5.3 (미실측 임계, ADR-007 캘리브레이션)",
+    "failure_means": [
+      "logic_bug",
+      "param_sensitivity"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "임계 20,000m은 실측 max 19,441m 기반 (ADR-007) — 위반 시 조인 오염 우선 의심, 실세계 예외면 재캘리브레이션 후 --ack"
+  },
+  {
+    "check_id": "P-S01-B-002",
+    "check_class": "PHYSICAL",
+    "severity": "WARN",
+    "status": "PASS",
+    "observed": {
+      "backbone_patterns": 253,
+      "backbone_stop_patterns": 253,
+      "routes_covered": 150,
+      "routes_total": 184,
+      "routes_uncovered": [
+        "111",
+        "1421",
+        "31",
+        "32",
+        "343",
+        "36",
+        "426",
+        "53",
+        "913",
+        "921",
+        "922",
+        "923",
+        "925",
+        "927",
+        "928",
+        "929",
+        "931",
+        "932",
+        "944",
+        "945",
+        "951",
+        "975",
+        "976",
+        "978",
+        "981",
+        "울주01",
+        "울주02",
+        "울주03",
+        "울주04",
+        "울주05",
+        "울주06",
+        "울주07",
+        "울주09",
+        "울주10"
+      ]
+    },
+    "expected": {
+      "backbone_patterns": 253,
+      "backbone_stop_patterns": 253,
+      "routes_covered": 150,
+      "routes_total": 184,
+      "routes_uncovered": [
+        "111",
+        "1421",
+        "31",
+        "32",
+        "343",
+        "36",
+        "426",
+        "53",
+        "913",
+        "921",
+        "922",
+        "923",
+        "925",
+        "927",
+        "928",
+        "929",
+        "931",
+        "932",
+        "944",
+        "945",
+        "951",
+        "975",
+        "976",
+        "978",
+        "981",
+        "울주01",
+        "울주02",
+        "울주03",
+        "울주04",
+        "울주05",
+        "울주06",
+        "울주07",
+        "울주09",
+        "울주10"
+      ]
+    },
+    "source": "ADR-006 실측 (design.md §5 s01 ⑥ 가설 반증 — 감사 미실측이므로 WARN 유지)",
+    "failure_means": [
+      "upstream_regression",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "하류 주의(caveat): s03/s04/s06의 backbone 입력에는 이 34 route가 없다 — 순수 순환 노선의 골간 취급은 ADR-006이 s03/s04 설계로 이관. BLOCK 승급은 사용자 리뷰 대기"
+  },
+  {
+    "check_id": "P-S01-B-003",
+    "check_class": "PHYSICAL",
+    "severity": "WARN",
+    "status": "PASS",
+    "observed": {
+      "checked": 475,
+      "element_mismatch": 0
+    },
+    "expected": {
+      "checked": 475,
+      "element_mismatch": 0
+    },
+    "source": "variant_tags.md §5 (n_stops까지 실측 — 요소 단위는 미실측)",
+    "failure_means": [
+      "logic_bug",
+      "upstream_regression"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "전행 일치 확인 시 BLOCK 게시 근거가 된다"
+  },
+  {
+    "check_id": "D-S01-B-001",
+    "check_class": "DIFF",
+    "severity": "SIGNAL",
+    "status": "MATCH",
+    "observed": 379,
+    "expected": 379,
+    "source": "prior_baseline",
+    "failure_means": [
+      "convention_mismatch",
+      "baseline_stale",
+      "logic_bug",
+      "param_sensitivity"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "D-S01-B-002",
+    "check_class": "DIFF",
+    "severity": "SIGNAL",
+    "status": "MATCH",
+    "observed": {
+      "general": 170,
+      "express": 14
+    },
+    "expected": {
+      "general": 170,
+      "express": 14
+    },
+    "source": "prior_baseline; routes_stops.md §4",
+    "failure_means": [
+      "convention_mismatch",
+      "baseline_stale",
+      "logic_bug"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "D-S01-B-003",
+    "check_class": "DIFF",
+    "severity": "SIGNAL",
+    "status": "MATCH",
+    "observed": 4648,
+    "expected": 4648,
+    "source": "prior_baseline",
+    "failure_means": [
+      "convention_mismatch",
+      "baseline_stale",
+      "logic_bug",
+      "param_sensitivity"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": ""
+  },
+  {
+    "check_id": "D-S01-B-004",
+    "check_class": "DIFF",
+    "severity": "SIGNAL",
+    "status": "EXPLAINED",
+    "observed": 2275,
+    "expected": 2271,
+    "source": "prior_baseline",
+    "failure_means": [
+      "convention_mismatch",
+      "baseline_stale",
+      "logic_bug",
+      "param_sensitivity"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "KD-0001 (hypothesis) — docs/investigations/DIFF-0001-variant-role-trips.md"
+  },
+  {
+    "check_id": "D-S01-B-005",
+    "check_class": "DIFF",
+    "severity": "SIGNAL",
+    "status": "EXPLAINED",
+    "observed": 319,
+    "expected": 227,
+    "source": "prior_baseline",
+    "failure_means": [
+      "convention_mismatch",
+      "baseline_stale",
+      "logic_bug",
+      "param_sensitivity"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "KD-0002 (hypothesis) — docs/investigations/DIFF-0001-variant-role-trips.md"
+  },
+  {
+    "check_id": "D-S01-B-006",
+    "check_class": "DIFF",
+    "severity": "SIGNAL",
+    "status": "EXPLAINED",
+    "observed": 33,
+    "expected": 31,
+    "source": "prior_baseline",
+    "failure_means": [
+      "convention_mismatch",
+      "baseline_stale",
+      "logic_bug",
+      "param_sensitivity"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "KD-0003 (hypothesis) — docs/investigations/DIFF-0001-variant-role-trips.md"
+  },
+  {
+    "check_id": "D-S01-B-007",
+    "check_class": "DIFF",
+    "severity": "SIGNAL",
+    "status": "MATCH",
+    "observed": 1.0,
+    "expected": 1.0,
+    "source": "prior_baseline",
+    "failure_means": [
+      "convention_mismatch",
+      "baseline_stale",
+      "logic_bug",
+      "param_sensitivity"
+    ],
+    "action_hint": "",
+    "sample_path": null,
+    "positive_control": false,
+    "note": "ADR-001: role=support 신설 + parent_route 귀속으로 100% 재현 (KD-0004 방식 차이)"
+  }
+]

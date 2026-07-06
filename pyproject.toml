@@ -1,0 +1,14 @@
+[project]
+name = "bts"
+version = "0.2.0"
+description = "울산 버스망 재구성 — 버스를 지하철처럼 다루게 만드는 계약 기반 제조 파이프라인 (before 스코프)"
+requires-python = ">=3.10"
+dependencies = ["pandas>=2.0", "numpy>=1.24", "pyyaml>=6.0", "pyarrow>=14"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"

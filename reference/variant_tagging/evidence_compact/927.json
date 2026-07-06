@@ -1,0 +1,54 @@
+{
+ "route": "927",
+ "route_type": "General",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 1,
+ "direction_groups": {
+  "현대백화점 순환": [
+   "BR_TAGO_USB193109273"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_TAGO_USB193109273",
+   "route_name": "927(현대백화점 순환)",
+   "dir_label": "현대백화점 순환",
+   "n_stops": 26,
+   "frequency": 34,
+   "is_loop": true,
+   "first_raw": "현대백화점정문",
+   "last_raw": "현대백화점정문",
+   "first_norm": "현대백화점정문",
+   "last_norm": "현대백화점정문",
+   "stop_names_raw": [
+    "현대백화점정문",
+    "대현중학교",
+    "평창3차아파트",
+    "강변벽산아파트앞",
+    "벽산아파트",
+    "대우푸르지오아파트",
+    "화물공제조합",
+    "아데라움아파트",
+    "세양청구아파트",
+    "삼산본동사거리",
+    "이마트앞",
+    "울산세무서",
+    "울산도서관",
+    "한화꿈에그린",
+    "이마트앞",
+    "삼산본동사거리",
+    "세양청구아파트",
+    "아데라움아파트",
+    "화물공제조합",
+    "대우푸르지오아파트",
+    "벽산아파트",
+    "벽산아파트입구",
+    "강변벽산아파트앞",
+    "보람병원입구",
+    "시외고속버스터미널/신세계안과의원",
+    "현대백화점정문"
+   ]
+  }
+ ],
+ "pairs": []
+}

@@ -1,0 +1,70 @@
+{
+ "route": "929",
+ "route_type": "General",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 1,
+ "direction_groups": {
+  "남양그린빌 순환": [
+   "BR_TAGO_USB193109293"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_TAGO_USB193109293",
+   "route_name": "929(남양그린빌 순환)",
+   "dir_label": "남양그린빌 순환",
+   "n_stops": 42,
+   "frequency": 12,
+   "is_loop": true,
+   "first_raw": "남양그린빌",
+   "last_raw": "남양그린빌",
+   "first_norm": "남양그린빌",
+   "last_norm": "남양그린빌",
+   "stop_names_raw": [
+    "남양그린빌",
+    "목화아파트",
+    "개운초등학교입구",
+    "삼일여고입구",
+    "울산해양경찰서",
+    "롯데캐슬",
+    "남부초등학교",
+    "동부아파트204동",
+    "동부아파트104동",
+    "동부3단지아파트",
+    "홈플러스",
+    "울산세관입구",
+    "신정현대홈타운106동",
+    "신정현대홈타운앞",
+    "동평중학교",
+    "달동주공아파트",
+    "광로교",
+    "우방아파트앞",
+    "삼성자동차학원",
+    "롯데백화점후문",
+    "현대백화점정문",
+    "보람병원입구",
+    "고속버스터미널앞",
+    "삼성자동차학원",
+    "우방아파트앞",
+    "광로교",
+    "달동주공아파트",
+    "동평중학교",
+    "신정현대홈타운앞",
+    "신정현대홈타운단지내",
+    "울산세관입구",
+    "홈플러스",
+    "동부3단지아파트",
+    "동부아파트104동",
+    "동부아파트204동",
+    "남부초등학교",
+    "롯데캐슬",
+    "울산해양경찰서",
+    "삼일여고입구",
+    "개운초등학교입구",
+    "목화아파트",
+    "남양그린빌"
+   ]
+  }
+ ],
+ "pairs": []
+}

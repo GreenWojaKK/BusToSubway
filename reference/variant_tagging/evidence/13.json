@@ -1,0 +1,131 @@
+{
+ "route": "13",
+ "route_type": "General",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 2,
+ "direction_groups": {
+  "박병원앞 방면": [
+   "BR_TAGO_USB192100131"
+  ],
+  "함월구민운동장 방면": [
+   "BR_TAGO_USB192100132"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_TAGO_USB192100131",
+   "route_name": "13(박병원앞 방면)",
+   "dir_label": "박병원앞 방면",
+   "n_stops": 26,
+   "frequency": 44,
+   "is_loop": false,
+   "first_raw": "함월구민운동장",
+   "last_raw": "박병원",
+   "first_norm": "함월구민운동장",
+   "last_norm": "박병원",
+   "stop_names_raw": [
+    "함월구민운동장",
+    "성안금호아파트",
+    "국토정보공사",
+    "G마트",
+    "신안골드빌",
+    "방통대후문",
+    "성안청구",
+    "성안청구아파트입구",
+    "애니원고등학교",
+    "장애인종합복지관",
+    "시립요양원",
+    "편의점앞",
+    "라이온스앞",
+    "경찰청",
+    "궁도장",
+    "성안고가하부도로",
+    "성안입구",
+    "향교앞",
+    "우정선경아파트앞",
+    "우정시장",
+    "강원마트",
+    "목살골목",
+    "양사초등학교",
+    "울산시립미술관",
+    "소방서사거리",
+    "박병원"
+   ],
+   "stop_ids": [
+    "BS_TAGO_USB192011807",
+    "BS_TAGO_USB192011801",
+    "BS_TAGO_USB192011803",
+    "BS_TAGO_USB192072102",
+    "BS_TAGO_USB192072104",
+    "BS_TAGO_USB192062201",
+    "BS_TAGO_USB192011701",
+    "BS_TAGO_USB192011704",
+    "BS_TAGO_USB192062301",
+    "BS_TAGO_USB192072505",
+    "BS_TAGO_USB192072503",
+    "BS_TAGO_USB192072501",
+    "BS_TAGO_USB192062402",
+    "BS_TAGO_USB192023903",
+    "BS_TAGO_USB192023905",
+    "BS_TAGO_USB192023911",
+    "BS_TAGO_USB192023907",
+    "BS_TAGO_USB192022701",
+    "BS_TAGO_USB192022703",
+    "BS_TAGO_USB192063109",
+    "BS_TAGO_USB192063111",
+    "BS_TAGO_USB192063113",
+    "BS_TAGO_USB192063115",
+    "BS_TAGO_USB192063117",
+    "BS_TAGO_USB192066803",
+    "BS_TAGO_USB192066807"
+   ]
+  },
+  {
+   "route_id": "BR_TAGO_USB192100132",
+   "route_name": "13(함월구민운동장 방면)",
+   "dir_label": "함월구민운동장 방면",
+   "n_stops": 10,
+   "frequency": 43,
+   "is_loop": false,
+   "first_raw": "박병원",
+   "last_raw": "함월구민운동장",
+   "first_norm": "박병원",
+   "last_norm": "함월구민운동장",
+   "stop_names_raw": [
+    "박병원",
+    "중앙동행정복지센터",
+    "복산초등학교",
+    "성안입구",
+    "성안고가하부도로",
+    "궁도장",
+    "경찰청",
+    "백양사",
+    "국토정보공사",
+    "함월구민운동장"
+   ],
+   "stop_ids": [
+    "BS_TAGO_USB192066807",
+    "BS_TAGO_USB192077201",
+    "BS_TAGO_USB192077204",
+    "BS_TAGO_USB192023908",
+    "BS_TAGO_USB192023912",
+    "BS_TAGO_USB192023906",
+    "BS_TAGO_USB192023904",
+    "BS_TAGO_USB192011806",
+    "BS_TAGO_USB192011804",
+    "BS_TAGO_USB192011808"
+   ]
+  }
+ ],
+ "pairs": [
+  {
+   "a": "BR_TAGO_USB192100131",
+   "b": "BR_TAGO_USB192100132",
+   "name_jaccard": 0.241,
+   "seam_a_to_b": true,
+   "seam_b_to_a": true,
+   "reverse_pair": true,
+   "relationship": "divergent"
+  }
+ ]
+}

@@ -1,0 +1,17 @@
+# route_class 판정 규칙 — after 스코프 (design.md §7.2)
+# 규칙은 위에서 아래로 우선 적용(yangsan이 이름형태 규칙에 우선).
+era: after
+rules:
+  - {class: yangsan,         rule: 'pattern_prefix:388',              expect_names: 5, scope_flag: boundary_clipped}
+  - {class: express,         rule: 'in:[5001,5002,5003,5004,5005]',   expect_names: 5}
+  - {class: rapid_candidate, rule: 'fullmatch:1\d{3}',                expect_names: 17, needs_review: true}
+  - {class: town,            rule: 'fullmatch:[가-힣]+\d+',            expect_names: 74}
+  - {class: general,         rule: fallback,                          expect_names: 83}
+accounting: {total_names: 184}   # ★ 경성 항등 — 클래스 합 == route_name 184
+# expect_names는 첫 실행 확정치로 게시됨(design.md §7.2 '첫 실행에서 클래스별 확정치를
+# expect로 게시한다' — 2026-07-04 v001/v002 관측: yangsan 5{13,2100,2300,3000,3100} ·
+# express 5 · rapid_candidate 17 · town 74 · general 83, 합 184).
+# 이력: 초기 기대치 yangsan 6은 감사 미실측이었고 관측 5로 확정(감사 §6.2 열거와 일치).
+# 감사 이름 형태 분포와의 정합: 3자리 83 + 한글숫자 74 + 4자리 26(=1xxx 17 + 양산 4 + 급행 5)
+# + 1~2자리 1(양산 13).
+portability: forbidden   # era 키 없는 규칙 조회는 KeyError

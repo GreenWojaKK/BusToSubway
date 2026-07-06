@@ -1,0 +1,61 @@
+{
+ "route": "913",
+ "route_type": "General",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 1,
+ "direction_groups": {
+  "골드클래스 방면": [
+   "BR_TAGO_USB192109133"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_TAGO_USB192109133",
+   "route_name": "913(골드클래스 방면)",
+   "dir_label": "골드클래스 방면",
+   "n_stops": 33,
+   "frequency": 14,
+   "is_loop": true,
+   "first_raw": "골드클래스",
+   "last_raw": "골드클래스",
+   "first_norm": "골드클래스",
+   "last_norm": "골드클래스",
+   "stop_names_raw": [
+    "골드클래스",
+    "외솔중학교",
+    "서동현대",
+    "농수산물유통센터정문",
+    "롯데마트진장점",
+    "울산우편집중국앞",
+    "차량등록사업소입구",
+    "중부경찰서",
+    "병영1동행정복지센터",
+    "병영사거리",
+    "선우시장",
+    "약사중학교",
+    "약사동행정복지센터",
+    "래미안2단지",
+    "약사더샵",
+    "삼성아파트앞",
+    "홈플러스중구점",
+    "래미안",
+    "약사더샵",
+    "래미안2단지",
+    "약사동행정복지센터",
+    "약사중학교",
+    "선우시장",
+    "병영사거리",
+    "중부경찰서",
+    "차량등록사업소입구",
+    "울산우편집중국앞",
+    "롯데마트진장점",
+    "농수산물유통센터정문",
+    "농수산물종합유통센터후문",
+    "서동현대",
+    "외솔중학교",
+    "골드클래스"
+   ]
+  }
+ ],
+ "pairs": []
+}

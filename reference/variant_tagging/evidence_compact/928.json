@@ -1,0 +1,69 @@
+{
+ "route": "928",
+ "route_type": "General",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 1,
+ "direction_groups": {
+  "법원순환": [
+   "BR_TAGO_USB193109283"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_TAGO_USB193109283",
+   "route_name": "928(법원순환 )",
+   "dir_label": "법원순환",
+   "n_stops": 41,
+   "frequency": 26,
+   "is_loop": true,
+   "first_raw": "법원",
+   "last_raw": "법원",
+   "first_norm": "법원",
+   "last_norm": "법원",
+   "stop_names_raw": [
+    "법원",
+    "법조타운삼거리",
+    "구법원",
+    "천호탕앞",
+    "서강파크앞",
+    "옥동현대아파트앞",
+    "신정중학교앞",
+    "대륙2차현대아파트앞",
+    "도성가든후문",
+    "푸른아파트앞",
+    "목련아파트앞",
+    "평화시장",
+    "문수로2차아이파크",
+    "신정2동주민센터입구",
+    "공업탑",
+    "롯데마트",
+    "이진빌라",
+    "우방아파트",
+    "신정현대홈타운앞",
+    "어울림아파트",
+    "동평교회",
+    "동서그린아파트",
+    "신정현대홈타운106동",
+    "신정현대홈타운4단지",
+    "미소지움아파트",
+    "롯데마트앞",
+    "공업탑",
+    "신정2동주민센터입구",
+    "문수로2차아이파크",
+    "평화시장",
+    "목련아파트앞",
+    "푸른아파트앞",
+    "도성가든후문",
+    "대륙2차현대아파트앞",
+    "신정중학교앞",
+    "옥동현대아파트앞",
+    "서강파크앞",
+    "천호탕앞",
+    "옥동중학교앞",
+    "법조타운삼거리",
+    "법원"
+   ]
+  }
+ ],
+ "pairs": []
+}

@@ -1,0 +1,61 @@
+{
+ "route": "343",
+ "route_type": "General",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 1,
+ "direction_groups": {
+  "동문굿모닝힐 순환": [
+   "BR_TAGO_USB196103433"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_TAGO_USB196103433",
+   "route_name": "343(동문굿모닝힐 순환)",
+   "dir_label": "동문굿모닝힐 순환",
+   "n_stops": 33,
+   "frequency": 12,
+   "is_loop": true,
+   "first_raw": "동문굿모닝힐",
+   "last_raw": "동문굿모닝힐",
+   "first_norm": "동문굿모닝힐",
+   "last_norm": "동문굿모닝힐",
+   "stop_names_raw": [
+    "동문굿모닝힐",
+    "우성스마트시티뷰",
+    "센트레빌더테라스",
+    "울산전시컨벤션센터",
+    "울산역",
+    "금아드림팰리스",
+    "언양자동차학원",
+    "울주도서관",
+    "어음리E편한세상",
+    "언양고등학교",
+    "언양임시시외터미널앞",
+    "구언양버스터미널",
+    "언양알프스시장",
+    "남천교",
+    "언삼교사거리",
+    "남천공원",
+    "삼성아파트",
+    "삼성아파트",
+    "언양성당",
+    "언양맨션",
+    "언양전화국",
+    "남천교",
+    "언양알프스시장",
+    "구언양버스터미널",
+    "언양임시시외터미널앞",
+    "언양고등학교",
+    "어음리E편한세상",
+    "울주도서관",
+    "언양자동차학원",
+    "울산역",
+    "금아드림팰리스",
+    "울산전시컨벤션센터",
+    "동문굿모닝힐"
+   ]
+  }
+ ],
+ "pairs": []
+}

@@ -1,0 +1,148 @@
+{
+  "stage": "s03_hub",
+  "scope": "before",
+  "version": "v002",
+  "created_at": "2026-07-07T03:04:39+09:00",
+  "code_ref": "dirty+fb30892585e9",
+  "params": {
+    "scopes": [
+      "before"
+    ],
+    "universe": "general_before",
+    "arm_theta_deg": 45.0,
+    "lifetime": {
+      "mask_mode": "masked_global",
+      "dominance": "weak",
+      "k_max": 10
+    },
+    "lstar_gate_min_degree": 3,
+    "thresholds": {
+      "crossing_min_degree": 3,
+      "crossing_min_arms": 3,
+      "terminal_min_degree": 5,
+      "terminal_max_arms": 2,
+      "terminal_min_lstar": 5
+    },
+    "lspace_edge_max_m": 15000,
+    "sensitivity_grid": {
+      "mask_mode": [
+        "masked_global",
+        "subgraph"
+      ],
+      "dominance": [
+        "weak",
+        "strict"
+      ],
+      "k_max": [
+        5,
+        10,
+        15
+      ],
+      "arm_theta_deg": [
+        30.0,
+        45.0,
+        60.0
+      ]
+    }
+  },
+  "params_hash": "sha256:c050c7c37e5a1beae9e5aca2b8103b8f2feff803037975c3c6bb66058760619c",
+  "content_key": "sha256:c96711538016b8ca647948e6c94329c85f0de3900155c407588a2c4f1fb3d5ef",
+  "inputs": [
+    {
+      "artifact": "s01_canonical/before",
+      "version": "v002",
+      "files": {
+        "backbone_stops.parquet": "sha256:b58ece2f483f1aa08556a083f79e55e067e64019e62e7610eab76e12124f86c3",
+        "canonical_rows.parquet": "sha256:73291312a1abcceed54d65da4d0b894d8861463dba2ac0af7fe5698c01a7f10a",
+        "duplicates.csv": "sha256:05119a595ec5108bd7530f153ef006d1f91ab6e37b6d9220b3a29982bdff77cc",
+        "pattern_disposition.parquet": "sha256:2264f92190023f6daccececefe67708fdb4587e6c203cf30b4195adff8f1ffba",
+        "pattern_stops.parquet": "sha256:0082ff0bfaeac50dfcf2608e0001e9158bcaa274db0bb83b648199a6a1b37c3e",
+        "patterns.parquet": "sha256:63f70755f20480214b0f1362b4002039ef3c75a4e8245127079395fe77b78b94",
+        "route_catalog.parquet": "sha256:0a042f6560e3461d2c79f5646af7ccf1a71298b681d2979eb6f6d524542a174c",
+        "support_attribution.csv": "sha256:ba5a2ca3866b3fa37aab21aa2dbb8bc46e7335d7efb9a9fc0fca616821407557",
+        "trip_attribution.parquet": "sha256:c601b7cb0d2013a2b9fe9cae45b456f71c90a7ce43eb796a10034cc564cf4835"
+      }
+    },
+    {
+      "artifact": "s02_place/before",
+      "version": "v002",
+      "files": {
+        "diag_alias.csv": "sha256:6d3da4ad1551fe5df49edae2e8ab832efc310610fbd85f05bc790500d3a69a9f",
+        "diag_under_merge.csv": "sha256:f1fe67067f5bd58b11de41dfd65ae29db98c9bbf7a782c4c469a74b96750a7b1",
+        "override_applied.csv": "sha256:a0ab636b3309202f8b98d6f40a2c7572de3d5313ebfcd5da7db39025b040105e",
+        "place_meta.json": "sha256:2cfc9da9d858d72324d2482a766bd43c618d7941a84e5552f613b39eb004073c",
+        "places.parquet": "sha256:61e5055e1d3bf0ec9958ae47cab15331f8f7f1605b8d4a9064b23ff1d48264ee",
+        "stop_place_map.parquet": "sha256:02c8122ea517b75b0b5b819f1271d15c95f8978a26156d0f089f750cb00b9e81"
+      }
+    },
+    {
+      "file": "reference/prior_baseline/baseline.yaml",
+      "sha256": "d50f8ce6b9fd2d844b4bb822bfc19b54751bb1d4d48fa1fb86cc375610d2a31c"
+    },
+    {
+      "file": "reference/prior_baseline/known_deviations.yaml",
+      "sha256": "75c77eedc11f7ac6ca8b076d372ef0a5266593406f7ab59d4e2ed502357d1c4b"
+    },
+    {
+      "file": "reference/prior_baseline/raw_hashes.yaml",
+      "sha256": "2f4d12bc1f41516d6df24fbcb9c9b23264f355e516f22920e35213e3b0960284"
+    },
+    {
+      "file": "src/bts/config/overrides/hub_overrides.csv",
+      "sha256": "d86a4341727e22133e28cf992f7d6358cd06be50fc2028f55283379e24cc796a"
+    },
+    {
+      "file": "src/bts/config/params.yaml",
+      "sha256": "f45997783cce9b404c149fc8ea14aa7390e756b95ccc69ced676245c817e9f28"
+    }
+  ],
+  "outputs": {
+    "_semantics.yaml": {
+      "rows": null,
+      "sha256": "sha256:f77be8f8f74fd770c3522d0fe00cb0f2f4bbea24c61552884168d55bc4eeacf5"
+    },
+    "diag_lspace_gap.csv": {
+      "rows": 306,
+      "sha256": "sha256:fcbd46600ec150fedde593820b7dfe9617e47ae49385b61918e799739bcbb113"
+    },
+    "hub_meta.json": {
+      "rows": null,
+      "sha256": "sha256:cc594962321bd65ab09d0c7155fe7d36572364cde59557da1b9a2514087883d3"
+    },
+    "hub_qualification.parquet": {
+      "rows": 1868,
+      "sha256": "sha256:b1502e154b461547fb2e09d5f8bdffca2b9a2eaab8ba01797a59ac7a4f04a3a8"
+    },
+    "l_space_place_edges.parquet": {
+      "rows": 2182,
+      "sha256": "sha256:4a61324b1bd4bba14e3fef59b0a480a1bc2a4133bc2933ed8f83e6152adb10b9"
+    },
+    "place_metrics.parquet": {
+      "rows": 1868,
+      "sha256": "sha256:81f6b9b881c358f2ecc98f49bc150f6a04f9c084464bc4479d7622db08a093f9"
+    },
+    "sensitivity.csv": {
+      "rows": 14,
+      "sha256": "sha256:9a3b7ee659db7cd017bcf7256de137cd757d32d5774a26d24ed4085f28a11f6e"
+    }
+  },
+  "checks_summary": {
+    "CONTRACT": "pass",
+    "PHYSICAL": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "DIFF": {
+      "match": 1,
+      "explained": 8,
+      "unexplained": 0
+    }
+  },
+  "acks": [],
+  "reviewed_by": null,
+  "needs_review": false,
+  "caveats": [],
+  "upstream_unexplained": [],
+  "status": "promoted"
+}

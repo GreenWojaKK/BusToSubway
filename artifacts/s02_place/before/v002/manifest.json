@@ -1,0 +1,102 @@
+{
+  "stage": "s02_place",
+  "scope": "before",
+  "version": "v002",
+  "created_at": "2026-07-07T03:04:32+09:00",
+  "code_ref": "dirty+fb30892585e9",
+  "params": {
+    "scopes": [
+      "before",
+      "after"
+    ],
+    "linkage_max_m": 150.0,
+    "diag_alias_max_m": 30.0,
+    "diag_under_merge_max_m": null,
+    "span_warn_m": 300.0
+  },
+  "params_hash": "sha256:737111bf475bb085c92a68b2ddea77b94c50dd2c453b14c155795a9a6086c39f",
+  "content_key": "sha256:15920e63b988989ae1362648642e68d3f99c4220aeddd3bd12772307a140630d",
+  "inputs": [
+    {
+      "artifact": "s00_ingest/before",
+      "version": "v002",
+      "files": {
+        "ingest_meta.json": "sha256:333e95380960188118ae79d6303a146138d0fd56bfd021e66ecfa85a3f0a52b1",
+        "route_union.parquet": "sha256:3c4309ddd3000a2fb051e418b50117fc6c0414327fd3e9484d8c4559f0704867",
+        "stop_times.parquet": "sha256:b3e34db11995d2d1e4a92883acdc5094d1344356198583b3c2c578a02d992ca5",
+        "stops.parquet": "sha256:563abb36e974adf4af14eca191ea34c06afb1fea53f66f9c1bf551b0bb574a83",
+        "trips.parquet": "sha256:e6d4dcdd7183d685093e25f68c3e59ffe30452267e8e9e6c7a5f79ae7afeeb5c",
+        "variant_tags.parquet": "sha256:890b72459c31a60ce21f4df9f933b866d7384f5564d993e6060bf1159db556d8"
+      }
+    },
+    {
+      "file": "reference/prior_baseline/baseline.yaml",
+      "sha256": "d50f8ce6b9fd2d844b4bb822bfc19b54751bb1d4d48fa1fb86cc375610d2a31c"
+    },
+    {
+      "file": "reference/prior_baseline/known_deviations.yaml",
+      "sha256": "75c77eedc11f7ac6ca8b076d372ef0a5266593406f7ab59d4e2ed502357d1c4b"
+    },
+    {
+      "file": "reference/prior_baseline/raw_hashes.yaml",
+      "sha256": "2f4d12bc1f41516d6df24fbcb9c9b23264f355e516f22920e35213e3b0960284"
+    },
+    {
+      "file": "src/bts/config/overrides/name_aliases.csv",
+      "sha256": "bd44e00abe3c238d6dcc6590586559871861ef35c7044c4314b6e655af1d9569"
+    },
+    {
+      "file": "src/bts/config/overrides/place_overrides.before.csv",
+      "sha256": "11a82f61cf66efc0d77b753d551226d67960c8cccc86f300cc996b86fa3e5342"
+    },
+    {
+      "file": "src/bts/config/params.yaml",
+      "sha256": "f45997783cce9b404c149fc8ea14aa7390e756b95ccc69ced676245c817e9f28"
+    }
+  ],
+  "outputs": {
+    "diag_alias.csv": {
+      "rows": 31,
+      "sha256": "sha256:6d3da4ad1551fe5df49edae2e8ab832efc310610fbd85f05bc790500d3a69a9f"
+    },
+    "diag_under_merge.csv": {
+      "rows": 123,
+      "sha256": "sha256:f1fe67067f5bd58b11de41dfd65ae29db98c9bbf7a782c4c469a74b96750a7b1"
+    },
+    "override_applied.csv": {
+      "rows": 0,
+      "sha256": "sha256:a0ab636b3309202f8b98d6f40a2c7572de3d5313ebfcd5da7db39025b040105e"
+    },
+    "place_meta.json": {
+      "rows": null,
+      "sha256": "sha256:2cfc9da9d858d72324d2482a766bd43c618d7941a84e5552f613b39eb004073c"
+    },
+    "places.parquet": {
+      "rows": 1868,
+      "sha256": "sha256:61e5055e1d3bf0ec9958ae47cab15331f8f7f1605b8d4a9064b23ff1d48264ee"
+    },
+    "stop_place_map.parquet": {
+      "rows": 3409,
+      "sha256": "sha256:02c8122ea517b75b0b5b819f1271d15c95f8978a26156d0f089f750cb00b9e81"
+    }
+  },
+  "checks_summary": {
+    "CONTRACT": "pass",
+    "PHYSICAL": {
+      "pass": 1,
+      "fail": 0,
+      "skip": 0
+    },
+    "DIFF": {
+      "match": 0,
+      "explained": 3,
+      "unexplained": 0
+    }
+  },
+  "acks": [],
+  "reviewed_by": null,
+  "needs_review": false,
+  "caveats": [],
+  "upstream_unexplained": [],
+  "status": "promoted"
+}

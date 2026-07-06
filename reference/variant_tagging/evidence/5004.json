@@ -1,0 +1,117 @@
+{
+ "route": "5004",
+ "route_type": "Express",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 2,
+ "direction_groups": {
+  "남창고등학교 방면": [
+   "BR_TAGO_USB196150041"
+  ],
+  "KTX울산역 방면": [
+   "BR_TAGO_USB196150042"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_TAGO_USB196150041",
+   "route_name": "5004(남창고등학교 방면)",
+   "dir_label": "남창고등학교 방면",
+   "n_stops": 15,
+   "frequency": 33,
+   "is_loop": false,
+   "first_raw": "울산역",
+   "last_raw": "남창고등학교앞",
+   "first_norm": "울산역",
+   "last_norm": "남창고등학교앞",
+   "stop_names_raw": [
+    "울산역",
+    "굴화마을",
+    "굴화주공 아파트앞",
+    "신복로터리",
+    "울산대학교앞",
+    "문수경기장",
+    "법원",
+    "옥동초등학교",
+    "공업탑",
+    "루첸아파트",
+    "롯데캐슬 삼거리",
+    "덕하시장앞",
+    "S-oil정문",
+    "온산읍 행정복지센터",
+    "남창고등학교앞"
+   ],
+   "stop_ids": [
+    "BS_TAGO_USB196015416",
+    "BS_TAGO_USB196040221",
+    "BS_TAGO_USB193040223",
+    "BS_TAGO_USB193030703",
+    "BS_TAGO_USB193030707",
+    "BS_TAGO_USB193040617",
+    "BS_TAGO_USB193040605",
+    "BS_TAGO_USB193040607",
+    "BS_TAGO_USB193040403",
+    "BS_TAGO_USB193031117",
+    "BS_TAGO_USB193022903",
+    "BS_TAGO_USB196040107",
+    "BS_TAGO_USB196040127",
+    "BS_TAGO_USB196031606",
+    "BS_TAGO_USB196031517"
+   ]
+  },
+  {
+   "route_id": "BR_TAGO_USB196150042",
+   "route_name": "5004(KTX울산역 방면)",
+   "dir_label": "KTX울산역 방면",
+   "n_stops": 14,
+   "frequency": 33,
+   "is_loop": false,
+   "first_raw": "남창고등학교앞",
+   "last_raw": "울산역",
+   "first_norm": "남창고등학교앞",
+   "last_norm": "울산역",
+   "stop_names_raw": [
+    "남창고등학교앞",
+    "온산읍 행정복지센터",
+    "S-oil정문",
+    "덕하시장앞",
+    "수암동주민센터",
+    "루첸아파트",
+    "공업탑",
+    "옥동초등학교",
+    "법원",
+    "문수경기장",
+    "울산대학교앞",
+    "신복로터리",
+    "농협하나로마트",
+    "울산역"
+   ],
+   "stop_ids": [
+    "BS_TAGO_USB196031518",
+    "BS_TAGO_USB196031605",
+    "BS_TAGO_USB196040128",
+    "BS_TAGO_USB196040108",
+    "BS_TAGO_USB193022906",
+    "BS_TAGO_USB193031118",
+    "BS_TAGO_USB193040404",
+    "BS_TAGO_USB193040610",
+    "BS_TAGO_USB193040606",
+    "BS_TAGO_USB193040618",
+    "BS_TAGO_USB193030708",
+    "BS_TAGO_USB193030701",
+    "BS_TAGO_USB196040247",
+    "BS_TAGO_USB196015415"
+   ]
+  }
+ ],
+ "pairs": [
+  {
+   "a": "BR_TAGO_USB196150041",
+   "b": "BR_TAGO_USB196150042",
+   "name_jaccard": 0.706,
+   "seam_a_to_b": true,
+   "seam_b_to_a": true,
+   "reverse_pair": true,
+   "relationship": "divergent"
+  }
+ ]
+}

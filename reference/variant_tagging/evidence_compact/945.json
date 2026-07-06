@@ -1,0 +1,52 @@
+{
+ "route": "945",
+ "route_type": "General",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 1,
+ "direction_groups": {
+  "평창리비에르3차 순환": [
+   "BR_TAGO_USB195109453"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_TAGO_USB195109453",
+   "route_name": "945(평창리비에르3차 순환)",
+   "dir_label": "평창리비에르3차 순환",
+   "n_stops": 24,
+   "frequency": 39,
+   "is_loop": true,
+   "first_raw": "평창리비에르3차",
+   "last_raw": "평창리비에르3차",
+   "first_norm": "평창리비에르3차",
+   "last_norm": "평창리비에르3차",
+   "stop_names_raw": [
+    "평창리비에르3차",
+    "명촌동",
+    "농심메가마트앞",
+    "메가마트",
+    "명촌동입구",
+    "효문사거리",
+    "현대자동차명촌정문앞",
+    "평창리비에르아파트앞",
+    "세양청구앞",
+    "평창아데라움앞",
+    "농수산물도매시장앞",
+    "시외고속버스터미널/신세계안과의원",
+    "시외고속버스터미널/신세계안과의원",
+    "한국산업단지공단",
+    "평창아데라움앞",
+    "세양청구앞",
+    "평창리비에르아파트앞",
+    "현대자동차명촌정문앞",
+    "효문사거리",
+    "농심메가마트앞",
+    "메가마트",
+    "우정교회",
+    "명촌동",
+    "평창리비에르3차"
+   ]
+  }
+ ],
+ "pairs": []
+}

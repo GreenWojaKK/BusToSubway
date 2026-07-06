@@ -1,0 +1,117 @@
+{
+ "route": "5003",
+ "route_type": "Express",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 2,
+ "direction_groups": {
+  "KTX울산역 방면": [
+   "BR_TAGO_USB196150032"
+  ],
+  "병영사거리 방면": [
+   "BR_TAGO_USB196150031"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_TAGO_USB196150032",
+   "route_name": "5003(KTX울산역 방면)",
+   "dir_label": "KTX울산역 방면",
+   "n_stops": 15,
+   "frequency": 28,
+   "is_loop": false,
+   "first_raw": "대안입구",
+   "last_raw": "울산역",
+   "first_norm": "대안입구",
+   "last_norm": "울산역",
+   "stop_names_raw": [
+    "대안입구",
+    "산하중앙사거리",
+    "푸르지오2차",
+    "정자",
+    "달곡마을",
+    "북구청남문",
+    "병영사거리",
+    "학성공원",
+    "신중앙시장",
+    "성남동",
+    "태화루",
+    "태화동",
+    "삼호교",
+    "굴화주공 아파트앞",
+    "울산역"
+   ],
+   "stop_ids": [
+    "BS_TAGO_USB195014015",
+    "BS_TAGO_USB195026379",
+    "BS_TAGO_USB195026357",
+    "BS_TAGO_USB195026345",
+    "BS_TAGO_USB195026323",
+    "BS_TAGO_USB195026341",
+    "BS_TAGO_USB192040505",
+    "BS_TAGO_USB192024301",
+    "BS_TAGO_USB192024709",
+    "BS_TAGO_USB192021606",
+    "BS_TAGO_USB192021212",
+    "BS_TAGO_USB192021208",
+    "BS_TAGO_USB192021202",
+    "BS_TAGO_USB193040224",
+    "BS_TAGO_USB196015415"
+   ]
+  },
+  {
+   "route_id": "BR_TAGO_USB196150031",
+   "route_name": "5003(병영사거리 방면)",
+   "dir_label": "병영사거리 방면",
+   "n_stops": 14,
+   "frequency": 28,
+   "is_loop": false,
+   "first_raw": "울산역",
+   "last_raw": "대안입구",
+   "first_norm": "울산역",
+   "last_norm": "대안입구",
+   "stop_names_raw": [
+    "울산역",
+    "굴화주공 아파트앞",
+    "삼호교",
+    "태화동",
+    "태화루",
+    "성남동",
+    "학성공원",
+    "병영사거리",
+    "북구청남문",
+    "달곡마을",
+    "정자",
+    "푸르지오2차",
+    "산하중앙사거리",
+    "대안입구"
+   ],
+   "stop_ids": [
+    "BS_TAGO_USB196015416",
+    "BS_TAGO_USB193040223",
+    "BS_TAGO_USB192021201",
+    "BS_TAGO_USB192021207",
+    "BS_TAGO_USB192021211",
+    "BS_TAGO_USB192021605",
+    "BS_TAGO_USB192024302",
+    "BS_TAGO_USB192040506",
+    "BS_TAGO_USB195026342",
+    "BS_TAGO_USB195026324",
+    "BS_TAGO_USB195026318",
+    "BS_TAGO_USB195026358",
+    "BS_TAGO_USB195026378",
+    "BS_TAGO_USB195014015"
+   ]
+  }
+ ],
+ "pairs": [
+  {
+   "a": "BR_TAGO_USB196150032",
+   "b": "BR_TAGO_USB196150031",
+   "name_jaccard": 0.933,
+   "seam_a_to_b": true,
+   "seam_b_to_a": true,
+   "reverse_pair": true,
+   "relationship": "b_subset_unordered_of_a"
+  }
+ ]
+}

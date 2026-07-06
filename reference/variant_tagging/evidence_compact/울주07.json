@@ -1,0 +1,64 @@
+{
+ "route": "울주07",
+ "route_type": "General",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 1,
+ "direction_groups": {
+  "(none)": [
+   "BR_ACC0_26510070"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_ACC0_26510070",
+   "route_name": "울주07",
+   "dir_label": "(none)",
+   "n_stops": 36,
+   "frequency": 5,
+   "is_loop": true,
+   "first_raw": "웅촌면사무소앞",
+   "last_raw": "웅촌면사무소앞",
+   "first_norm": "웅촌면사무소앞",
+   "last_norm": "웅촌면사무소앞",
+   "stop_names_raw": [
+    "웅촌면사무소앞",
+    "내기마을",
+    "초전마을",
+    "웅촌농협",
+    "웅촌초등학교",
+    "웅촌면사무소",
+    "대진",
+    "하대마을",
+    "중대마을",
+    "상대마을",
+    "울산컨트리클럽앞",
+    "웅비공업지구",
+    "한창제지 앞",
+    "용당마을",
+    "편들마을",
+    "북부마을",
+    "삼용마을",
+    "서창동행정복지센터",
+    "농협은행웅상지점",
+    "서창동행정복지센터",
+    "북부마을",
+    "편들마을",
+    "용당마을",
+    "한창제지 앞",
+    "웅비공업지구",
+    "울산컨트리클럽앞",
+    "상대마을",
+    "중대마을",
+    "하대마을",
+    "대진",
+    "웅촌면사무소",
+    "웅촌초등학교",
+    "웅촌농협",
+    "초전마을",
+    "내기마을",
+    "웅촌면사무소앞"
+   ]
+  }
+ ],
+ "pairs": []
+}

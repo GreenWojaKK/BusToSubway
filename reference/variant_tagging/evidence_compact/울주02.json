@@ -1,0 +1,70 @@
+{
+ "route": "울주02",
+ "route_type": "General",
+ "gtfs_note": "before = GTFS planned schedule; each route_id is a distinct trip-pattern (variant); frequency = number of distinct planned trips (trip_ids) on it. PRE-MERGE resolution: tag each variant, do NOT merge.",
+ "n_variants": 1,
+ "direction_groups": {
+  "(none)": [
+   "BR_ACC0_26510020"
+  ]
+ },
+ "variants": [
+  {
+   "route_id": "BR_ACC0_26510020",
+   "route_name": "울주02",
+   "dir_label": "(none)",
+   "n_stops": 42,
+   "frequency": 5,
+   "is_loop": true,
+   "first_raw": "남창",
+   "last_raw": "남창",
+   "first_norm": "남창",
+   "last_norm": "남창",
+   "stop_names_raw": [
+    "남창",
+    "남창고등학교앞",
+    "대안사거리",
+    "동호아파트앞",
+    "럭키아파트앞",
+    "온양농협앞",
+    "솔밭마을",
+    "우주아파트",
+    "진동마을",
+    "마근마을",
+    "푸른농장",
+    "화산삼거리",
+    "감시국사택",
+    "명산초등학교",
+    "화산장터",
+    "서생역",
+    "온곡2구",
+    "고원3차아파트",
+    "월내농협",
+    "월내",
+    "월내",
+    "월내농협",
+    "길천",
+    "고원3차아파트",
+    "온곡2구",
+    "서생역",
+    "화산장터",
+    "명산초등학교",
+    "감시국사택",
+    "화산삼거리",
+    "푸른농장",
+    "마근마을",
+    "진동마을",
+    "우주아파트",
+    "대우아파트",
+    "솔밭마을",
+    "온양농협앞",
+    "럭키아파트앞",
+    "동호아파트앞",
+    "대안사거리",
+    "남창고등학교앞",
+    "남창"
+   ]
+  }
+ ],
+ "pairs": []
+}
