@@ -1,5 +1,5 @@
 # route_class 판정 규칙 — before 스코프 (design.md §7.2)
-# 규칙은 코드가 아니라 데이터다. expect_count가 규칙 부패를 자가 감지한다.
+# 규칙은 코드가 아니라 데이터다. expect_count가 규칙 변경을 확인한다.
 # era 키 없는 규칙 조회는 KeyError — before 규칙의 after 이식은 기계적으로 불가.
 era: before
 rules:

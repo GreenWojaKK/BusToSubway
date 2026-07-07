@@ -6,7 +6,7 @@ This document explains the design rationale. For schemas and definitions, see [R
 
 BusToSubway is not a modal-transfer project. It is not about finding routes from buses to subways.
 
-The name points to a data asymmetry. Subway data normally has station boundaries, line paths, and transfer stations already encoded. Bus data often has only stop poles and route stop order. What is observed in subway data must be inferred in bus data.
+The name points to a data asymmetry. Subway data normally has station boundaries, line paths, and transfer stations already encoded. Bus data often has only individual stops and route stop order. What is observed in subway data must be inferred in bus data.
 
 The project asks: can we build those missing representation layers from the network structure itself?
 

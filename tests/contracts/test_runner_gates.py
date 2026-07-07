@@ -1,5 +1,5 @@
-# 러너 게시 게이트·멱등 스킵·exit code의 실동작 검증 (design.md §4.3, verification.md §3.2)
-# 더미 스테이지 사용 — 스테이지 구현 없이 러너 골격 자체를 검증한다.
+# runner가 같은 입력을 재사용하고, review 요구와 반환 코드를 올바르게 처리하는지 검증한다.
+# 더미 스테이지를 사용해 실제 stage 구현과 분리해서 확인한다.
 import json
 
 import bts.paths as paths
@@ -8,7 +8,7 @@ import bts.run as run
 import bts.status as status
 
 
-def test_전부_통과_게시_exit0(sandbox):
+def test_all_pass_records_latest_exit0(sandbox):
     assert run.run("t90_dummy", "before") == run.EXIT_OK
     vdir = paths.artifact_dir("t90_dummy", "before")
     assert vdir.name == "v001"
@@ -18,12 +18,12 @@ def test_전부_통과_게시_exit0(sandbox):
     assert m["content_key"].startswith("sha256:")
 
 
-def test_멱등_스킵_새_버전_미생성(sandbox):
+def test_same_inputs_reuse_existing_version(sandbox):
     assert run.run("t90_dummy", "before") == run.EXIT_OK
-    assert run.run("t90_dummy", "before") == run.EXIT_OK   # 동일 입력 재실행
+    assert run.run("t90_dummy", "before") == run.EXIT_OK   # 같은 입력으로 다시 실행
     sdir = paths.ARTIFACTS / "t90_dummy" / "before"
     versions = [d.name for d in sdir.iterdir() if d.is_dir()]
-    assert versions == ["v001"]                             # content-addressed 캐시
+    assert versions == ["v001"]                             # 같은 내용이면 기존 버전을 재사용
 
 
 def test_params_변경은_새_버전(sandbox):
@@ -38,13 +38,13 @@ def test_CONTRACT_FAIL은_exit2_rejected_보존(sandbox):
     assert run.run("t90_dummy", "before") == run.EXIT_CONTRACT
     sdir = paths.ARTIFACTS / "t90_dummy" / "before"
     names = [d.name for d in sdir.iterdir() if d.is_dir()]
-    assert names == ["v001-rejected"]                       # 포렌식 보존
-    assert not (sdir / "_latest.json").exists()             # 게시 안 됨
+    assert names == ["v001-rejected"]                       # 실패한 출력은 rejected로 남긴다.
+    assert not (sdir / "_latest.json").exists()             # 최신 버전 포인터는 만들지 않는다.
     m = manifest.read_manifest(sdir / "v001-rejected")
     assert m["status"] == "rejected"
 
 
-def test_PHYSICAL_미승인은_exit3_보류(sandbox):
+def test_physical_without_ack_returns_exit3_pending(sandbox):
     sandbox["state"]["params"]["t90_dummy"] = {"mode": "physical_fail"}
     assert run.run("t90_dummy", "before") == run.EXIT_PHYSICAL
     sdir = paths.ARTIFACTS / "t90_dummy" / "before"
@@ -53,11 +53,11 @@ def test_PHYSICAL_미승인은_exit3_보류(sandbox):
     assert m["status"] == "pending"
 
 
-def test_PHYSICAL_ack로_게시_재개(sandbox):
+def test_physical_ack_with_reviewer_publishes(sandbox):
     sandbox["state"]["params"]["t90_dummy"] = {"mode": "physical_fail"}
     assert run.run("t90_dummy", "before") == run.EXIT_PHYSICAL
-    # bts.run promote <stage> <scope> <version> --ack ... 경로 — 주체 식별 필수
-    assert run.promote_pending("t90_dummy", "before", "v001",
+    # bts.run promote <stage> <scope> <version> --ack ... 경로에서도 승인자를 요구한다.
+    assert run.publish_pending("t90_dummy", "before", "v001",
                                acks=["P-DUM-X-001"], reviewed_by="whtnm") == run.EXIT_OK
     assert paths.latest_version("t90_dummy", "before") == "v001"
     m = manifest.read_manifest(paths.artifact_dir("t90_dummy", "before"))
@@ -65,28 +65,28 @@ def test_PHYSICAL_ack로_게시_재개(sandbox):
     assert m["acks"][0]["by"] == "whtnm"
 
 
-def test_promote_익명_ack_거부(sandbox):
-    # --ack에 --reviewed-by가 없으면 거부 — 익명 ack('user') 이력 제거 (검증 라운드 2)
+def test_publish_without_reviewer_rejects_ack(sandbox):
+    # --ack에 --reviewed-by가 없으면 승인 기록을 남기지 않는다.
     sandbox["state"]["params"]["t90_dummy"] = {"mode": "physical_fail"}
     assert run.run("t90_dummy", "before") == run.EXIT_PHYSICAL
-    assert run.promote_pending("t90_dummy", "before", "v001",
+    assert run.publish_pending("t90_dummy", "before", "v001",
                                acks=["P-DUM-X-001"], reviewed_by=None) == run.EXIT_PHYSICAL
     m = manifest.read_manifest(paths.ARTIFACTS / "t90_dummy" / "before" / "v001")
-    assert m["status"] == "pending"                         # 게시되지 않음
-    assert m["acks"] == []                                  # 익명 ack 기록 없음
+    assert m["status"] == "pending"                         # 아직 확정하지 않는다.
+    assert m["acks"] == []                                  # 승인자 없는 ack은 기록하지 않는다.
     sdir = paths.ARTIFACTS / "t90_dummy" / "before"
     assert not (sdir / "_latest.json").exists()
 
 
-def test_PHYSICAL_인라인_ack는_reviewed_by와_함께_즉시_게시(sandbox):
+def test_inline_ack_with_reviewer_publishes(sandbox):
     sandbox["state"]["params"]["t90_dummy"] = {"mode": "physical_fail"}
     assert run.run("t90_dummy", "before",
                    acks=["P-DUM-X-001"], reviewed_by="whtnm") == run.EXIT_OK
     assert paths.latest_version("t90_dummy", "before") == "v001"
 
 
-def test_인라인_익명_ack는_적용되지_않고_보류(sandbox):
-    # run 경로도 동일 규율 — --ack만으로는 ack이 적용되지 않는다(익명 ack 제거)
+def test_inline_ack_without_reviewer_stays_pending(sandbox):
+    # run 경로에서도 --ack만으로는 승인 처리하지 않는다.
     sandbox["state"]["params"]["t90_dummy"] = {"mode": "physical_fail"}
     assert run.run("t90_dummy", "before", acks=["P-DUM-X-001"]) == run.EXIT_PHYSICAL
     m = manifest.read_manifest(paths.ARTIFACTS / "t90_dummy" / "before" / "v001")
@@ -94,12 +94,12 @@ def test_인라인_익명_ack는_적용되지_않고_보류(sandbox):
     assert m["acks"] == []
 
 
-def test_신규_UNEXPLAINED는_게시_후_exit4_스텁_생성(sandbox):
+def test_unexplained_diff_publishes_and_returns_exit4_with_note(sandbox):
     sandbox["state"]["params"]["t90_dummy"] = {"mode": "diff_unexplained"}
     assert run.run("t90_dummy", "before") == run.EXIT_UNEXPLAINED
-    assert paths.latest_version("t90_dummy", "before") == "v001"   # 비차단 SIGNAL
+    assert paths.latest_version("t90_dummy", "before") == "v001"   # 산출물은 확정된다.
     stubs = list(sandbox["stub_dir"].glob("DIFF-*.md"))
-    assert len(stubs) == 1                                          # 규명 스텁 강제
+    assert len(stubs) == 1                                          # 조사 메모를 만든다.
     m = manifest.read_manifest(paths.artifact_dir("t90_dummy", "before"))
     assert m["checks_summary"]["DIFF"]["unexplained"] == 1
 
@@ -108,10 +108,10 @@ def test_상류_부재는_exit5(sandbox):
     assert run.run("t91_downstream", "before") == run.EXIT_UPSTREAM
 
 
-def test_상류_변조는_exit5(sandbox):
+def test_상류_출력_변경은_exit5(sandbox):
     assert run.run("t90_dummy", "before") == run.EXIT_OK
     vdir = paths.artifact_dir("t90_dummy", "before")
-    # 게시본 변조 (테스트만 권한 매트릭스 밖에서 직접 조작)
+    # 확정된 artifact를 테스트에서 직접 바꾼다.
     (vdir / "out.csv").write_text("tampered", encoding="utf-8")
     assert run.run("t91_downstream", "before") == run.EXIT_UPSTREAM
 
@@ -130,7 +130,7 @@ def test_STALE_전파(sandbox):
     assert run.run("t90_dummy", "before") == run.EXIT_OK
     assert run.run("t91_downstream", "before") == run.EXIT_OK
     assert status.stage_status("t91_downstream", "before")["status"] == "OK"
-    # 상류 재게시(파라미터 더미 변경) → 하류 STALE (design.md §4.3-7)
+    # 상류를 다른 파라미터로 다시 확정하면 하류는 STALE이 된다.
     sandbox["state"]["params"]["t90_dummy"] = {"v": 99}
     assert run.run("t90_dummy", "before") == run.EXIT_OK
     st = status.stage_status("t91_downstream", "before")
@@ -149,24 +149,23 @@ def test_UNEXPLAINED_하류_전파_배지(sandbox):
 
 
 def test_CLI_main_경로(sandbox):
-    # argparse 경유 실동작: run / promote 서브커맨드 (--ack에는 --reviewed-by 필수)
+    # CLI 경로에서도 run/promote가 같은 승인 규칙을 따른다.
     sandbox["state"]["params"]["t90_dummy"] = {"mode": "physical_fail"}
     assert run.main(["t90_dummy", "--scope", "before"]) == run.EXIT_PHYSICAL
     assert run.main(["promote", "t90_dummy", "before", "v001",
-                     "--ack", "P-DUM-X-001"]) == run.EXIT_PHYSICAL   # 익명 ack 거부
+                     "--ack", "P-DUM-X-001"]) == run.EXIT_PHYSICAL   # 익명 ack 미적용
     assert run.main(["promote", "t90_dummy", "before", "v001",
                      "--ack", "P-DUM-X-001", "--reviewed-by", "whtnm"]) == run.EXIT_OK
     assert paths.latest_version("t90_dummy", "before") == "v001"
 
 
 def test_빌드_중_ContractViolation은_exit2_rejected_기록(sandbox):
-    # 빌드 중 로더 계약 위반이 traceback exit 1로 새면 runs/ 기록도 rejected 개명도 없이
-    # 고아 vNNN이 남는다 — exit 규약 {0,2,3,4,5} 준수 확인 (검증 라운드 1 수리)
+    # build 중 ContractViolation이 나도 traceback으로 끝나지 않고 rejected 버전과 실행 기록을 남긴다.
     sandbox["state"]["params"]["t90_dummy"] = {"mode": "build_contract_violation"}
     assert run.run("t90_dummy", "before") == run.EXIT_CONTRACT
     sdir = paths.ARTIFACTS / "t90_dummy" / "before"
     names = [d.name for d in sdir.iterdir() if d.is_dir()]
-    assert names == ["v001-rejected"]                       # 고아 vNNN 없음
+    assert names == ["v001-rejected"]                       # 중간 버전 디렉터리를 남기지 않는다.
     recs = list(paths.RUNS.glob("*_t90_dummy_before*.json"))
     assert len(recs) == 1
     rec = json.loads(recs[0].read_text(encoding="utf-8"))
@@ -180,71 +179,67 @@ def test_ack_기록에_주체와_시각(sandbox):
                    reviewed_by="whtnm") == run.EXIT_OK
     m = manifest.read_manifest(paths.artifact_dir("t90_dummy", "before"))
     assert m["acks"][0]["by"] == "whtnm"
-    assert m["acks"][0]["at"]                               # 시각 기록 (design.md §4.2)
+    assert m["acks"][0]["at"]                               # 승인 시각을 기록한다.
 
 
-def test_review_overrides_게이트는_reviewed_by를_요구(sandbox, tmp_path):
-    # design.md §4.3-3 — override 데이터 행이 실린 빌드는 --reviewed-by 없이는 보류.
-    # Stage 1에서 휴면이던 경로의 실동작 검증 (검증 라운드 1 지적).
+def test_review_overrides_require_reviewer(sandbox, tmp_path):
+    # override 데이터 행이 포함된 버전은 --reviewed-by 없이는 확정할 수 없다.
     import os
     ov = tmp_path / "ov.csv"
     ov.write_text("a,b\n1,2\n", encoding="utf-8")           # 헤더 + 데이터 1행
     run.REGISTRY["t90_dummy"].review_overrides.append(os.path.relpath(ov, paths.ROOT))
-    assert run.run("t90_dummy", "before") == run.EXIT_PHYSICAL   # 보류
+    assert run.run("t90_dummy", "before") == run.EXIT_PHYSICAL   # review 대기
     m = manifest.read_manifest(paths.ARTIFACTS / "t90_dummy" / "before" / "v001")
     assert m["status"] == "pending"
-    assert m["needs_review"] is True                        # 빌드 시점 술어 고정 기록
-    assert run.promote_pending("t90_dummy", "before", "v001",
+    assert m["needs_review"] is True                        # 빌드 시점의 review 필요 여부를 기록한다.
+    assert run.publish_pending("t90_dummy", "before", "v001",
                                acks=[], reviewed_by=None) == run.EXIT_PHYSICAL
-    assert run.promote_pending("t90_dummy", "before", "v001",
+    assert run.publish_pending("t90_dummy", "before", "v001",
                                acks=[], reviewed_by="whtnm") == run.EXIT_OK
     m = manifest.read_manifest(paths.artifact_dir("t90_dummy", "before"))
     assert m["reviewed_by"] == "whtnm"
 
 
-def test_review_게이트_TOCTOU_빌드후_원복해도_우회_불가(sandbox, tmp_path):
-    # 검증 라운드 1 (Stage 2) major 수리 — 실증된 우회 시나리오의 재현 봉쇄:
-    # override 1행 실린 빌드(pending) → 파일을 빈 헤더로 원복 → --reviewed-by 없는 promote는
-    # 여전히 보류여야 한다 (술어 = 버전 자신의 빌드 시점 기록, 현재 디스크 파일 아님).
+def test_review_requirement_uses_build_record_after_file_revert(sandbox, tmp_path):
+    # override 1행으로 만든 버전은 이후 파일을 빈 헤더로 되돌려도 review 없이 확정할 수 없다.
+    # 판단은 현재 파일 상태가 아니라 해당 버전의 빌드 기록을 기준으로 한다.
     import os
     ov = tmp_path / "ov.csv"
     ov.write_text("a,b\n1,2\n", encoding="utf-8")
     run.REGISTRY["t90_dummy"].review_overrides.append(os.path.relpath(ov, paths.ROOT))
-    assert run.run("t90_dummy", "before") == run.EXIT_PHYSICAL   # 보류 (정상)
-    ov.write_text("a,b\n", encoding="utf-8")                # 빈 헤더로 원복 (우회 시도)
-    assert run.promote_pending("t90_dummy", "before", "v001",
+    assert run.run("t90_dummy", "before") == run.EXIT_PHYSICAL   # review 대기
+    ov.write_text("a,b\n", encoding="utf-8")                # 빈 헤더로 되돌린다.
+    assert run.publish_pending("t90_dummy", "before", "v001",
                                acks=[], reviewed_by=None) == run.EXIT_PHYSICAL   # 차단
     m = manifest.read_manifest(paths.ARTIFACTS / "t90_dummy" / "before" / "v001")
     assert m["status"] == "pending"
     assert m["reviewed_by"] is None
-    assert run.promote_pending("t90_dummy", "before", "v001",
-                               acks=[], reviewed_by="whtnm") == run.EXIT_OK      # 정식 경로
+    assert run.publish_pending("t90_dummy", "before", "v001",
+                               acks=[], reviewed_by="whtnm") == run.EXIT_OK      # reviewer를 명시하면 통과
     assert manifest.read_manifest(
         paths.artifact_dir("t90_dummy", "before"))["reviewed_by"] == "whtnm"
 
 
-def test_review_게이트_역방향_빈_override_빌드는_현재_파일_주입에_불변(sandbox, tmp_path):
-    # 동일 근원의 역방향 오류 수리 — 빈 override로 빌드된 버전은, promote 시점의 파일에
-    # 데이터 행이 실려 있어도 그 버전의 판정이 바뀌지 않는다 (needs_review=False 기록).
+def test_empty_override_build_ignores_later_file_rows(sandbox, tmp_path):
+    # 빈 override로 만든 버전은 이후 파일에 데이터 행이 생겨도 그 버전의 review 필요 여부가 바뀌지 않는다.
     import os
     ov = tmp_path / "ov.csv"
-    ov.write_text("a,b\n", encoding="utf-8")                # 빈 헤더로 빌드
+    ov.write_text("a,b\n", encoding="utf-8")                # 빈 헤더로 빌드한다.
     st = run.REGISTRY["t90_dummy"]
     st.review_overrides.append(os.path.relpath(ov, paths.ROOT))
     sandbox["state"]["params"]["t90_dummy"] = {"mode": "physical_fail"}   # pending 유도
     assert run.run("t90_dummy", "before") == run.EXIT_PHYSICAL
     m = manifest.read_manifest(paths.ARTIFACTS / "t90_dummy" / "before" / "v001")
     assert m["needs_review"] is False
-    ov.write_text("a,b\n1,2\n", encoding="utf-8")           # promote 전 데이터 행 주입
-    assert run._needs_review(st, "before") is True          # 현재 파일 기준으로는 True지만
-    assert run._version_needs_review(m, st, "before") is False   # 버전 판정은 빌드 기록
-    assert run.promote_pending("t90_dummy", "before", "v001",
+    ov.write_text("a,b\n1,2\n", encoding="utf-8")           # promote 전에 데이터 행을 추가한다.
+    assert run._needs_review(st, "before") is True          # 현재 파일만 보면 review가 필요하지만
+    assert run._version_needs_review(m, st, "before") is False   # 이 버전은 빌드 기록을 따른다.
+    assert run.publish_pending("t90_dummy", "before", "v001",
                                acks=["P-DUM-X-001"], reviewed_by="whtnm") == run.EXIT_OK
 
 
-def test_review_게이트_구버전_manifest_폴백은_보수적(sandbox, tmp_path):
-    # needs_review 필드가 없는 구버전 manifest: 핀 부재/해시 불일치 시 판정 불능 →
-    # 보수적으로 --reviewed-by 요구 (무심사 게시 금지).
+def test_old_manifest_requires_reviewer_when_review_state_unknown(sandbox, tmp_path):
+    # needs_review 필드가 없는 manifest에서는 판단 근거가 부족하면 --reviewed-by를 요구한다.
     import os
     ov = tmp_path / "ov.csv"
     ov.write_text("a,b\n1,2\n", encoding="utf-8")
@@ -252,60 +247,57 @@ def test_review_게이트_구버전_manifest_폴백은_보수적(sandbox, tmp_pa
     assert run.run("t90_dummy", "before") == run.EXIT_PHYSICAL
     vdir = paths.ARTIFACTS / "t90_dummy" / "before" / "v001"
     m = manifest.read_manifest(vdir)
-    del m["needs_review"]                                   # 구버전 manifest 시뮬레이션
+    del m["needs_review"]                                   # 오래된 manifest 형식을 흉내 낸다.
     (vdir / "manifest.json").write_text(
         json.dumps(m, ensure_ascii=False, indent=2), encoding="utf-8")
-    ov.write_text("a,b\n", encoding="utf-8")                # 원복 (해시 드리프트)
-    assert run.promote_pending("t90_dummy", "before", "v001",
+    ov.write_text("a,b\n", encoding="utf-8")                # 입력 파일 내용이 달라진 상태
+    assert run.publish_pending("t90_dummy", "before", "v001",
                                acks=[], reviewed_by=None) == run.EXIT_PHYSICAL   # 차단
-    assert run.promote_pending("t90_dummy", "before", "v001",
+    assert run.publish_pending("t90_dummy", "before", "v001",
                                acks=[], reviewed_by="whtnm") == run.EXIT_OK
 
 
-def test_promote_경로도_UNEXPLAINED면_exit4(sandbox):
-    # 검증 라운드 1 (Stage 2) minor 수리 — pending→promote 흐름에서 exit 4 의미론
-    # (verification.md §3.2)이 exit code 채널에서 유실되지 않는다 (게시 자체는 비차단).
+def test_publish_path_returns_exit4_when_unexplained(sandbox):
+    # promote가 성공해도 설명되지 않은 차이가 있으면 반환 코드에는 그 상태가 남아야 한다.
     sandbox["state"]["params"]["t90_dummy"] = {"mode": "physical_fail+diff_unexplained"}
     assert run.run("t90_dummy", "before") == run.EXIT_PHYSICAL
-    assert run.promote_pending("t90_dummy", "before", "v001",
+    assert run.publish_pending("t90_dummy", "before", "v001",
                                acks=["P-DUM-X-001"],
                                reviewed_by="whtnm") == run.EXIT_UNEXPLAINED
-    assert paths.latest_version("t90_dummy", "before") == "v001"   # 게시은 됨
+    assert paths.latest_version("t90_dummy", "before") == "v001"   # 버전은 확정된다.
     m = manifest.read_manifest(paths.artifact_dir("t90_dummy", "before"))
     assert m["status"] == "promoted"
     assert any("promoted_via_promote_unexplained" in n for n in _run_notes())
 
 
-def test_promote_ack_기록은_phys_fail_교집합만(sandbox):
-    # 검증 라운드 1 (Stage 2) minor 수리 — run 경로(교집합 기록)와의 비대칭 해소:
-    # 존재하지 않는 check_id의 ack은 판정 이력(manifest.acks)에 남지 않는다.
+def test_publish_ack_records_only_matching_physical_failures(sandbox):
+    # 존재하지 않는 check_id에 대한 ack은 manifest.acks에 남기지 않는다.
     sandbox["state"]["params"]["t90_dummy"] = {"mode": "physical_fail"}
     assert run.run("t90_dummy", "before") == run.EXIT_PHYSICAL
-    assert run.promote_pending("t90_dummy", "before", "v001",
+    assert run.publish_pending("t90_dummy", "before", "v001",
                                acks=["P-DUM-X-001", "P-BOGUS-X-999"],
                                reviewed_by="whtnm") == run.EXIT_OK
     m = manifest.read_manifest(paths.artifact_dir("t90_dummy", "before"))
-    assert [a["check_id"] for a in m["acks"]] == ["P-DUM-X-001"]   # 교집합만
+    assert [a["check_id"] for a in m["acks"]] == ["P-DUM-X-001"]   # 실제 실패 항목만 기록
     assert m["checks_summary"]["PHYSICAL"]["acked"] == 1
 
 
-def test_promote_직전_산출물_변조는_exit5_거부(sandbox):
-    # 검증 라운드 1 (Stage 2) minor 수리 — 빌드~promote 사이 변조 창 봉쇄:
-    # promote는 게시 직전 출력 해시를 재검증하고 불일치면 거부한다.
+def test_publish_rechecks_outputs_before_latest_update(sandbox):
+    # build 이후 promote 전에 출력이 바뀌면 promote 직전 해시 검사에서 거부한다.
     sandbox["state"]["params"]["t90_dummy"] = {"mode": "physical_fail"}
     assert run.run("t90_dummy", "before") == run.EXIT_PHYSICAL
     vdir = paths.ARTIFACTS / "t90_dummy" / "before" / "v001"
     (vdir / "out.csv").write_text("tampered", encoding="utf-8")
-    assert run.promote_pending("t90_dummy", "before", "v001",
+    assert run.publish_pending("t90_dummy", "before", "v001",
                                acks=["P-DUM-X-001"],
                                reviewed_by="whtnm") == run.EXIT_UPSTREAM
     m = manifest.read_manifest(vdir)
-    assert m["status"] == "pending"                         # 게시되지 않음
+    assert m["status"] == "pending"                         # 아직 확정하지 않는다.
     assert not (paths.ARTIFACTS / "t90_dummy" / "before" / "_latest.json").exists()
     assert any("promote_outputs_corrupt" in n for n in _run_notes())
 
 
-def test_runs_기록은_게시_여부와_무관(sandbox):
+def test_runs_record_is_written_for_every_result(sandbox):
     sandbox["state"]["params"]["t90_dummy"] = {"mode": "contract_fail"}
     run.run("t90_dummy", "before")
     recs = list(paths.RUNS.glob("*_t90_dummy_before*.json"))
@@ -319,13 +311,13 @@ def _run_notes(stage="t90_dummy", scope="before"):
     return [json.loads(r.read_text(encoding="utf-8"))["note"] for r in recs]
 
 
-def test_promote_서브커맨드도_runs에_기록(sandbox):
-    # verification.md §3.3 — 게시 여부와 무관하게 '전 실행' 기록 (검증 라운드 2 수리)
+def test_publish_subcommand_records_run(sandbox):
+    # promote 여부와 관계없이 모든 실행 기록이 남아야 한다.
     sandbox["state"]["params"]["t90_dummy"] = {"mode": "physical_fail"}
     assert run.run("t90_dummy", "before") == run.EXIT_PHYSICAL
-    assert run.promote_pending("t90_dummy", "before", "v001",
+    assert run.publish_pending("t90_dummy", "before", "v001",
                                acks=["P-DUM-X-001"], reviewed_by=None) == run.EXIT_PHYSICAL
-    assert run.promote_pending("t90_dummy", "before", "v001",
+    assert run.publish_pending("t90_dummy", "before", "v001",
                                acks=["P-DUM-X-001"], reviewed_by="whtnm") == run.EXIT_OK
     notes = _run_notes()
     assert len(notes) == 3                                  # run 1 + promote 2
@@ -333,29 +325,27 @@ def test_promote_서브커맨드도_runs에_기록(sandbox):
     assert any("promoted_via_promote" in n for n in notes)
 
 
-def test_동결층_원복_flip_flop은_latest_동기화(sandbox, tmp_path):
-    # design.md §4.3-5 — 입력 원복으로 구버전을 재사용하면 _latest도 그 버전으로
-    # 동기화된다(하류가 현재 입력과 다른 내용을 읽는 flip-flop 해소, 검증 라운드 2 수리).
+def test_reused_old_input_version_updates_latest(sandbox, tmp_path):
+    # 입력을 예전 내용으로 되돌려 기존 버전을 재사용하면 _latest도 그 버전을 가리켜야 한다.
     import os
     frozen = tmp_path / "frozen.yaml"
     frozen.write_text("k: 1\n", encoding="utf-8")
     run.REGISTRY["t90_dummy"].config_files.append(os.path.relpath(frozen, paths.ROOT))
     assert run.run("t90_dummy", "before") == run.EXIT_OK
     assert paths.latest_version("t90_dummy", "before") == "v001"
-    frozen.write_text("k: 2\n", encoding="utf-8")           # 동결층 변경 → 새 버전
+    frozen.write_text("k: 2\n", encoding="utf-8")           # 입력 내용 변경 → 새 버전
     assert run.run("t90_dummy", "before") == run.EXIT_OK
     assert paths.latest_version("t90_dummy", "before") == "v002"
-    frozen.write_text("k: 1\n", encoding="utf-8")           # 원복 → v001 재사용
+    frozen.write_text("k: 1\n", encoding="utf-8")           # 예전 내용으로 되돌림 → v001 재사용
     assert run.run("t90_dummy", "before") == run.EXIT_OK
-    assert paths.latest_version("t90_dummy", "before") == "v001"   # _latest 동기화
+    assert paths.latest_version("t90_dummy", "before") == "v001"   # _latest도 재사용 버전을 가리킴
     sdir = paths.ARTIFACTS / "t90_dummy" / "before"
     assert sorted(d.name for d in sdir.iterdir() if d.is_dir()) == ["v001", "v002"]
     assert any("latest_synced" in n for n in _run_notes())
 
 
-def test_STALE_file_입력_해시_드리프트(sandbox, tmp_path):
-    # STALE이 artifact 입력만 아니라 file 입력(raw·params·rules·overrides·동결층)
-    # 드리프트도 검사한다 (검증 라운드 2 수리)
+def test_stale_detects_file_input_hash_change(sandbox, tmp_path):
+    # file 입력(raw·params·rules·overrides·reference files)이 바뀌어도 STALE로 표시한다.
     import os
     cfg = tmp_path / "rules.yaml"
     cfg.write_text("r: 1\n", encoding="utf-8")
@@ -363,18 +353,18 @@ def test_STALE_file_입력_해시_드리프트(sandbox, tmp_path):
     run.REGISTRY["t90_dummy"].config_files.append(rel)
     assert run.run("t90_dummy", "before") == run.EXIT_OK
     assert status.stage_status("t90_dummy", "before")["status"] == "OK"
-    cfg.write_text("r: 2\n", encoding="utf-8")              # 게시 후 config 변경
+    cfg.write_text("r: 2\n", encoding="utf-8")              # 확정 후 config 변경
     st = status.stage_status("t90_dummy", "before")
     assert st["status"] == "STALE"
     assert any("해시 드리프트" in w and rel in w for w in st["stale_because"])
-    cfg.unlink()                                            # 파일 소실도 STALE
+    cfg.unlink()                                            # 파일이 없어져도 STALE
     st = status.stage_status("t90_dummy", "before")
     assert st["status"] == "STALE"
     assert any("소실" in w for w in st["stale_because"])
 
 
-def test_STALE_디렉터리_입력_드리프트(sandbox, tmp_path):
-    # input_files의 디렉터리 입력(evidence/ 류)도 파일 추가/변경이 STALE로 드러난다
+def test_stale_detects_directory_input_hash_change(sandbox, tmp_path):
+    # input_files가 디렉터리를 가리키는 경우 파일 추가/변경도 STALE로 드러난다.
     import os
     ev = tmp_path / "evidence"
     ev.mkdir()

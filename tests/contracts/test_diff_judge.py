@@ -1,4 +1,4 @@
-# DIFF 3값 판정기 + measured 고정 부패 감지 + 스텁 생성 (verification.md §2.3)
+# DIFF 판정기 테스트 — MATCH/EXPLAINED/UNEXPLAINED와 조사 메모 생성을 확인한다.
 from bts.checks import diff
 
 
@@ -12,7 +12,7 @@ def test_MATCH(tmp_path):
     r = diff.judge("D-S01-B-001", 379, "before.canonical.rows",
                    baseline=BASE, kds=[], stub_dir=tmp_path)
     assert r.status == "MATCH"
-    assert not list(tmp_path.glob("*.md"))          # 스텁 없음
+    assert not list(tmp_path.glob("*.md"))          # 조사 메모를 만들지 않는다.
 
 
 def test_EXPLAINED_등재_measured_일치(tmp_path):
@@ -24,25 +24,25 @@ def test_EXPLAINED_등재_measured_일치(tmp_path):
 
 
 def test_measured_재이탈은_UNEXPLAINED_강등(tmp_path):
-    # 시나리오: known_deviation의 measured 재이탈 (319→320) — 설명의 부패 감지
+    # 시나리오: known_deviation의 measured가 다시 달라지면 기존 설명을 재검토해야 한다.
     r = diff.judge("D-S01-B-005", 320, "before.canonical.trips.short_turn",
                    baseline=BASE, kds=KDS, stub_dir=tmp_path)
     assert r.status == "UNEXPLAINED"
     assert "재이탈" in r.note
-    assert len(list(tmp_path.glob("DIFF-*.md"))) == 1   # 규명 스텁 자동 생성
+    assert len(list(tmp_path.glob("DIFF-*.md"))) == 1   # 조사 메모를 자동 생성한다.
 
 
-def test_미등재_편차는_UNEXPLAINED_스텁(tmp_path):
+def test_unregistered_diff_creates_investigation_note(tmp_path):
     r = diff.judge("D-S01-B-004", 2280, "before.canonical.trips.circular",
                    baseline=BASE, kds=[], stub_dir=tmp_path, metric="circular-trips")
     assert r.status == "UNEXPLAINED"
     stubs = list(tmp_path.glob("DIFF-0001-circular-trips.md"))
     assert len(stubs) == 1
     text = stubs[0].read_text(encoding="utf-8")
-    assert "2280" in text and "2271" in text            # 측정값·기준값이 미리 채워진 템플릿
+    assert "2280" in text and "2271" in text            # 조사 메모에 observed/expected가 들어간다.
 
 
-def test_같은_metric_스텁은_재사용(tmp_path):
+def test_same_metric_reuses_investigation_note(tmp_path):
     diff.judge("D-X", 1, "before.canonical.rows", baseline=BASE, kds=[],
                stub_dir=tmp_path, metric="m1")
     diff.judge("D-X", 2, "before.canonical.rows", baseline=BASE, kds=[],
@@ -56,13 +56,13 @@ def test_tol_허용_오차(tmp_path):
     assert r.status == "MATCH"
 
 
-def test_동결층_실파일_로드():
-    # 실제 동결층 3파일이 판정기 계약대로 읽히는지 (Stage 1 등재분 KD-0001~0004 확인).
+def test_reference_files_load():
+    # 실제 reference 3파일을 판정기가 계약대로 읽는지 확인한다.
     # 대장은 추가 전용(append-only)이다 — 후속 스테이지 등재(KD-0005~: s02 DIFF-0002 등)를
-    # 막지 않도록 '선두 4건 + id 유일'만 고정한다 (전체 목록 동결은 append-only 설계와 모순).
-    baseline = diff.load_baseline()
-    assert diff.baseline_value(baseline, "before.canonical.rows") == 379
-    assert diff.baseline_value(baseline, "before.trips") == 7625
+    # 후속 항목 추가를 막지 않도록 선두 4건과 id 유일성만 고정한다.
+    reference_values = diff.load_reference_values()
+    assert diff.reference_value(reference_values, "before.canonical.rows") == 379
+    assert diff.reference_value(reference_values, "before.trips") == 7625
     kds = diff.load_known_deviations()
     ids = [k.id for k in kds]
     assert ids[:4] == ["KD-0001", "KD-0002", "KD-0003", "KD-0004"]

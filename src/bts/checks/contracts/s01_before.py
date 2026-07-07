@@ -93,7 +93,7 @@ def _role_scope(patterns: pd.DataFrame) -> pd.Series:
 def c001_pattern_reconstruction(patterns: pd.DataFrame, pattern_stops: pd.DataFrame,
                                 st: pd.DataFrame, ev_ids: dict, vt: pd.DataFrame,
                                 vdir=None) -> core.CheckResult:
-    """C-S01-B-001: 패턴 487·대표 시퀀스의 단일 정본 재확인.
+    """C-S01-B-001: 패턴 487·대표 시퀀스의 단일 기준 재확인.
 
     결정 패턴: 모든 trip 정차열 == 대표(유일성 재확인). tags n_stops == 대표 길이 전행.
     ACC0 비결정 6: 대표 == evidence 합집합 순회(is_drt), distinct == schedule 합집합 distinct.
@@ -150,7 +150,7 @@ def c002_join_direction(patterns: pd.DataFrame, vt: pd.DataFrame,
 def c003_base_scope(patterns: pd.DataFrame, vdir=None) -> core.CheckResult:
     """C-S01-B-003: base 정규화 role 스코프 — 379의 성립 조건.
 
-    main 자기참조 92건만 base_ref=NaN, circular 자기참조 34건 보존('기저 있음'),
+    main 자기참조 92건만 base_ref=NaN, circular 자기참조 34건 보존('base 참조 있음'),
     재귀 해소 정확히 4건(체인 147 + detour→branch 2 + detour→short_turn 1), dangling 0.
     """
     main = patterns[patterns["role"] == "main"]
@@ -159,7 +159,7 @@ def c003_base_scope(patterns: pd.DataFrame, vdir=None) -> core.CheckResult:
     raw_isna_of = patterns.set_index("pattern_id")["base_pattern_id_raw"].isna()
     derived = patterns[patterns["role"].isin(_DERIVED_ROLES)]
     resolved_roles = derived["base_ref_resolved"].map(role_of)
-    # canonical 조상 술어 = main 또는 '무기저 circular' (spec §5.1) —
+    # canonical 조상 술어 = main 또는 'base 없는 circular' (spec §5.1) —
     # role in {main, circular}만으로는 circular_with_base 종착을 검출하지 못한다
     canonical_ancestor = (resolved_roles == "main") | (
         (resolved_roles == "circular")
@@ -188,7 +188,7 @@ def c003_base_scope(patterns: pd.DataFrame, vdir=None) -> core.CheckResult:
 
 def c004_canonical_formula(patterns: pd.DataFrame, canonical: pd.DataFrame,
                            canonical_roles: list, vdir=None) -> core.CheckResult:
-    """C-S01-B-004: canonical 재현식 — main 187 + 무기저 circular 66 + short_turn 112
+    """C-S01-B-004: canonical 재현식 — main 187 + base 없는 circular 66 + short_turn 112
     + branch 14 == 379 == canonical_rows 행수 == in_canonical 플래그."""
     rs = _role_scope(patterns)
     sel = rs.isin(canonical_roles)
@@ -207,7 +207,7 @@ def c004_canonical_formula(patterns: pd.DataFrame, canonical: pd.DataFrame,
 
 
 def c005_disposition_accounting(disposition: pd.DataFrame, vdir=None) -> core.CheckResult:
-    """C-S01-B-005: 처분표 전수 회계 — canonical 379 + 제외 102 + support 6 == 487.
+    """C-S01-B-005: 전수 분류표 회계 — canonical 379 + 제외 102 + support 6 == 487.
 
     observed에 분해를 그대로 기록 — 실패 시 어느 항이 새는지 즉시 판독(accounting 1급 어휘).
     """
@@ -374,7 +374,7 @@ def p001_adjacent_gap(patterns: pd.DataFrame, pattern_stops: pd.DataFrame,
                         {"over_threshold_segments": 0},
                         "verification.md §5.3 (미실측 임계, ADR-007 캘리브레이션)",
                         failure_means=["logic_bug", "param_sensitivity"],
-                        note="임계 20,000m은 실측 max 19,441m 기반 (ADR-007) — 위반 시 조인 오염 "
+                        note="임계 20,000m은 실측 max 19,441m 기반 (ADR-007) — 위반 시 조인 불일치 "
                              "우선 의심, 실세계 예외면 재캘리브레이션 후 --ack")
     if r.failed and vdir is not None:
         _dump(r, vdir, seg.iloc[np.where(same & (d_all > thr))[0]])
@@ -385,12 +385,12 @@ def p002_backbone_coverage(patterns: pd.DataFrame, backbone: pd.DataFrame,
                            vdir=None, exp_covered: int = _BACKBONE_ROUTES_COVERED,
                            exp_uncovered: list | None = None,
                            exp_total: int = _ROUTES_TAGGED) -> core.CheckResult:
-    """P-S01-B-002: backbone(main ∪ 무기저 circular)의 route 커버리지 고정 대조.
+    """P-S01-B-002: backbone(main ∪ base 없는 circular)의 route 커버리지 고정 대조.
 
     design.md §5 s01 ⑥의 '184 전 커버' 가설은 최초 실행이 반증했다(ADR-006): 미커버
     34 route는 정확히 circular 자기참조 34건 보유 노선 — canonical 379 검증 규칙의 논리적 귀결.
     따라서 기대를 실측 검증 규칙(150/184 + 미커버 목록 exact)으로 고정하고 '변화'를 감시한다.
-    커버리지가 어느 방향이든 움직이면 FAIL(판단층 재태깅/로직 회귀 신호).
+    커버리지가 어느 방향이든 움직이면 FAIL(수동 분류표 재태깅/로직 회귀 신호).
     """
     if exp_uncovered is None:
         exp_uncovered = _BACKBONE_UNCOVERED_ROUTES
@@ -439,9 +439,9 @@ def p003_evidence_elementwise(patterns: pd.DataFrame, pattern_stops: pd.DataFram
 # ── DIFF (SIGNAL) ────────────────────────────────────────────────────────────
 def d002_general_express(catalog: pd.DataFrame) -> core.CheckResult:
     """D-S01-B-002: General 170(=general 160+울주 10) / Express 14 — 기준값 비교."""
-    baseline = diff.load_baseline()
-    exp = {"general": diff.baseline_value(baseline, "before.general_routes"),
-           "express": diff.baseline_value(baseline, "before.express_routes")}
+    reference_values = diff.load_reference_values()
+    exp = {"general": diff.reference_value(reference_values, "before.general_routes"),
+           "express": diff.reference_value(reference_values, "before.express_routes")}
     obs = {"general": int(catalog["route_class"].isin(["general", "ulju"]).sum()),
            "express": int((catalog["route_class"] == "express").sum())}
     if obs == exp:

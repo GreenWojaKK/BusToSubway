@@ -1,5 +1,5 @@
-# s00 before 체크 모듈 — 위반 주입·양성 대조군 자기 검증 (verification.md §6.1)
-# 개별 체크 함수를 합성 데이터로 직접 호출한다 — 위음성(잡아야 할 것을 통과) 방지.
+# s00 before 체크 테스트 — 합성 데이터로 실패해야 할 조건을 직접 주입한다.
+# 각 체크 함수가 놓치면 안 되는 입력을 실제로 FAIL 처리하는지 확인한다.
 import pandas as pd
 import pytest
 
@@ -41,12 +41,12 @@ def test_c008_exact_31_passes():
 
 
 def test_c008_30_fails():
-    # 스펙 §7.2: dwell>600s 30행 표본 → FAIL (양성 대조군의 자기 검증)
+    # dwell 이상치가 30행이면 기대한 31행 조건을 만족하지 못한다.
     assert chk.c008_dwell_pc(_dwell_frame(30)).status == "FAIL"
 
 
 def test_c008_zero_fails():
-    # 이상치가 사라져도(0건) FAIL — positive_control 의미론
+    # 이상치가 사라져도 통과하면 안 된다. positive_control이 이 회귀를 잡는다.
     r = chk.c008_dwell_pc(_dwell_frame(0))
     assert r.status == "FAIL" and r.positive_control
 
@@ -97,22 +97,22 @@ def test_c002_meta_pass_and_fail():
     assert chk.c002_schedule_rows(bad, st).status == "FAIL"
 
 
-# ── C-S00-B-013 [PC]: 공인 조인기 메타 ──────────────────────────────────────
+# ── C-S00-B-013 [PC]: name→stop 해소 메타 ───────────────────────────────────
 def test_c013_pass_and_fail():
     ok = {"join": {"n_alias": 1, "n_fail": 0,
                    "resolved_max_dist_m": 0.91, "resolved_stop_nunique": 3409}}
     assert chk.c013_joiner_pc(ok, 1.0).status == "PASS"
     zero_alias = {"join": {"n_alias": 0, "n_fail": 0,
                            "resolved_max_dist_m": 0.91, "resolved_stop_nunique": 3409}}
-    assert chk.c013_joiner_pc(zero_alias, 1.0).status == "FAIL"   # alias 미검출 = PC 실패
+    assert chk.c013_joiner_pc(zero_alias, 1.0).status == "FAIL"   # alias를 못 찾으면 실패
     too_far = {"join": {"n_alias": 1, "n_fail": 0,
                         "resolved_max_dist_m": 1.5, "resolved_stop_nunique": 3409}}
     assert chk.c013_joiner_pc(too_far, 1.0).status == "FAIL"
 
 
 # ── C-S00-B-016: role 분포 exact ────────────────────────────────────────────
-def test_c016_role_dist_drift_fails():
-    # 최소 합성 vt: role 분포가 감사 실측과 다르면 FAIL (다른 항목의 성립 여부와 무관)
+def test_c016_role_dist_change_fails():
+    # 최소 합성 vt로 role 분포 drift가 독립적으로 실패하는지 확인한다.
     vt = pd.DataFrame({
         "pattern_id": [f"P{i}" for i in range(3)],
         "role": ["main", "main", "circular"],
@@ -144,7 +144,7 @@ def test_d001_match_and_unexplained(monkeypatch, tmp_path):
     r = chk.d001_route_classes(st, ru)
     assert r.status == "MATCH"
 
-    # 급행 1개 제거 → UNEXPLAINED (스텁은 tmp로 우회)
+    # 급행 1개를 제거하면 설명되지 않은 차이로 분류된다.
     monkeypatch.setattr(diff, "make_stub",
                         lambda *a, **kw: tmp_path / "stub.md")
     st2 = pd.DataFrame({"route_name": [n for n in _class_universe() if n != "5001"]})
@@ -168,4 +168,4 @@ def test_p001_pass_and_fail():
     assert chk.p001_coords(_stops()).status == "PASS"
     r = chk.p001_coords(_stops(extra_out=1))
     assert r.status == "FAIL"
-    assert r.check_class == "CONTRACT"     # † 감사 실측 — BLOCK 유지 (verification.md §5.1)
+    assert r.check_class == "CONTRACT"     # 감사 실측 범위라 CONTRACT로 유지한다.

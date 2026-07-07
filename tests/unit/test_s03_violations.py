@@ -1,5 +1,5 @@
 # s03 위반 주입 테스트 — "위반을 심은 데이터에서 검증기가 실제로 FAIL을 내는가"
-# (verification.md §6.1, stage2_place_hub_spec.md §6.2의 s03 해당분. 위음성 방지)
+# (verification.md §6.1, stage2_place_hub_spec.md §6.2의 s03 해당분)
 import numpy as np
 import pandas as pd
 import pytest
@@ -35,7 +35,7 @@ def _north(mm):
 
 @pytest.fixture()
 def fx():
-    """합성 정상 파이프라인 산출 일체 — 각 테스트가 1군데씩 오염시킨다."""
+    """합성 정상 파이프라인 산출 일체 — 각 테스트가 1군데씩 바꾼다."""
     places = pd.DataFrame({
         "place_id": ["PB_1", "PB_2", "PB_3", "PB_4"],
         "name_norm": ["가", "나", "다", "라"],
@@ -63,7 +63,7 @@ def fx():
             "qual": qual, "sens": sens, "gap": gap}
 
 
-# ── 대조군: 오염 없으면 전부 PASS ────────────────────────────────────────────
+# ── 대조군: 변경 없으면 전부 PASS ────────────────────────────────────────────
 def test_정상_fixture는_전_체크_PASS(fx):
     assert chk.c001_full_metrics(fx["metrics"], fx["places"]).status == "PASS"
     assert chk.c002_lstar_identity(fx["metrics"], 3).status == "PASS"
@@ -87,8 +87,8 @@ def test_D0_행_삭제는_C001_FAIL(fx):
     assert chk.c001_full_metrics(bad, fx["places"]).status == "FAIL"
 
 
-# ── §6.2: L* 게이트 미적용 값 주입(D=2, L=4, L*=4) → C-S03-B-002 ─────────────
-def test_Lstar_게이트_미적용_주입은_C002_FAIL(fx):
+# ── §6.2: L* 조건을 적용하지 않은 값 주입(D=2, L=4, L*=4) → C-S03-B-002 ───
+def test_Lstar_without_condition_fails_C002(fx):
     bad = fx["metrics"].copy()
     i = bad.index[bad["place_id"] == "PB_2"][0]
     bad.loc[i, ["D", "L", "L_star"]] = [2, 4, 4]

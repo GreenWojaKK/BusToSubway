@@ -6,7 +6,7 @@ These guides answer practical questions after you understand the basic workflow 
 
 Prepare two input tables:
 
-- `stops.csv`: one row per physical stop pole.
+- `stops.csv`: one row per physical individual stop.
 - `route_stops.csv`: one row per route stop sequence entry.
 
 Minimum schema:

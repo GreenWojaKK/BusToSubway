@@ -26,7 +26,7 @@ def _current_upstream(entry: dict, scope: str) -> tuple[str, dict] | None:
     return version, {k: v["sha256"] for k, v in m.get("outputs", {}).items()}
 
 
-def _file_input_drift(entry: dict) -> str | None:
+def _file_input_change_reason(entry: dict) -> str | None:
     """file 입력 항목(파일 또는 디렉터리)의 현재 해시 대조 — 드리프트 사유 반환."""
     rel = entry["file"]
     p = paths.ROOT / rel
@@ -51,7 +51,7 @@ def stage_status(stage: str, scope: str) -> dict | None:
     stale_because = []
     for e in m.get("inputs", []):
         if "file" in e:
-            why = _file_input_drift(e)
+            why = _file_input_change_reason(e)
             if why:
                 stale_because.append(why)
             continue

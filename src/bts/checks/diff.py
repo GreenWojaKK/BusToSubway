@@ -1,8 +1,8 @@
 """선행 기준값 비교 판정기 (verification.md §2.3, design.md §6.2).
 
 3값 판정: MATCH → EXPLAINED(대장 등재 AND observed == 등재 measured) → UNEXPLAINED.
-등재 measured에서 재이탈하면 EXPLAINED가 성립하지 않는다(설명의 부패 감지).
-UNEXPLAINED는 게시를 막지 않되(SIGNAL) 조사 메모가 자동 생성된다 — 편차 묵인의 구조적 차단.
+등재 measured에서 재이탈하면 EXPLAINED가 성립하지 않는다(설명 값 재확인).
+UNEXPLAINED는 게시를 막지 않되(SIGNAL) 조사 메모가 자동 생성된다.
 """
 from __future__ import annotations
 
@@ -30,7 +30,7 @@ class DocumentedDifference:
     note: str = ""
 
 
-def load_baseline(path: Path | None = None) -> dict:
+def load_reference_values(path: Path | None = None) -> dict:
     import yaml
     p = path or (paths.BASELINE_DIR / "baseline.yaml")
     with open(p, encoding="utf-8") as f:
@@ -50,9 +50,9 @@ def load_known_deviations(path: Path | None = None) -> list[DocumentedDifference
             for row in raw.get("deviations", [])]
 
 
-def baseline_value(baseline: dict, key: str):
+def reference_value(reference_values: dict, key: str):
     """'before.canonical.rows' 형태의 점 경로 조회. 부재 시 KeyError."""
-    node = baseline
+    node = reference_values
     for part in key.split("."):
         node = node[part]
     return node
@@ -98,7 +98,7 @@ def make_investigation_note(metric: str, cid: str, observed, expected,
 
 ## 1차 분기 (verification.md §3.1)
 
-- [ ] raw sha256 동결값 대조 (data_drift?)
+- [ ] raw sha256 기준값 대조 (data_drift?)
 - [ ] 상류 manifest 버전/해시 변화 (upstream_regression?)
 - [ ] params_hash 대조 (param_sensitivity?)
 - [ ] 규약 메타(M, universe, 방향 union 등) 대조 (convention_mismatch?)
@@ -116,12 +116,12 @@ def make_investigation_note(metric: str, cid: str, observed, expected,
 make_stub = make_investigation_note
 
 
-def judge(cid: str, observed, baseline_key: str, tol=None, metric: str | None = None,
+def judge(cid: str, observed, reference_key: str, tol=None, metric: str | None = None,
           source: str = "prior_baseline", baseline: dict | None = None,
           documented_differences: list[DocumentedDifference] | None = None,
           stub_dir: Path | None = None,
           make_stub_on_unexplained: bool = True, **legacy_kwargs) -> CheckResult:
-    """DIFF 3값 판정 + measured 고정 부패 감지 + 조사 메모 자동 생성.
+    """DIFF 3값 판정 + measured 값 재확인 + 조사 메모 자동 생성.
 
     baseline/documented_differences/stub_dir 인자는 테스트 주입용 — 기본은 기준 입력 묶음에서 로드.
     """
@@ -132,11 +132,11 @@ def judge(cid: str, observed, baseline_key: str, tol=None, metric: str | None = 
         raise TypeError(f"unexpected keyword argument(s): {unexpected}")
     if tol is None:
         tol = paths.load_params()["diff"]["default_tol"]
-    baseline = baseline if baseline is not None else load_baseline()
+    baseline = baseline if baseline is not None else load_reference_values()
     documented_differences = (documented_differences if documented_differences is not None
                               else load_known_deviations())
-    metric = metric or baseline_key
-    expected = baseline_value(baseline, baseline_key)
+    metric = metric or reference_key
+    expected = reference_value(baseline, reference_key)
 
     if _close(observed, expected, tol):
         status, note = "MATCH", ""
@@ -146,10 +146,10 @@ def judge(cid: str, observed, baseline_key: str, tol=None, metric: str | None = 
             status = "EXPLAINED"
             note = f"{documented.id} ({documented.status}) — {documented.doc}"
         elif documented is not None:
-            # 등재 measured 재이탈 — 설명의 부패: 자동 강등
+            # 등재 measured 재이탈 — 설명 값 불일치: 자동 강등
             status = "UNEXPLAINED"
             note = (f"{documented.id} 등재 measured={documented.measured}에서 재이탈(observed={observed}) "
-                    f"— EXPLAINED 자동 강등(부패 감지)")
+                    f"— EXPLAINED 자동 강등(설명 값 재확인)")
         else:
             status, note = "UNEXPLAINED", "대장 미등재 편차"
 

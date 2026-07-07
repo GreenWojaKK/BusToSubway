@@ -350,7 +350,7 @@ def classify_routes(catalog_base: pd.DataFrame, rules: dict) -> pd.DataFrame:
         if exp is not None and counts.get(r["class"], 0) != exp:
             raise ContractViolation(
                 f"expect_count 위반: class={r['class']} 관측 {counts.get(r['class'], 0)} != 기대 {exp} "
-                f"(규칙 부패 자가 감지 — design.md §7.2)")
+                f"(규칙 변경 확인 — design.md §7.2)")
     acc = rules.get("accounting", {})
     scope_out = {r["class"] for r in rules["rules"] if r.get("scope_out")}
     regular = sum(n for c, n in counts.items() if c not in scope_out)

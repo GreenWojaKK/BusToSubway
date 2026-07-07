@@ -177,7 +177,7 @@ def dump_sample(vdir: Path, cid: str, df_violations, limit: int | None = None) -
 class Ctx:
     """체크 함수에 주어지는 유일한 이름공간 (바인딩 모호성 제거).
 
-    input_df는 registry 선언 입력만 접근을 허용한다 — 입력 화이트리스트의 사후 강제.
+    input_df는 registry에 선언된 입력만 접근하게 한다 — 입력 화이트리스트의 사후 확인.
     """
 
     def __init__(self, vdir: Path, params: dict, scope: str, inputs=None):

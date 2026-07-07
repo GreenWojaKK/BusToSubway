@@ -12,11 +12,11 @@ Subway data usually arrives with three things already decided:
 2. which path each line follows,
 3. which stations work as transfer hubs.
 
-Bus data usually does not. It often gives only individual stop poles, coordinates, and route-by-route stop order. In IFOPT terms, the data is mostly at the **Quay** level, while the **StopPlace** layer is missing.
+Bus data usually does not. It often gives individual stops, coordinates, and route-by-route stop order. In IFOPT terms, the data is mostly at the **Quay** level, while the **StopPlace** layer is missing.
 
 That creates two common distortions:
 
-- Several stop poles that function as one place appear as unrelated points.
+- Several individual stops that function as one place appear as unrelated points.
 - Busy corridor stops look important simply because many routes pass through them, even when they do not function as real interchange points.
 
 BusToSubway treats these missing layers as an inference problem.
@@ -31,7 +31,7 @@ Raw bus data
         |
         v
 StopPlace grouping
-  split stop poles -> logical places
+  split individual stops -> logical places
         |
         v
 L-space graph

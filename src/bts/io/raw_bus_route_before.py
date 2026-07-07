@@ -29,7 +29,7 @@ _LIST_SEP = "|"            # [RS§7] 시각 리스트 구분자
 
 
 def kr_hms_to_sec(tok: str) -> int:
-    """'H시 M분 S초' 토큰 → 초. 4~25시 연장 표기 허용 — service_s 창 [4h,26h) 강제.
+    """'H시 M분 S초' 토큰 → 초. 4~25시 연장 표기 허용 — service_s 창 [4h,26h) 확인.
 
     이 파일 고유 포맷의 파서라 여기 소속이다(after의 'H시 M분 S초' 겸용 파서와 별개).
     """
@@ -61,7 +61,7 @@ def validate(df: pd.DataFrame, meta: dict | None = None) -> pd.DataFrame:
     """raw 불변식 assert. meta(dict)에 실측 관찰값을 기록한다."""
     m = meta if meta is not None else {}
     if df.columns[0].startswith("﻿"):
-        _fail("BOM 오염 컬럼명 — utf-8-sig 로딩 실패 [RS§1]")
+        _fail("BOM 포함 컬럼명 — utf-8-sig 로딩 실패 [RS§1]")
     if list(df.columns) != _COLUMNS:
         _fail(f"컬럼 순서 불일치 {list(df.columns)} [RS§1]")
     m["bom_ok"] = True

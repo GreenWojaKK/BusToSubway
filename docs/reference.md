@@ -8,7 +8,7 @@ The names below describe the intended public API. The internal engineering pipel
 
 | term | definition |
 |---|---|
-| **Quay** | Individual boarding/alighting point, usually one physical stop pole. |
+| **Quay** | Individual boarding/alighting point, usually one physical stop. |
 | **StopPlace** | Logical station-like grouping of one or more Quays. |
 | **L-space** | Graph representation where nodes are stops or StopPlaces and edges connect consecutive stops on a route. |
 | **Dominance** `s(v)` | Hub suitability score used for local comparison. Default: L-space degree. |

@@ -1,6 +1,5 @@
-# 위반 주입 fixture — 검증기의 검증 ("계약의 계약", verification.md §6.1)
-# 각 primitive에 위반을 심은 합성 데이터로 검증기가 실제로 FAIL을 내는지 확인한다.
-# 위음성(잡아야 할 것을 통과시킴)이 이 계층에서 잡힌다.
+# 위반 주입 fixture — 체크 primitive가 실패 조건을 실제로 잡는지 확인한다.
+# 각 primitive에 깨진 합성 데이터를 넣어 PASS로 새는 회귀를 막는다.
 import pandas as pd
 
 from bts.checks import core
@@ -58,7 +57,7 @@ class TestEnum:
 
 class TestAccounting:
     def test_처리결과표_detour_1행_누락_검출(self):
-        # 시나리오: 처리 결과 표에서 detour 1행 누락 → C-S01-B-005 accounting FAIL (486≠487)
+        # 시나리오: 패턴 분류표에서 detour 1행 누락 → C-S01-B-005 accounting FAIL (486≠487)
         parts = {"canonical": 379, "excl_circular_with_base": 37, "excl_detour": 50,
                  "excl_extension": 10, "excl_duplicate": 2, "excl_anomaly": 2, "support": 6}
         r = core.accounting("C-S01-B-005", parts, 487, "audit/variant_tags§2,§3")
@@ -70,7 +69,7 @@ class TestAccounting:
         parts = {"canonical": 379, "excluded": 102, "support": 6}
         assert core.accounting("C-S01-B-005", parts, 487, "t").status == "PASS"
 
-    def test_canonical_413_변조_검출(self):
+    def test_canonical_413_변경_검출(self):
         # 시나리오: 전 role self→NaN 정규화 흉내(circular 자기참조 34 소거) → canonical 413≠379
         # (C-S01-B-004의 골자 — main 187 + circular base 없는 66+34 + short_turn 112 + branch 14)
         parts = {"main": 187, "circular_baseless": 100, "short_turn": 112, "branch": 14}

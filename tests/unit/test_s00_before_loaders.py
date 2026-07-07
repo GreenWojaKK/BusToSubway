@@ -1,4 +1,4 @@
-# s00 before 로더 3종 — raw 불변식 위반 주입 테스트 (검증기의 검증, verification.md §6)
+# s00 before 로더 테스트 — raw 입력 형식 위반을 합성 데이터로 주입한다.
 # 실데이터 로드는 module 스코프 fixture 1회 — 위반 주입은 in-memory 사본으로 수행한다.
 import pandas as pd
 import pytest

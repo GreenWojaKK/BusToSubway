@@ -1,4 +1,4 @@
-# normalize 단위 테스트 — base 추출 + 공인 조인기 (verification.md §6.2)
+# normalize 단위 테스트 — route 이름 정리와 name→stop 해소 경로를 검증한다.
 import numpy as np
 import pandas as pd
 import pytest
@@ -17,7 +17,7 @@ class TestBaseRouteName:
         assert nz.base_route_name("울주01") == "울주01"
 
     def test_숫자_절단_파싱_부재(self):
-        # base 추출은 route_name 정규식만 — 숫자 코어 절단이 아님을 확인
+        # base는 괄호 접미사만 제거해 만든다. 숫자로 된 본문은 잘라내지 않는다.
         assert nz.base_route_name("50(내고산 방면)") == "50"
         assert nz.base_route_name("13 지원2") == "13 지원2"   # 절단이면 '13'이 됐을 것
 
@@ -26,13 +26,13 @@ def _stops(rows):
     return pd.DataFrame(rows, columns=["stop_id", "stop_name", "lat", "lon"])
 
 
-# 위도 35.5에서 약 1m ≈ 0.000009도
+# 위도 35.5 부근에서 1m를 대략적인 위도 차이로 표현한다.
 DEG_1M = 0.000009
 
 
 class TestResolver:
     def test_alias_양우내안에_정확히_1건_적용(self):
-        # [PC] 양성 대조군의 위치 교정본: stop 우주에는 '양우내안애'만 존재 (design.md §5 s02 주의)
+        # alias를 적용한 뒤 실제 stop 표기 하나로 해소되는지 확인한다.
         stops = _stops([("BS_1", "양우내안애", 35.5, 129.3)])
         df = pd.DataFrame({"name": ["양우내안에"], "lat": [35.5 + DEG_1M * 0.9], "lon": [129.3]})
         resolved, failures, n_alias = nz.resolve_stops_by_name(
@@ -68,7 +68,7 @@ class TestResolver:
         assert failures["reason"].iloc[0] == "no_name_match"
 
     def test_좌표_문자열_조인_미사용(self):
-        # 반올림 자릿수가 달라도(문자열 불일치) 거리 기반으로 해소됨 — exact 조인 금지의 검증
+        # 좌표 문자열이 정확히 같지 않아도, 같은 이름 안에서는 거리로 가장 가까운 stop을 고른다.
         stops = _stops([("BS_A", "공업탑", 35.55000, 129.30000)])
         df = pd.DataFrame({"name": ["공업탑"], "lat": [35.5500000001], "lon": [129.3]})
         resolved, failures, _ = nz.resolve_stops_by_name(

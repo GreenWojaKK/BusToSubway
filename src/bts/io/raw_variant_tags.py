@@ -40,7 +40,7 @@ def validate(df: pd.DataFrame, meta: dict | None = None) -> pd.DataFrame:
     """raw 불변식 assert. base_route_id는 원형 보존(정규화 금지)."""
     m = meta if meta is not None else {}
     if df.columns[0].startswith("﻿"):
-        _fail("BOM 오염 컬럼명 — utf-8-sig 로딩 실패 [VT§1]")
+        _fail("BOM 포함 컬럼명 — utf-8-sig 로딩 실패 [VT§1]")
     if list(df.columns) != _COLUMNS:
         _fail(f"컬럼 불일치 {list(df.columns)} [VT§1]")
     m["raw_shape"] = [int(df.shape[0]), int(df.shape[1])]

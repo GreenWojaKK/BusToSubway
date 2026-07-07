@@ -1,6 +1,6 @@
-# s01_canonical/before 계약 체크의 위반 주입 테스트 (stage1 spec §7.2 — 검증기의 검증)
+# s01_canonical/before 계약 체크 테스트 — 실패해야 할 조건을 합성 데이터로 주입한다.
 # ★ 핵심 fixture: "전 role self→NaN 정규화를 흉내낸 tags"(circular 자기참조 34 소거)에서
-#   C-S01-B-004가 실제로 FAIL(413≠379 검출)해야 한다 — 위음성 방지.
+#   C-S01-B-004가 실제로 FAIL(413≠379 검출)해야 한다.
 import pandas as pd
 import pytest
 
@@ -201,7 +201,7 @@ class TestP002BackboneCoverage:
 class TestC003CanonicalAncestor:
     def test_circular_with_base_종착은_noncanonical로_검출(self):
         # spec §5.1: 종착 조상은 canonical(main/base 없는 circular)이어야 한다 —
-        # 술어가 role in {main, circular}로 약하면 이 위반을 놓친다 (검증 라운드 1 지적)
+        # 조건이 role in {main, circular} 정도로 넓으면 이 위반을 놓친다.
         pat = make_patterns()
         cwb = pat.loc[pat["role_scope"] == "circular_with_base", "pattern_id"].iloc[0]
         idx = pat.index[pat["role"] == "detour"][:1]

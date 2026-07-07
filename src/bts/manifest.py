@@ -1,4 +1,4 @@
-"""manifest 읽기/쓰기, sha256 해시, 버전 해석, 멱등 키, code_ref (design.md §4.2).
+"""manifest 읽기/쓰기, sha256 해시, 버전 해석, 재사용 기준값, code_ref (design.md §4.2).
 
 manifest는 "어느 입력·params·코드가 이 산출물을 만들었나"의 유일한 기록이다.
 하류는 상류의 _latest를 읽되, 해석된 실제 버전·해시를 자기 manifest에 고정 기록한다.
@@ -87,7 +87,7 @@ def code_ref() -> str:
 # ── 입력 해석 ────────────────────────────────────────────────────────────────
 @dataclass
 class ResolvedInputs:
-    """registry 선언 입력의 해석 결과 — 화이트리스트 강제의 매개체.
+    """registry 선언 입력의 해석 결과 — 선언된 입력만 쓰기 위한 매개체.
 
     artifacts: {상류 stage: {"version": vNNN, "files": {파일명: sha256}}}
     files:     {루트 상대 경로: sha256}  (params.yaml + 스테이지 선언 config)
@@ -111,7 +111,7 @@ def read_manifest(vdir: Path) -> dict:
 
 
 def verify_outputs(vdir: Path, manifest: dict | None = None) -> list[str]:
-    """게시본 출력 파일 sha256 대조 — 불일치 파일 목록 반환(빈 목록 = 무결)."""
+    """게시본 출력 파일 sha256 대조 — 불일치 파일 목록 반환(빈 목록 = 일치)."""
     m = manifest or read_manifest(vdir)
     bad = []
     for fname, meta in m.get("outputs", {}).items():
@@ -138,14 +138,14 @@ def resolve_inputs(stage: str, scope: str, pins: dict[str, str] | None = None) -
         bad = verify_outputs(vdir, m)
         if bad:
             raise paths.UpstreamCorrupt(
-                f"상류 오염: {up}/{scope}/{version} 해시 불일치 파일 {bad}")
+                f"상류 출력 해시 불일치: {up}/{scope}/{version} 파일 {bad}")
         ri.artifacts[f"{up}/{scope}"] = {
             "version": version,
             "files": {k: v["sha256"] for k, v in m.get("outputs", {}).items()},
         }
     # config 입력: params.yaml은 전 스테이지 공통 + 스테이지 선언 config 파일.
     # 기준 입력 묶음 3파일도 전 스테이지 공통 입력이다 — DIFF 판정(0번 체크·baseline·known_deviations)의
-    # 입력이 content_key에 없으면 등재 변경이 멱등 스킵에 가려져 '재이탈 자동 강등'이
+    # 입력이 content_key에 없으면 등재 변경이 동일 입력 재사용에 가려져 '재이탈 자동 강등'이
     # 무관한 재빌드 없이는 발동하지 않는다 (design.md §4.3-5: '입력 해시 전부').
     cfg_files = (["src/bts/config/params.yaml"]
                  + _FROZEN_LAYER_FILES
@@ -154,9 +154,9 @@ def resolve_inputs(stage: str, scope: str, pins: dict[str, str] | None = None) -
         p = paths.ROOT / rel
         if p.exists():
             ri.files[rel] = sha256_file(p)
-    # 스테이지 선언 raw/판단층 입력(파일 또는 디렉터리) — design.md §4.2 예시 manifest의
+    # 스테이지 선언 raw/수동 분류 입력(파일 또는 디렉터리) — design.md §4.2 예시 manifest의
     # file 입력 항목. raw는 s00의 '입력 전부'이므로 여기 고정되지 않으면 raw 변경 시
-    # 멱등 스킵이 빌드·체크(0번 체크 포함)를 통째로 우회한다.
+    # 기존 게시본 재사용이 빌드·체크(0번 체크 포함)를 통째로 우회한다.
     for rel in st.input_files.get(scope, []):
         p = paths.ROOT / rel
         if p.is_dir():
@@ -168,13 +168,13 @@ def resolve_inputs(stage: str, scope: str, pins: dict[str, str] | None = None) -
     return ri
 
 
-# ── 멱등 키 ─────────────────────────────────────────────────────────────────
+# ── 재사용 기준값 ───────────────────────────────────────────────────────────
 def content_key(inputs: ResolvedInputs, phash: str, code: str) -> str:
-    """(입력 해시 전부 + params_hash + code_ref) — content-addressed 멱등 키.
+    """(입력 해시 전부 + params_hash + code_ref) — 동일 입력 재사용 기준값.
 
     design.md §4.3-5 문언 그대로 '해시 전부'만 들어간다 — 상류 버전 라벨(vNNN)은
-    키의 입력이 아니다(내용 동일 = 키 동일). 버전 라벨이 키에 들어가면 동일 내용의
-    상류 재게시만으로 하류 키가 바뀌어 content-addressed 캐시가 무력화된다.
+    기준값의 입력이 아니다(내용 동일 = 기준값 동일). 버전 라벨이 기준값에 들어가면 동일 내용의
+    상류 재게시만으로도 하류 기준값이 달라져 기존 게시본을 재사용하기 어렵다.
     해석된 실제 버전 라벨은 manifest.inputs에 기록된다(재현 경로 — §4.3-4).
     """
     artifact_hashes = {stage: info["files"]
@@ -186,8 +186,8 @@ def content_key(inputs: ResolvedInputs, phash: str, code: str) -> str:
     return "sha256:" + sha256_text(payload)
 
 
-def find_promoted(stage: str, scope: str, key: str) -> str | None:
-    """동일 content_key의 기존 게시본 탐색 — 있으면 그 버전(멱등 스킵)."""
+def find_published(stage: str, scope: str, key: str) -> str | None:
+    """동일 content_key의 기존 게시본 탐색 — 있으면 그 버전을 재사용한다."""
     sdir = paths.ARTIFACTS / stage / scope
     if not sdir.exists():
         return None
@@ -261,10 +261,10 @@ def hash_outputs(vdir: Path) -> dict:
     return out
 
 
-def promote(stage: str, scope: str, vdir: Path) -> None:
-    """_latest.json 원자 갱신 (promote 경로만 — 권한 매트릭스)."""
+def publish(stage: str, scope: str, vdir: Path) -> None:
+    """_latest.json 원자 갱신 (promote 경로만)."""
     latest = paths.ARTIFACTS / stage / scope / "_latest.json"
-    with paths.promote_context():
+    with paths.publish_context():
         paths.assert_writable(latest)
         tmp = latest.with_suffix(".json.tmp")
         with open(tmp, "w", encoding="utf-8") as f:

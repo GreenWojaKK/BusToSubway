@@ -1,5 +1,5 @@
-# route_class_rules yaml 자가 정합성 (stage1 spec §7.1의 데이터 측 절반)
-# get_rules(era) API 자체는 s01 구현자 소유 — 여기서는 규칙 파일의 계약 형식을 검증한다.
+# route_class_rules yaml 테스트 — 규칙 파일 자체의 형식과 기대 행수를 확인한다.
+# get_rules(era)의 구현은 s01 소속이고, 여기서는 입력 데이터 계약만 검증한다.
 import yaml
 
 import bts.paths as paths
@@ -41,12 +41,12 @@ class TestAfterRules:
 
     def test_before_이식_반증_가능(self):
         # before express 규칙(fullmatch:\d{4})을 after에 이식하면 26개(실측)로 expect 14가 깨진다.
-        # 여기서는 두 파일의 era가 서로 달라 scope 미지정 조회가 불가능함을 형식으로 확인한다.
+        # before와 after 규칙은 서로 다른 era를 가지므로, 조회할 era를 생략할 수 없다.
         assert _load("before")["era"] != _load("after")["era"]
 
 
 def test_era_scope_미지정_조회_불가():
-    # era scope 미지정 규칙 조회 금지 (design.md §2.5) — 파일 명명 자체가 era 키를 요구한다
+    # 규칙 파일 이름이 era를 포함하므로, 호출자도 era를 명시해야 한다.
     import pytest
     with pytest.raises(FileNotFoundError):
         _load("전체")

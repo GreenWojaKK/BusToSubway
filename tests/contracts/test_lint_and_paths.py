@@ -1,4 +1,4 @@
-# 규범 어휘 lint + 쓰기 권한 매트릭스 (design.md §8, §3.1)
+# lint와 쓰기 권한 테스트 — 금지어와 쓰기 가능 경로를 확인한다.
 import pytest
 
 import bts.paths as paths
@@ -20,7 +20,7 @@ class TestLint:
         assert lint.check_names("C-X", cols, "t").status == "PASS"
 
     def test_금칙어_목록은_params에서(self):
-        # 코드 리터럴 금지 — params.yaml이 출처
+        # 금지어 목록은 코드가 아니라 params.yaml에서 읽는다.
         terms = lint.forbidden_terms()
         assert "비합리" in terms and "should" in terms
 
@@ -43,16 +43,16 @@ class TestWriteMatrix:
         vdir = paths.ARTIFACTS / "t90_dummy" / "before" / "v001"
         other = paths.ARTIFACTS / "t90_dummy" / "before" / "v000" / "f.csv"
         with paths.build_context(vdir):
-            paths.assert_writable(vdir / "out.csv")          # 허용
+            paths.assert_writable(vdir / "out.csv")          # 현재 build 대상은 허용
             with pytest.raises(paths.WriteViolation):
-                paths.assert_writable(other)                 # 타 버전 거부 (게시본 불변)
+                paths.assert_writable(other)                 # 다른 버전은 쓸 수 없다.
 
-    def test_promote는_latest만(self, sandbox):
+    def test_publish_context_allows_latest_only(self, sandbox):
         latest = paths.ARTIFACTS / "t90_dummy" / "before" / "_latest.json"
         with pytest.raises(paths.WriteViolation):
-            paths.assert_writable(latest)                    # promote 경로 밖 거부
-        with paths.promote_context():
-            paths.assert_writable(latest)                    # promote 경로만 허용
+            paths.assert_writable(latest)                    # 일반 실행 중에는 쓸 수 없다.
+        with paths.publish_context():
+            paths.assert_writable(latest)                    # promote 중에만 허용
 
     def test_runs_docs는_허용(self):
         paths.assert_writable(paths.ROOT / "runs" / "r.json")
@@ -66,7 +66,7 @@ class TestVersionDirs:
         rej = paths.mark_rejected(v1)
         assert rej.name == "v001-rejected"
         v2 = paths.new_version_dir("t90_dummy", "before")
-        assert v2.name == "v002"                             # rejected 번호는 재사용하지 않는다
+        assert v2.name == "v002"                             # rejected 번호는 재사용하지 않는다.
 
     def test_latest_부재는_UpstreamMissing(self, sandbox):
         with pytest.raises(paths.UpstreamMissing):

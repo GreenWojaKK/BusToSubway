@@ -1,10 +1,10 @@
 """스테이지 러너 — python -m bts.run <stage> --scope <s> [--pin ...] (design.md §4.3, §6).
 
-실행 = 빌드 → 체크 → 게이트 판정 → 게시/거부/보류가 원자적이다.
+실행 = 빌드 → 체크 → 판정 → 게시/거부/보류가 한 번에 이어진다.
 "검증 없는 산출물"이 생길 수 있는 경로는 없다(verification.md).
 
 registry가 배선의 검증 기준이다: 스테이지 간 결합은 여기 선언된 입력뿐이며,
-러너가 입력 화이트리스트를 강제한다(선언 밖 artifact 읽기는 경로 헬퍼가 거부).
+러너는 선언된 입력만 해석한다(선언 밖 artifact 읽기는 경로 헬퍼가 막는다).
 """
 from __future__ import annotations
 
@@ -22,10 +22,10 @@ from bts.io import ContractViolation
 
 # exit code 규약 (verification.md §3.2)
 EXIT_OK = 0                 # 전부 통과 (DIFF는 MATCH/EXPLAINED만) — 게시
-EXIT_CONTRACT = 2           # CONTRACT FAIL — 거부, vNNN-rejected/ 보존
+EXIT_CONTRACT = 2           # CONTRACT FAIL — rejected 버전으로 보존
 EXIT_PHYSICAL = 3           # PHYSICAL WARN 미승인 — 보류
 EXIT_UNEXPLAINED = 4        # 게시됐으나 신규 UNEXPLAINED DIFF — 조사 메모 생성
-EXIT_UPSTREAM = 5           # 상류 오염 (해시 불일치·_latest 부재) — 실행 거부
+EXIT_UPSTREAM = 5           # 상류 출력 해시 불일치·_latest 부재
 
 
 @dataclass
@@ -34,9 +34,9 @@ class Stage:
 
     builders/checks 값: callable 또는 dotted 참조 문자열("pkg.mod:func" / "pkg.mod").
     config_files의 "{scope}"는 실행 스코프로 치환된다.
-    input_files: scope -> raw/판단층 입력(파일 또는 디렉터리, 루트 상대) — manifest inputs와
-    content_key에 해시 고정된다(design.md §4.3-5 '입력 해시 전부': raw 변경이 멱등 스킵을
-    우회하지 못하게 하는 핀).
+    input_files: scope -> raw/수동 분류 입력(파일 또는 디렉터리, 루트 상대) — manifest inputs와
+    content_key에 해시 기록된다(design.md §4.3-5 '입력 해시 전부': raw 변경 시
+    기존 게시본을 재사용하지 않게 하는 기준).
     review_overrides: 이 override 파일에 데이터 행이 1행 이상 실린 채 빌드되면
     게시에 --reviewed-by가 필요하다 (design.md §4.3-3).
     """
@@ -73,7 +73,7 @@ REGISTRY: dict[str, Stage] = {
         checks={"before": "bts.checks.contracts.s01_before",
                 "after": "bts.checks.contracts.s01_after"},
         config_files=["src/bts/config/route_class_rules.{scope}.yaml"],
-        input_files={                                # 판단층 직접 읽기 입력 (design.md §4.2 예시)
+        input_files={                                # 수동 분류표 직접 읽기 입력 (design.md §4.2 예시)
             "before": ["reference/variant_tagging/variant_tags.csv",
                        "reference/variant_tagging/evidence"]}),
     "s02_place": Stage(
@@ -117,7 +117,7 @@ def _ack_entry(check_id: str, reviewed_by: str) -> dict:
     """manifest acks 항목 — 주체·시각 기록 (design.md §4.2: {check_id, by, at}).
 
     익명 ack은 존재하지 않는다 — ack 적용 경로(run/promote)가 --reviewed-by 부재 시
-    ack을 거부하므로, 이 함수는 항상 식별된 주체와 함께 호출된다 (검증 라운드 2 수리).
+    ack을 받지 않으므로, 이 함수는 항상 식별된 주체와 함께 호출된다 (검증 라운드 2 수리).
     """
     return {"check_id": check_id, "by": reviewed_by,
             "at": datetime.now(manifest.KST).isoformat(timespec="seconds")}
@@ -147,7 +147,7 @@ def _version_needs_review(m: dict, st: Stage, scope: str) -> bool:
     ② 구버전 manifest(필드 부재) 폴백: manifest inputs에 핀된 override 파일 해시가
        현재 디스크 파일과 일치할 때만 현재 파일 판독을 빌드 시점의 대리 증거로 인정.
        불일치·핀 부재는 빌드 시점 상태를 복원할 수 없으므로 보수적으로 True
-       (판정 불능 상태의 무심사 게시 금지 — 재실행이 정답).
+       (판정 근거가 부족하면 재실행한다).
     """
     if "needs_review" in m:
         return bool(m["needs_review"])
@@ -198,7 +198,7 @@ def _record_run(stage: str, scope: str, exit_code: int, version: str | None,
 
 def run(stage: str, scope: str, pins: dict | None = None, acks: list | None = None,
         reviewed_by: str | None = None) -> int:
-    """resolve → 멱등 스킵 → build → checks → 게이트 → 기록 → 게시/거부/보류."""
+    """resolve → 기존 게시본 재사용 → build → checks → 게이트 → 기록 → 게시/거부/보류."""
     pins, acks = pins or {}, list(acks or [])
     if stage not in REGISTRY:
         print(f"[bts.run] 미등록 스테이지: {stage} (registry: {sorted(REGISTRY)})")
@@ -212,7 +212,7 @@ def run(stage: str, scope: str, pins: dict | None = None, acks: list | None = No
     try:
         inputs = manifest.resolve_inputs(stage, scope, pins)
     except (paths.UpstreamMissing, paths.UpstreamCorrupt) as e:
-        print(f"[bts.run] 상류 오염/부재 (exit {EXIT_UPSTREAM}): {e}")
+        print(f"[bts.run] 상류 입력 확인 실패 (exit {EXIT_UPSTREAM}): {e}")
         _record_run(stage, scope, EXIT_UPSTREAM, None, "", str(e))
         return EXIT_UPSTREAM
 
@@ -221,23 +221,23 @@ def run(stage: str, scope: str, pins: dict | None = None, acks: list | None = No
     code = manifest.code_ref()
     key = manifest.content_key(inputs, phash, code)
 
-    # 2) 멱등 스킵 (content-addressed 캐시 — design.md §4.3-5)
-    existing = manifest.find_promoted(stage, scope, key)
+    # 2) 기존 게시본 재사용 (동일 입력·params·code — design.md §4.3-5)
+    existing = manifest.find_published(stage, scope, key)
     if existing:
-        note = "idempotent_skip"
+        note = "reuse_existing"
         # flip-flop 해소 (검증 라운드 2 수리): 기준 입력 묶음·params 원복 등으로 재사용 대상이
-        # _latest가 아닌 구버전일 수 있다 — 재사용 = 그 버전이 현재 입력의 정본이므로
+        # _latest가 아닌 구버전일 수 있다 — 재사용 대상이 현재 입력에 맞는 게시본이므로
         # _latest를 재사용 버전으로 동기화한다(하류가 현 입력과 다른 내용을 읽는 것 방지).
         try:
             current = paths.latest_version(stage, scope)
         except paths.UpstreamMissing:
             current = None
         if current != existing:
-            manifest.promote(stage, scope, paths.artifact_dir(stage, scope, existing))
-            note = f"idempotent_skip_latest_synced:{current}->{existing}"
-            print(f"[bts.run] 멱등 재사용 대상({existing})이 _latest({current})와 달라 "
+            manifest.publish(stage, scope, paths.artifact_dir(stage, scope, existing))
+            note = f"reuse_existing_latest_synced:{current}->{existing}"
+            print(f"[bts.run] 재사용 대상({existing})이 _latest({current})와 달라 "
                   f"_latest를 동기화했다")
-        print(f"[bts.run] 멱등 스킵: {stage}/{scope} — 동일 content_key 게시본 {existing} 재사용")
+        print(f"[bts.run] 기존 게시본 재사용: {stage}/{scope} — 동일 content_key {existing}")
         _record_run(stage, scope, EXIT_OK, existing, key, note)
         return EXIT_OK
 
@@ -267,9 +267,9 @@ def run(stage: str, scope: str, pins: dict | None = None, acks: list | None = No
             ]
             approved_sanity_ids = [r.check_id for r in sanity_failures if r.check_id in acks]
             if approved_sanity_ids and not reviewed_by:
-                # 익명 ack 거부 (검증 라운드 2 수리): ack은 판정 이력이다 — 주체 식별
+                # 익명 ack 미적용 (검증 라운드 2 수리): ack은 판정 이력이다 — 주체 식별
                 # (--reviewed-by) 없는 ack은 적용하지 않고 보류한다.
-                print(f"[bts.run] 익명 ack 거부: --ack {approved_sanity_ids}는 --reviewed-by <이름>과 "
+                print(f"[bts.run] 익명 ack 미적용: --ack {approved_sanity_ids}는 --reviewed-by <이름>과 "
                       f"함께만 적용된다 — 보류")
                 unapproved_sanity_failures, approved_sanity_ids = sanity_failures, []
             if approved_sanity_ids:
@@ -296,7 +296,7 @@ def run(stage: str, scope: str, pins: dict | None = None, acks: list | None = No
         # 빌드 중 검증 규칙 위반(로더 등) — CONTRACT FAIL과 같은 의미론: exit 2 + 포렌식 보존
         # (traceback exit 1로 새면 runs/ 기록도 rejected 개명도 없이 고아 vNNN이 남는다)
         rej = paths.mark_rejected(vdir)
-        print(f"[bts.run] 빌드 중 ContractViolation → 거부 (exit {EXIT_CONTRACT}) — "
+        print(f"[bts.run] 빌드 중 ContractViolation → rejected 처리 (exit {EXIT_CONTRACT}) — "
               f"보존: {rej.name}\n  {e}")
         _record_run(stage, scope, EXIT_CONTRACT, rej.name, key, f"build_contract_violation:{e}")
         return EXIT_CONTRACT
@@ -311,7 +311,7 @@ def run(stage: str, scope: str, pins: dict | None = None, acks: list | None = No
     if blocking_failures:
         rej = paths.mark_rejected(vdir)
         ids = [r.check_id for r in blocking_failures]
-        print(f"[bts.run] CONTRACT FAIL {ids} → 거부 (exit {EXIT_CONTRACT}) — 보존: {rej.name}")
+        print(f"[bts.run] CONTRACT FAIL {ids} → rejected 처리 (exit {EXIT_CONTRACT}) — 보존: {rej.name}")
         _record_run(stage, scope, EXIT_CONTRACT, rej.name, key, f"blocking_validation_failed:{ids}")
         return EXIT_CONTRACT
 
@@ -327,7 +327,7 @@ def run(stage: str, scope: str, pins: dict | None = None, acks: list | None = No
         _record_run(stage, scope, EXIT_PHYSICAL, vdir.name, key, "needs_reviewed_by")
         return EXIT_PHYSICAL
 
-    manifest.promote(stage, scope, vdir)
+    manifest.publish(stage, scope, vdir)
     if unexplained_baseline_diffs:
         ids = [r.check_id for r in unexplained_baseline_diffs]
         print(f"[bts.run] 게시 + 신규 DIFF UNEXPLAINED {ids} (exit {EXIT_UNEXPLAINED}) — 조사 메모 생성됨")
@@ -339,18 +339,18 @@ def run(stage: str, scope: str, pins: dict | None = None, acks: list | None = No
     return EXIT_OK
 
 
-def promote_pending(stage: str, scope: str, version: str, acks: list,
+def publish_pending(stage: str, scope: str, version: str, acks: list,
                     reviewed_by: str | None) -> int:
     """보류(pending) 버전의 게시 재개 — checks.json 재판독 + --ack 적용.
 
     전 경로가 runs/에 기록된다(verification.md §3.3 — 게시 여부와 무관하게 전 실행).
-    익명 ack 금지: --ack은 --reviewed-by(주체 식별) 없이는 거부된다 (검증 라운드 2 수리).
+    익명 ack은 적용하지 않는다: --ack은 --reviewed-by(주체 식별)와 함께 쓴다 (검증 라운드 2 수리).
     검증 라운드 1(Stage 2) 수리 4건:
     - review 게이트는 현재 디스크의 override 파일이 아니라 버전 자신의 빌드 시점 기록
       (_version_needs_review)으로 판정한다 — 파일 원복에 의한 TOCTOU 우회 차단.
-    - 게시 직전 출력 해시 재검증(verify_outputs) — 빌드~promote 사이 변조는 exit 5 거부.
+    - 게시 직전 출력 해시 재검증(verify_outputs) — 빌드~promote 사이 출력 변경은 exit 5.
     - ack 기록은 run 경로와 동일하게 PHYSICAL FAIL 교집합만 — 미지/PASS 체크의 ack이
-      판정 이력으로 오염되지 않는다.
+      판정 이력에 섞이지 않는다.
     - 게시 버전의 checks.json에 UNEXPLAINED DIFF가 있으면 run 경로와 동일하게 exit 4
       (게시 자체는 비차단 — 신호가 exit code 채널에서도 유실되지 않게).
     """
@@ -358,7 +358,7 @@ def promote_pending(stage: str, scope: str, version: str, acks: list,
     m = manifest.read_manifest(vdir)
     key = m.get("content_key", "")
     if acks and not reviewed_by:
-        print(f"[bts.run] 익명 ack 거부: --ack {acks}는 --reviewed-by <이름>과 함께만 "
+        print(f"[bts.run] 익명 ack 미적용: --ack {acks}는 --reviewed-by <이름>과 함께만 "
               f"적용된다 (exit {EXIT_PHYSICAL})")
         _record_run(stage, scope, EXIT_PHYSICAL, version, key,
                     f"promote_anonymous_ack_refused:{acks}")
@@ -373,7 +373,7 @@ def promote_pending(stage: str, scope: str, version: str, acks: list,
         return EXIT_CONTRACT
     bad = manifest.verify_outputs(vdir, m)
     if bad:
-        print(f"[bts.run] 산출물 해시 불일치(빌드 후 변조) {bad} — 게시 거부 "
+        print(f"[bts.run] 산출물 해시 불일치(빌드 후 출력 변경) {bad} — 게시하지 않음 "
               f"(exit {EXIT_UPSTREAM}), 재실행하라")
         _record_run(stage, scope, EXIT_UPSTREAM, version, key,
                     f"promote_outputs_corrupt:{bad}")
@@ -399,7 +399,7 @@ def promote_pending(stage: str, scope: str, version: str, acks: list,
     ignored = sorted(set(acks) - sanity_failure_ids)
     if ignored:
         print(f"[bts.run] --ack 중 이 버전의 PHYSICAL FAIL이 아닌 항목은 기록하지 않는다: {ignored}")
-    # pending 버전은 아직 불변 대상이 아니다 — manifest에 승인 기록 후 게시
+    # pending 버전은 아직 게시 전이다 — manifest에 승인 기록 후 게시
     m["acks"] = [_ack_entry(c, reviewed_by) for c in approved_sanity_ids]
     m["reviewed_by"] = reviewed_by
     m["status"] = "promoted"
@@ -408,7 +408,7 @@ def promote_pending(stage: str, scope: str, version: str, acks: list,
     with paths.build_context(vdir):
         with open(vdir / "manifest.json", "w", encoding="utf-8") as f:
             json.dump(m, f, ensure_ascii=False, indent=2)
-    manifest.promote(stage, scope, vdir)
+    manifest.publish(stage, scope, vdir)
     unexplained_baseline_diffs = [
         r["check_id"] for r in results
         if r["check_class"] == "DIFF" and r["status"] == "UNEXPLAINED"
@@ -443,7 +443,7 @@ def _topo_order() -> list[str]:
 
 
 def run_all(scope: str, pins, acks, reviewed_by) -> int:
-    """DAG 순서 전 스테이지 실행 — 멱등 스킵 포함. 차단 exit에서 중단."""
+    """DAG 순서 전 스테이지 실행 — 동일 입력 재사용 포함. 차단 exit에서 중단."""
     worst = EXIT_OK
     for s in _topo_order():
         if scope not in REGISTRY[s].scopes:
@@ -456,7 +456,7 @@ def run_all(scope: str, pins, acks, reviewed_by) -> int:
 
 
 def recheck(scope: str) -> int:
-    """게시본 전체 재검증 (변조·회귀 감시) — python -m bts.run checks --scope s."""
+    """게시본 전체 재검증 (출력 변경·회귀 확인) — python -m bts.run checks --scope s."""
     worst = EXIT_OK
     for s in _topo_order():
         try:
@@ -466,7 +466,7 @@ def recheck(scope: str) -> int:
         m = manifest.read_manifest(vdir)
         bad = manifest.verify_outputs(vdir, m)
         if bad:
-            print(f"[checks] {s}/{scope}/{m['version']}: 해시 불일치(변조) {bad}")
+            print(f"[checks] {s}/{scope}/{m['version']}: 해시 불일치 {bad}")
             worst = max(worst, EXIT_UPSTREAM)
             continue
         pins = {e["artifact"].split("/")[0]: e["version"]
@@ -524,7 +524,7 @@ def main(argv=None) -> int:
     if args.stage == "promote":
         if len(args.rest) != 3:
             ap.error("promote는 <stage> <scope> <version> 3인자가 필요하다")
-        return promote_pending(args.rest[0], args.rest[1], args.rest[2],
+        return publish_pending(args.rest[0], args.rest[1], args.rest[2],
                                args.ack, args.reviewed_by)
     if args.scope is None:
         ap.error("--scope가 필요하다")

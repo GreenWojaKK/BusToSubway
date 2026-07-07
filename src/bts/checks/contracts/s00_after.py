@@ -41,7 +41,7 @@ def _window() -> tuple[int, int]:
             t["service_max_h"] * timeparse.SEC_PER_HOUR)
 
 
-# ── C-S00-A-000: raw sha256 == 동결값 (모든 실행의 0번 체크) ─────────────────
+# ── C-S00-A-000: raw sha256 == 기준값 (모든 실행의 0번 체크) ─────────────────
 def c000_raw_hashes() -> core.CheckResult:
     import yaml
     with open(paths.BASELINE_DIR / "raw_hashes.yaml", encoding="utf-8") as f:
@@ -50,7 +50,7 @@ def c000_raw_hashes() -> core.CheckResult:
     for rel in RAW_FILES:
         p = paths.ROOT / rel
         if rel not in frozen:
-            obs[rel] = "동결값 부재"
+            obs[rel] = "기준값 부재"
         elif not p.exists():
             obs[rel] = "파일 부재"
         else:
@@ -74,7 +74,7 @@ def c001_raw_shape(sched_raw: pd.DataFrame) -> core.CheckResult:
            "full_dup_rows": 0}
     return core.check_true("C-S00-A-001", "CONTRACT", obs == exp, obs, exp,
                            "audit/schedule_after.md §1",
-                           note="첫 컬럼명은 공백 포함 '운행 일자' — BOM 오염 시 즉시 검출")
+                           note="첫 컬럼명은 공백 포함 '운행 일자' — BOM 포함 여부 확인")
 
 
 # ── C-S00-A-002: 운행일자 nunique==1, 값 20250506 ────────────────────────────
@@ -107,7 +107,7 @@ def c004_dep_sentinel(dep_raw: pd.Series, n_flagged: int) -> core.CheckResult:
          "events_dep_is_sentinel_rows": int(n_flagged)},
         {"raw_sentinel_counts": exp_counts, "events_dep_is_sentinel_rows": exp_flagged},
         "audit/schedule_after.md §4", positive_control=True,
-        note="숨은 결측의 플래그화 검증 — 이벤트 시각 정본은 arrival(결측 0)")
+        note="숨은 결측의 플래그화 검증 — 이벤트 시각 기준은 arrival(결측 0)")
 
 
 # ── C-S00-A-005: dep≥arr, arr 실측 범위, service_s 창 ────────────────────────

@@ -1,6 +1,6 @@
-# s01_canonical/before 빌드 순수 함수 단위 테스트 (stage1 spec §7.1)
-# 핵심: base 정규화 role 스코프(main 한정), 재귀 해소·depth 가드, 판정표 조인 방향,
-# 비결정 패턴의 evidence 대표 채택, get_rules era 강제.
+# s01_canonical/before 순수 함수 테스트.
+# role별 base 처리, 재귀 해소, 판정표 조인 방향, 비결정 패턴의 evidence 선택,
+# get_rules의 era 명시 요구를 각각 독립적으로 확인한다.
 import numpy as np
 import pandas as pd
 import pytest
@@ -10,7 +10,7 @@ from bts.stages.s01_canonical import get_rules
 from bts.stages.s01_canonical import before as s01b
 
 
-# ── get_rules — era scope 미지정 조회 불가 ───────────────────────────────────────
+# ── get_rules — era를 명시해야 규칙을 읽을 수 있다 ───────────────────────────
 class TestGetRules:
     def test_before_로드(self):
         r = get_rules("before")
@@ -27,13 +27,13 @@ class TestGetRules:
 
 class TestSupportParent:
     def test_base명_규칙(self):
-        # design.md §5 s01 ④: '13 지원2' → 모선 '13'
+        # 지원 노선명에서 뒤쪽 지원 표기를 떼어 부모 route 이름을 얻는다.
         assert s01b.support_parent("13 지원2", "지원") == "13"
         assert s01b.support_parent("236 지원4", "지원") == "236"
         assert s01b.support_parent("924 지원2", "지원") == "924"
 
 
-# ── build_patterns — 대표 시퀀스의 단일 표준 ─────────────────────────────────
+# ── build_patterns — 대표 정차열 선택 ───────────────────────────────────────
 def _stop_times(rows):
     df = pd.DataFrame(rows, columns=["trip_id", "pattern_id", "route_name",
                                      "stop_id", "seq", "lineage"])
@@ -63,7 +63,7 @@ class TestBuildPatterns:
                           ("T2", "PB", "울주01", "c", 2, "ACC0")])
         core, ps = s01b.build_patterns(st, _ev("PB", ["a", "b", "c"]))
         assert bool(core.at[0, "is_drt"])
-        assert list(ps["stop_id"]) == ["a", "b", "c"]   # 이중 진실 없음 — evidence 단일 표준
+        assert list(ps["stop_id"]) == ["a", "b", "c"]   # 비결정 ACC0는 evidence 순서를 대표 정차열로 쓴다.
 
     def test_비결정_TAGO는_즉시_실패(self):
         st = _stop_times([("T1", "PX", "10(a)", "a", 1, "TAGO"),
@@ -99,7 +99,7 @@ class TestJoinTags:
         sup = j[j["pattern_id"] == "P2"].iloc[0]
         assert sup["role"] == "support" and sup["route"] == "13 지원2"
         assert sup["n_stops"] == 5 and sup["frequency"] == 44
-        assert pd.isna(sup["is_loop"])   # 판정표 부재 — 창작 금지(NA 보존)
+        assert pd.isna(sup["is_loop"])   # 판정 입력에 없던 값은 새로 만들지 않고 NA로 둔다.
 
     def test_tags측_미매치는_실패(self):
         pc = _pat_core([("P1", "k1", "10(a)", "TAGO", 3, 2, False)])
@@ -116,7 +116,7 @@ class TestJoinTags:
             s01b.join_tags(pc, vt, "지원")
 
 
-# ── resolve_base_refs — ★ role 스코프가 379의 성립 조건 ─────────────────────
+# ── resolve_base_refs — base 처리는 role별로 달라야 한다 ────────────────────
 def _tagged(rows):
     return pd.DataFrame(rows, columns=["pattern_id", "role", "base_pattern_id_raw"])
 
@@ -129,7 +129,7 @@ class TestResolveBaseRefs:
                       ("C2", "circular", None)])
         out = s01b.resolve_base_refs(df, max_depth=4).set_index("pattern_id")
         assert pd.isna(out.at["M1", "base_ref"])
-        assert out.at["C1", "base_ref"] == "C1"            # 전역 정규화 금지 — 379의 성립 조건
+        assert out.at["C1", "base_ref"] == "C1"            # circular 자기참조는 그대로 유지한다.
         assert out.at["C1", "base_ref_resolved"] == "C1"   # circular는 정지 role
 
     def test_재귀_해소는_canonical_조상까지(self):
@@ -141,7 +141,7 @@ class TestResolveBaseRefs:
         out = s01b.resolve_base_refs(df, max_depth=4).set_index("pattern_id")
         assert out.at["S1", "base_ref_resolved"] == "M1"
         assert out.at["D0", "base_ref_resolved"] == "M1"
-        assert out.at["S0", "base_ref_resolved"] == "M1"   # 직접 참조는 그대로 해소
+        assert out.at["S0", "base_ref_resolved"] == "M1"   # 직접 참조도 같은 방식으로 해소한다.
 
     def test_depth_가드(self):
         df = _tagged([("M1", "main", None),
@@ -157,7 +157,7 @@ class TestResolveBaseRefs:
             s01b.resolve_base_refs(df, max_depth=4)
 
 
-# ── build_disposition — 처리 결과는 role_scope×params의 순수 함수 ─────────────────
+# ── build_disposition — 처리 결과는 role_scope와 params로만 결정된다 ─────────
 class TestBuildDisposition:
     def test_role_scope와_처리결과(self):
         df = _tagged([("M1", "main", None), ("C1", "circular", "C1"),
@@ -183,7 +183,7 @@ class TestDetectDuplicates:
                             "pattern_key": ["k1", "k1", "k2", "k2"],
                             "route": ["22", "977", "10", "10"]})
         d = s01b.detect_duplicates(pat)
-        assert len(d) == 1                       # 같은 route 내 충돌(k2)은 비대상
+        assert len(d) == 1                       # 같은 route 안의 동일 정차열은 중복 비교에서 제외한다.
         assert d.at[0, "routes"] == "22|977" and d.at[0, "policy"] == "keep_flag"
 
 
@@ -214,7 +214,7 @@ class TestClassifyRoutes:
 
     def test_expect_count_위반은_실패(self):
         rules = {**_RULES, "rules": [dict(r) for r in _RULES["rules"]]}
-        rules["rules"][0]["expect_bases"] = 2    # 규칙 부패 주입
+        rules["rules"][0]["expect_bases"] = 2    # 규칙 파일의 기대 행수를 일부러 깨뜨린다.
         with pytest.raises(ContractViolation):
             s01b.classify_routes(_catalog_base(), rules)
 

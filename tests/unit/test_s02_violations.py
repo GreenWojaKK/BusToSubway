@@ -1,5 +1,5 @@
 # s02 위반 주입 테스트 — "위반을 심은 데이터에서 검증기가 실제로 FAIL을 내는가"
-# (verification.md §6.1, stage2_place_hub_spec.md §6.2의 s02 해당분. 위음성 방지)
+# (verification.md §6.1, stage2_place_hub_spec.md §6.2의 s02 해당분)
 import numpy as np
 import pandas as pd
 import pytest
@@ -39,7 +39,7 @@ def test_cross_name_병합_주입은_C002_FAIL():
     f = _frames(_BASE)
     places, mp = f["places"], f["stop_place_map"].copy()
     target = places.loc[places["name_norm"] == "가", "place_id"].iloc[0]
-    mp.loc[mp["stop_id"] == "P3", "place_id"] = target    # '나' stop을 '가' place로 강제 주입
+    mp.loc[mp["stop_id"] == "P3", "place_id"] = target    # '나' stop을 '가' place로 직접 주입
     r = s02_common.c002_no_cross_name(places, mp, "before")
     assert r.status == "FAIL"
     # 대조군: 주입 없으면 PASS
@@ -97,7 +97,7 @@ def test_override_참조_불능은_빌드_즉사():
 
 
 # ── 추가 위반 주입 — C-S02-*-003/004/005/006/008, P-S02-*-001 ────────────────
-def test_place_id_변조는_C003_FAIL():
+def test_place_id_변경은_C003_FAIL():
     f = _frames(_BASE)
     places, mp = f["places"].copy(), f["stop_place_map"].copy()
     old = places.loc[0, "place_id"]
@@ -108,7 +108,7 @@ def test_place_id_변조는_C003_FAIL():
         f["places"], f["stop_place_map"], "before").status == "PASS"
 
 
-def test_임계_초과_stop을_같은_place로_강제하면_C004_연결성_FAIL():
+def test_임계_초과_stop을_같은_place로_직접_묶으면_C004_연결성_FAIL():
     stops = _stops([("P1", "가", _LAT0, _LON0), ("P2", "가", _north(200.0), _LON0)])
     f = _frames(stops)
     places, mp = f["places"], f["stop_place_map"].copy()
@@ -124,7 +124,7 @@ def test_임계_초과_stop을_같은_place로_강제하면_C004_연결성_FAIL(
 def test_같은_이름_place쌍이_임계_이내면_C004_분리정당성_FAIL():
     stops = _stops([("P1", "가", _LAT0, _LON0), ("P2", "가", _north(100.0), _LON0)])
     f = _frames(stops)                                     # 정상: 1 place로 병합됨
-    # 위반 주입: 100m 쌍을 places 2개로 강제 분리
+    # 위반 주입: 100m 쌍을 places 2개로 직접 분리
     pa = merge.make_place_id("before", "가", ["P1"])
     pb = merge.make_place_id("before", "가", ["P2"])
     places = pd.DataFrame({"place_id": [pa, pb], "name_norm": ["가", "가"],
@@ -154,7 +154,7 @@ def test_이름당_stop_분포_회귀는_C006_FAIL():
         mp, expected={"1": 3, "2": 1, "3+": 0}).status == "FAIL"
 
 
-def test_n_stops_변조는_C008_accounting_FAIL():
+def test_n_stops_변경은_C008_accounting_FAIL():
     f = _frames(_BASE)
     places = f["places"].copy()
     places.loc[0, "n_stops"] = places.loc[0, "n_stops"] + 1
@@ -164,7 +164,7 @@ def test_n_stops_변조는_C008_accounting_FAIL():
         f["places"], f["stop_place_map"], _BASE, "before").status == "PASS"
 
 
-def test_centroid_변조는_C008_재계산_대조_FAIL():
+def test_centroid_변경은_C008_재계산_대조_FAIL():
     f = _frames(_BASE)
     places = f["places"].copy()
     places.loc[0, "lat_centroid"] = float(places.loc[0, "lat_centroid"]) + 0.001  # ≈111m 이동

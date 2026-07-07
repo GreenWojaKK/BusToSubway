@@ -20,9 +20,9 @@ from bts.io.timeparse import SEC_PER_HOUR, SEC_PER_MIN
 
 FILENAME = "ulsan_bus_route_after.parquet"
 
-# ── 감사 실측 동결 상수 (audit/routes_stops.md §1·§2·§7·§9) ──────────────────
+# ── 감사 실측 기준 상수 (audit/routes_stops.md §1·§2·§7·§9) ──────────────────
 # 원시 파일 검증 규칙(튜닝 대상 아님). 정위치는 params.yaml raw_contracts 절이나
-# 그 파일은 인프라 소유라 로더 동결 상수로 둔다.
+# 그 파일은 인프라 소유라 로더 기준 상수로 둔다.
 ROWS = 17_841                        # [RS§1]
 COLUMNS = ["route_id", "route_name", "stop_sequence", "stop_name",
            "stop_lat", "stop_lon", "권역", "행정동", "도착시간들", "stop_id", "도착횟수"]
@@ -62,7 +62,7 @@ def load() -> pd.DataFrame:
 
     # 1) BOM·컬럼·행수 [RS§9-1,3]
     if df.columns[0].startswith("﻿"):
-        raise ContractViolation(f"{FILENAME}: BOM 오염 컬럼명 — utf-8-sig 로딩 실패")
+        raise ContractViolation(f"{FILENAME}: BOM 포함 컬럼명 — utf-8-sig 로딩 실패")
     if list(df.columns) != COLUMNS:
         raise ContractViolation(f"{FILENAME}: 컬럼 불일치 {list(df.columns)}")
     if len(df) != ROWS:

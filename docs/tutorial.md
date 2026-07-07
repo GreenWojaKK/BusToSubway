@@ -2,7 +2,7 @@
 
 This tutorial shows the intended public workflow for BusToSubway. It is written for a small sample dataset with two tables:
 
-- `stops.csv`: individual stop poles, one row per Quay.
+- `stops.csv`: individual stops, one row per Quay.
 - `route_stops.csv`: route-by-route stop order.
 
 The exact command names may change while the package is being stabilized, but the workflow and outputs are the contract this public interface should satisfy.
@@ -13,7 +13,7 @@ Your stop table should contain at least:
 
 | column | meaning |
 |---|---|
-| `stop_id` | unique stop-pole identifier |
+| `stop_id` | unique stop identifier |
 | `name` | stop name |
 | `lat`, `lon` | WGS84 coordinates |
 

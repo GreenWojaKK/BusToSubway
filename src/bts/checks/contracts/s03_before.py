@@ -318,7 +318,7 @@ def d_spot(cid: str, metrics: pd.DataFrame, name: str) -> core.CheckResult:
     어느 하나라도 전항 일치 시 MATCH; 불일치면 최근접 후보 튜플 기록(조사 메모 설명 재료);
     이름 부재 시 observed='name_absent' → UNEXPLAINED."""
     key = f"before.hub.spot.{name}"
-    exp = {k: int(v) for k, v in diff.baseline_value(diff.load_baseline(), key).items()
+    exp = {k: int(v) for k, v in diff.reference_value(diff.load_reference_values(), key).items()
            if k in ("D", "A", "L")}
     cand = metrics[metrics["name_norm"].astype(str) == name]
     n_cand = int(len(cand))

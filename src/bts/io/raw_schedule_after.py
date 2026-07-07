@@ -17,9 +17,9 @@ from bts.io.timeparse import KR_TS_RE, SENTINELS
 
 FILENAME = "ulsan_route_schedule_after.parquet"
 
-# ── 감사 실측 동결 상수 (audit/schedule_after.md §1·§4·§6·§8) ────────────────
-# 임계값이 아니라 원시 파일의 검증 규칙이다(raw sha256 동결과 동위) — 튜닝 대상 아님.
-# 정위치는 params.yaml raw_contracts 절이나, 그 파일은 인프라 소유라 로더 동결 상수로 둔다.
+# ── 감사 실측 기준 상수 (audit/schedule_after.md §1·§4·§6·§8) ────────────────
+# 임계값이 아니라 원시 파일의 검증 규칙이다(raw sha256 기준값과 동위) — 튜닝 대상 아님.
+# 정위치는 params.yaml raw_contracts 절이나, 그 파일은 인프라 소유라 로더 기준 상수로 둔다.
 ROWS = 280_797                       # [SA§1] shape (280,797, 14)
 COLUMNS = ["운행 일자", "OBE_ID", "route_id", "route_name", "버스정류장 순번",
            "stop_id_raw", "stop_name", "stop_id", "arrival_time", "departure_time",
@@ -41,7 +41,7 @@ def load() -> pd.DataFrame:
 
     # 1) BOM·컬럼 [SA§8-1,2]
     if df.columns[0].startswith("﻿"):
-        raise ContractViolation(f"{FILENAME}: BOM 오염 컬럼명 — utf-8-sig 로딩 실패")
+        raise ContractViolation(f"{FILENAME}: BOM 포함 컬럼명 — utf-8-sig 로딩 실패")
     if list(df.columns) != COLUMNS:
         raise ContractViolation(f"{FILENAME}: 컬럼 불일치 {list(df.columns)}")
     if len(df) != ROWS:

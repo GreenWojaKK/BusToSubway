@@ -40,7 +40,7 @@ def validate(df: pd.DataFrame, meta: dict | None = None) -> pd.DataFrame:
     """
     m = meta if meta is not None else {}
     if df.columns[0].startswith("﻿"):
-        _fail("BOM 오염 컬럼명 — utf-8-sig 로딩 실패 [SB§7.2]")
+        _fail("BOM 포함 컬럼명 — utf-8-sig 로딩 실패 [SB§7.2]")
     if list(df.columns) != _COLUMNS:
         _fail(f"컬럼 순서 불일치 {list(df.columns)} [SB§1]")
     m["bom_ok"] = True

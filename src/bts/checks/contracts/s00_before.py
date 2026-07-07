@@ -78,7 +78,7 @@ def _service_window() -> tuple[int, int]:
 
 # ── CONTRACT ─────────────────────────────────────────────────────────────────
 def c000_raw_hashes() -> core.CheckResult:
-    """C-S00-B-000: raw sha256 == 동결값 — data_drift와 loader_bug의 기계 분리(0번 체크)."""
+    """C-S00-B-000: raw sha256 == 기준값 — data_drift와 loader_bug를 구분하는 0번 체크."""
     import yaml
     with open(paths.BASELINE_DIR / "raw_hashes.yaml", encoding="utf-8") as f:
         frozen = yaml.safe_load(f)["files"]
@@ -91,7 +91,7 @@ def c000_raw_hashes() -> core.CheckResult:
 
 
 def c001_encoding(meta: dict) -> core.CheckResult:
-    """C-S00-B-001: utf-8-sig 로딩·BOM 무오염·컬럼 순서 정확 일치 (로더 관찰값)."""
+    """C-S00-B-001: utf-8-sig 로딩·BOM 없음·컬럼 순서 정확 일치 (로더 관찰값)."""
     obs = {"schedule_bom_ok": meta.get("schedule", {}).get("bom_ok"),
            "schedule_columns_ok": meta.get("schedule", {}).get("columns_ok"),
            "bus_route_bom_ok": meta.get("bus_route", {}).get("bom_ok"),
@@ -436,9 +436,9 @@ def p001_coords(stops: pd.DataFrame, vdir=None) -> core.CheckResult:
 
 def d001_route_classes(st: pd.DataFrame, ru: pd.DataFrame) -> core.CheckResult:
     """D-S00-B-001: Express 14 / General 170(숫자160+울주10) / base−지원==184 (union 191−6−1==184)."""
-    baseline = diff.load_baseline()
-    exp_e = diff.baseline_value(baseline, "before.express_routes")
-    exp_g = diff.baseline_value(baseline, "before.general_routes")
+    reference_values = diff.load_reference_values()
+    exp_e = diff.reference_value(reference_values, "before.express_routes")
+    exp_g = diff.reference_value(reference_values, "before.general_routes")
     exp_regular = exp_e + exp_g
 
     bases = pd.Series(sorted({normalize.base_route_name(n)

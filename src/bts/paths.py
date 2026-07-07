@@ -1,4 +1,4 @@
-"""경로 단일 정의 + 쓰기 권한 매트릭스 강제 (design.md §3.1).
+"""경로 단일 정의 + 출력 위치 규칙 (design.md §3.1).
 
 이 모듈이 유일한 경로 진실이다. 다른 모듈은 반드시
 ``import bts.paths as paths`` 후 ``paths.ARTIFACTS`` 형태로 참조한다
@@ -31,7 +31,7 @@ class PathError(Exception):
 
 
 class WriteViolation(PathError):
-    """쓰기 권한 매트릭스(design.md §3.1) 위반."""
+    """출력 위치 규칙(design.md §3.1) 위반."""
 
 
 class UpstreamMissing(PathError):
@@ -39,7 +39,7 @@ class UpstreamMissing(PathError):
 
 
 class UpstreamCorrupt(PathError):
-    """상류 산출물 해시 불일치 — 변조/부패 (exit 5 사유)."""
+    """상류 산출물 해시 불일치 (exit 5 사유)."""
 
 
 # ── params 로더 (config는 해시되는 입력) ─────────────────────────────────────
@@ -118,7 +118,7 @@ def mark_rejected(vdir: Path) -> Path:
     return target
 
 
-# ── 쓰기 권한 매트릭스 ───────────────────────────────────────────────────────
+# ── 출력 위치 규칙 ──────────────────────────────────────────────────────────
 _active_build_dir: Path | None = None
 _promote_allowed: bool = False
 
@@ -136,7 +136,7 @@ def build_context(vdir: Path):
 
 
 @contextlib.contextmanager
-def promote_context():
+def publish_context():
     """promote 경로 — _latest.json 갱신만 허용된다."""
     global _promote_allowed
     prev = _promote_allowed
@@ -156,18 +156,18 @@ def _is_under(child: Path, parent: Path) -> bool:
 
 
 def assert_writable(target: Path) -> None:
-    """쓰기 권한 매트릭스(design.md §3.1) 강제.
+    """출력 위치 규칙(design.md §3.1)을 확인한다.
 
-    - data/ · reference/ : 코드 쓰기 전면 금지 (기준 입력 묶음 신규 생성도 사람의 몫).
+    - data/ · reference/ : 코드가 쓰지 않는다 (기준 입력 묶음 신규 생성도 사람의 몫).
     - artifacts/ : 활성 build_context의 vdir 내부, 또는 promote_context의
-      _latest.json 갱신만 허용. 그 밖은 전부 거부(게시본 불변성).
+      _latest.json 갱신만 허용한다. 그 밖은 새 실행으로 남긴다.
     - 그 외(runs/, docs/internal/investigations/ 등)는 허용.
     """
     t = Path(target).resolve()
     if _is_under(t, DATA.resolve()):
-        raise WriteViolation(f"data/ 쓰기 금지 (읽기 전용 원시층): {target}")
+        raise WriteViolation(f"data/는 코드가 쓰지 않는다 (읽기 전용 원시층): {target}")
     if _is_under(t, REFERENCE.resolve()):
-        raise WriteViolation(f"reference/ 코드 쓰기 금지 (기준 입력 묶음·판단층): {target}")
+        raise WriteViolation(f"reference/는 코드가 쓰지 않는다 (기준 입력 묶음·수동 분류표): {target}")
     if _is_under(t, ARTIFACTS.resolve()):
         if _promote_allowed and t.name == "_latest.json":
             return

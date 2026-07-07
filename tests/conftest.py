@@ -1,4 +1,4 @@
-# 공용 fixture — 러너·매니페스트 테스트를 위한 샌드박스 (artifacts/runs를 tmp로 격리)
+# 공용 fixture — runner와 manifest 테스트가 임시 artifacts/runs 안에서 실행되게 한다.
 import pandas as pd
 import pytest
 
@@ -11,8 +11,8 @@ from bts.checks import core, diff
 def sandbox(tmp_path, monkeypatch):
     """artifacts/·runs/를 tmp로 돌리고 더미 스테이지를 registry에 등록한다.
 
-    더미 스테이지로 러너 자체를 테스트한다(design.md §11-1) — 스테이지 구현 없이
-    게시 게이트·멱등 스킵·exit code가 실동작함을 증명하는 장치.
+    실제 스테이지 구현 대신 더미 스테이지를 써서 runner의 버전 생성,
+    review 요구, 반환 코드 처리를 확인한다.
     """
     monkeypatch.setattr(paths, "ARTIFACTS", tmp_path / "artifacts")
     monkeypatch.setattr(paths, "RUNS", tmp_path / "runs")
@@ -28,7 +28,7 @@ def sandbox(tmp_path, monkeypatch):
         return {"out.csv": vdir / "out.csv"}
 
     def dummy_checks(ctx):
-        # mode는 '+' 결합 가능 (예: "physical_fail+diff_unexplained" — promote exit 4 검증)
+        # mode는 '+'로 조합할 수 있다. 예: "physical_fail+diff_unexplained".
         mode = ctx.params.get("mode", "ok")
         results = [core.row_count(
             "C-DUM-X-001", "CONTRACT", ctx.df("out.csv"),

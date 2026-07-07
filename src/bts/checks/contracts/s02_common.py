@@ -180,7 +180,7 @@ def c005_override_accounting(applied: pd.DataFrame | None, overrides: pd.DataFra
     exp = {"applied_rows": int(len(overrides)), "override_rows": int(len(overrides)),
            "schema": merge.APPLIED_COLUMNS, "bad_actions": [], "unresolved_result_ids": []}
     r = core.check_true(f"C-S02-{_sc(scope)}-005", "CONTRACT", obs == exp, obs, exp,
-                        "stage2_place_hub_spec.md §4.2 (전건 회계 — 조용한 부패 금지)")
+                        "stage2_place_hub_spec.md §4.2 (전건 회계 — 조용한 불일치 방지)")
     _dump(r, vdir, applied[applied["result_place_id"].astype(str).isin(unresolved)])
     return r
 
@@ -318,7 +318,7 @@ def p001_span(places: pd.DataFrame, map_df: pd.DataFrame, stops: pd.DataFrame,
                         {"over_threshold_places": 0},
                         "verification.md §5.5 (미실측 임계 — WARN)",
                         failure_means=["logic_bug", "param_sensitivity"],
-                        note="FAIL 시 병합 과확장/좌표 오염 우선 의심 — 수용이면 --ack")
+                        note="FAIL 시 병합 과확장/좌표 불일치 우선 확인 — 수용이면 --ack")
     if r.failed and vdir is not None and len(over):
         sample = over.copy()
         if "lineage" in stops.columns:
