@@ -3,8 +3,8 @@
 import numpy as np
 import pandas as pd
 
-from bts.io import normalize
-from bts.stages.s02_place import merge
+from dataio import normalize
+from s02_place import merge
 
 _LAT0, _LON0 = 35.5, 129.3
 

@@ -3,7 +3,7 @@ from datetime import date, datetime
 
 import pytest
 
-from bts.io import timeparse as tp
+from dataio import timeparse as tp
 
 
 class TestHms24:

@@ -4,9 +4,9 @@
 import pandas as pd
 import pytest
 
-import bts.paths as paths
-from bts.checks.contracts import s01_before as chk
-from bts.stages.s01_canonical import before as s01b
+import paths
+from checks.contracts import s01_before as chk
+from s01_canonical import before as s01b
 
 
 def _params():

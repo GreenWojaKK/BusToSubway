@@ -1,5 +1,5 @@
 # DIFF 판정기 테스트 — MATCH/EXPLAINED/UNEXPLAINED와 조사 메모 생성을 확인한다.
-from bts.checks import diff
+from checks import diff
 
 
 BASE = {"before": {"canonical": {"rows": 379,

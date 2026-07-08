@@ -2,7 +2,7 @@
 # 각 primitive에 깨진 합성 데이터를 넣어 PASS로 새는 회귀를 막는다.
 import pandas as pd
 
-from bts.checks import core
+from checks import core
 
 
 class TestRowCount:
@@ -119,7 +119,7 @@ class TestRegexRangeFk:
 
 class TestDumpSample:
     def test_실패_표본_덤프(self, sandbox, tmp_path):
-        import bts.paths as paths
+        import paths
         vdir = paths.ARTIFACTS / "t90_dummy" / "before" / "v001"
         vdir.mkdir(parents=True)
         with paths.build_context(vdir):

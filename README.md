@@ -55,10 +55,10 @@ pip install -e ".[dev]"
 python -m pytest
 
 # 동봉된 before 산출물 재검증
-PYTHONPATH=src python -m bts.run checks --scope before
+PYTHONPATH=src python -m run checks --scope before
 
 # before 파이프라인 재생산
-PYTHONPATH=src python -m bts.run all --scope before
+PYTHONPATH=src python -m run all --scope before
 
 # 지도 viewer 재생성
 python tools/build_place_hub_map.py
@@ -69,7 +69,7 @@ python tools/build_place_hub_map.py
 ```text
 docs/README.md                 공개 문서 진입점
 reference/audit/*.md           원시 데이터 실측 감사 기록
-src/bts/                       로더, 생산 단계, 검증 코드
+src/                           로더, 생산 단계, 검증 코드
 artifacts/                     검증된 산출물과 입력·검증 기록
 viewers/                       산출물을 확인하는 HTML 뷰어
 ```

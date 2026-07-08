@@ -3,8 +3,8 @@ import re
 
 import pytest
 
-from bts.io import ContractViolation
-from bts.stages.s02_place import merge
+from dataio import ContractViolation
+from s02_place import merge
 
 
 def test_멤버_순서_무관_결정성():

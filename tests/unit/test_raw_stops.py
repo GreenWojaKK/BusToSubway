@@ -1,5 +1,5 @@
 # raw_stops 로더 테스트 — 실제 stop 원천 파일의 구조와 기본 불변식을 확인한다.
-from bts.io import raw_stops
+from dataio import raw_stops
 
 
 def test_before_로더_불변식():

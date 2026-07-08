@@ -4,11 +4,11 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from bts.checks import lint
-from bts.checks.contracts import s03_before as chk
-from bts.io import ContractViolation, normalize
-from bts.stages.s03_hub import metrics as m
-from bts.stages.s03_hub import qualify as q
+from checks import lint
+from checks.contracts import s03_before as chk
+from dataio import ContractViolation, normalize
+from s03_hub import metrics as m
+from s03_hub import qualify as q
 
 _LAT0, _LON0 = 35.5, 129.3
 
@@ -242,7 +242,7 @@ def test_qualify_자격식():
 
 # ── 스팟 DIFF의 비수치 동등 비교(dict) — spec §5.7 judge 요구 ────────────────
 def test_diff_judge_dict_동등_비교():
-    from bts.checks import diff
+    from checks import diff
     baseline = {"spot": {"태화로터리": {"D": 5, "A": 2, "L": 0}}}
     r = diff.judge("D-T-B-001", {"D": 5, "A": 2, "L": 0}, "spot.태화로터리",
                    baseline=baseline, kds=[], make_stub_on_unexplained=False)

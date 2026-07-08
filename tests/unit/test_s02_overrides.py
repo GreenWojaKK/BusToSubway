@@ -4,8 +4,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from bts.io import ContractViolation, normalize
-from bts.stages.s02_place import merge
+from dataio import ContractViolation, normalize
+from s02_place import merge
 
 _LAT0, _LON0 = 35.5, 129.3
 _PARAMS = {"linkage_max_m": 150.0, "diag_alias_max_m": 30.0, "diag_under_merge_max_m": None}

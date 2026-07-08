@@ -1,8 +1,8 @@
 # lint와 쓰기 권한 테스트 — 금지어와 쓰기 가능 경로를 확인한다.
 import pytest
 
-import bts.paths as paths
-from bts.checks import lint
+import paths
+from checks import lint
 
 
 class TestLint:
@@ -52,7 +52,7 @@ class TestWriteMatrix:
         with pytest.raises(paths.WriteViolation):
             paths.assert_writable(latest)                    # 일반 실행 중에는 쓸 수 없다.
         with paths.publish_context():
-            paths.assert_writable(latest)                    # promote 중에만 허용
+            paths.assert_writable(latest)                    # publish 중에만 허용
 
     def test_runs_docs는_허용(self):
         paths.assert_writable(paths.ROOT / "runs" / "r.json")

@@ -2,8 +2,8 @@
 import numpy as np
 import pandas as pd
 
-from bts.io import normalize
-from bts.stages.s03_hub import metrics as m
+from dataio import normalize
+from s03_hub import metrics as m
 
 _LAT0, _LON0 = 35.5, 129.3
 _THETA = 45.0

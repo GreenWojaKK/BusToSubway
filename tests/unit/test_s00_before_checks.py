@@ -3,8 +3,8 @@
 import pandas as pd
 import pytest
 
-from bts.checks import diff
-from bts.checks.contracts import s00_before as chk
+from checks import diff
+from checks.contracts import s00_before as chk
 
 
 def _st(rows):

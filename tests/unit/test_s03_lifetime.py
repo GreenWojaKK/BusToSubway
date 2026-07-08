@@ -3,8 +3,8 @@
 import pandas as pd
 import pytest
 
-from bts.io import ContractViolation
-from bts.stages.s03_hub import metrics as m
+from dataio import ContractViolation
+from s03_hub import metrics as m
 
 _K = 10
 

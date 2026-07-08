@@ -3,9 +3,9 @@
 import pandas as pd
 import pytest
 
-import bts.paths as paths
-from bts.io import ContractViolation
-from bts.io import raw_bus_route_before, raw_schedule_before, raw_variant_tags
+import paths
+from dataio import ContractViolation
+from dataio import raw_bus_route_before, raw_schedule_before, raw_variant_tags
 
 
 # ── kr_hms_to_sec — bus_route_before 고유 'H시 M분 S초' 파서 ─────────────────

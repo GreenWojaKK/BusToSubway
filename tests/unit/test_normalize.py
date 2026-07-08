@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from bts.io import normalize as nz
+from dataio import normalize as nz
 
 
 class TestBaseRouteName:

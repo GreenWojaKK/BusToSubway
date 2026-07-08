@@ -5,9 +5,9 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from bts.io import ContractViolation
-from bts.stages.s01_canonical import get_rules
-from bts.stages.s01_canonical import before as s01b
+from dataio import ContractViolation
+from s01_canonical import get_rules
+from s01_canonical import before as s01b
 
 
 # ── get_rules — era를 명시해야 규칙을 읽을 수 있다 ───────────────────────────

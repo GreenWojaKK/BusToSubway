@@ -2,9 +2,9 @@
 import pandas as pd
 import pytest
 
-import bts.paths as paths
-import bts.run as run
-from bts.checks import core, diff
+import paths
+import run
+from checks import core, diff
 
 
 @pytest.fixture
@@ -20,7 +20,7 @@ def sandbox(tmp_path, monkeypatch):
 
     def dummy_build(inputs, params, vdir):
         if params.get("mode") == "build_contract_violation":
-            from bts.io import ContractViolation
+            from dataio import ContractViolation
             raise ContractViolation("로더 계약 위반 주입 (테스트)")
         df = pd.DataFrame({"stop_id": ["P1", "P2", "P3"],
                            "v": [params.get("v", 1)] * 3})

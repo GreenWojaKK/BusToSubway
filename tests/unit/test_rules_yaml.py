@@ -2,7 +2,7 @@
 # get_rules(era)의 구현은 s01 소속이고, 여기서는 입력 데이터 계약만 검증한다.
 import yaml
 
-import bts.paths as paths
+import paths
 
 
 def _load(era):

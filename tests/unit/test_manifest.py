@@ -1,5 +1,5 @@
 # manifest 테스트 — 입력 해시와 code_ref가 버전 재사용 판단에 쓰이는지 확인한다.
-import bts.manifest as manifest
+import manifest
 
 
 def test_sha256_file(tmp_path):
@@ -71,8 +71,8 @@ def test_resolve_inputs_includes_reference_files(sandbox):
 def test_manifest_entries_형태():
     ri = manifest.ResolvedInputs(
         artifacts={"s00_ingest/before": {"version": "v002", "files": {"stop_times.parquet": "sha256:x"}}},
-        files={"src/bts/config/params.yaml": "abc"})
+        files={"src/config/params.yaml": "abc"})
     entries = ri.manifest_entries()
     assert {"artifact": "s00_ingest/before", "version": "v002",
             "files": {"stop_times.parquet": "sha256:x"}} in entries
-    assert {"file": "src/bts/config/params.yaml", "sha256": "abc"} in entries
+    assert {"file": "src/config/params.yaml", "sha256": "abc"} in entries

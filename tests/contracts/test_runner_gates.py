@@ -2,10 +2,10 @@
 # 더미 스테이지를 사용해 실제 stage 구현과 분리해서 확인한다.
 import json
 
-import bts.paths as paths
-import bts.manifest as manifest
-import bts.run as run
-import bts.status as status
+import paths
+import manifest
+import run
+import status
 
 
 def test_all_pass_records_latest_exit0(sandbox):
@@ -13,7 +13,7 @@ def test_all_pass_records_latest_exit0(sandbox):
     vdir = paths.artifact_dir("t90_dummy", "before")
     assert vdir.name == "v001"
     m = manifest.read_manifest(vdir)
-    assert m["status"] == "promoted"
+    assert m["status"] == "published"
     assert (vdir / "checks.json").exists()
     assert m["content_key"].startswith("sha256:")
 
@@ -56,7 +56,7 @@ def test_physical_without_ack_returns_exit3_pending(sandbox):
 def test_physical_ack_with_reviewer_publishes(sandbox):
     sandbox["state"]["params"]["t90_dummy"] = {"mode": "physical_fail"}
     assert run.run("t90_dummy", "before") == run.EXIT_PHYSICAL
-    # bts.run promote <stage> <scope> <version> --ack ... 경로에서도 승인자를 요구한다.
+    # run publish <stage> <scope> <version> --ack ... 경로에서도 승인자를 요구한다.
     assert run.publish_pending("t90_dummy", "before", "v001",
                                acks=["P-DUM-X-001"], reviewed_by="whtnm") == run.EXIT_OK
     assert paths.latest_version("t90_dummy", "before") == "v001"
@@ -149,12 +149,12 @@ def test_UNEXPLAINED_하류_전파_배지(sandbox):
 
 
 def test_CLI_main_경로(sandbox):
-    # CLI 경로에서도 run/promote가 같은 승인 규칙을 따른다.
+    # CLI 경로에서도 run/publish가 같은 승인 규칙을 따른다.
     sandbox["state"]["params"]["t90_dummy"] = {"mode": "physical_fail"}
     assert run.main(["t90_dummy", "--scope", "before"]) == run.EXIT_PHYSICAL
-    assert run.main(["promote", "t90_dummy", "before", "v001",
+    assert run.main(["publish", "t90_dummy", "before", "v001",
                      "--ack", "P-DUM-X-001"]) == run.EXIT_PHYSICAL   # 익명 ack 미적용
-    assert run.main(["promote", "t90_dummy", "before", "v001",
+    assert run.main(["publish", "t90_dummy", "before", "v001",
                      "--ack", "P-DUM-X-001", "--reviewed-by", "whtnm"]) == run.EXIT_OK
     assert paths.latest_version("t90_dummy", "before") == "v001"
 
@@ -231,7 +231,7 @@ def test_empty_override_build_ignores_later_file_rows(sandbox, tmp_path):
     assert run.run("t90_dummy", "before") == run.EXIT_PHYSICAL
     m = manifest.read_manifest(paths.ARTIFACTS / "t90_dummy" / "before" / "v001")
     assert m["needs_review"] is False
-    ov.write_text("a,b\n1,2\n", encoding="utf-8")           # promote 전에 데이터 행을 추가한다.
+    ov.write_text("a,b\n1,2\n", encoding="utf-8")           # publish 전에 데이터 행을 추가한다.
     assert run._needs_review(st, "before") is True          # 현재 파일만 보면 review가 필요하지만
     assert run._version_needs_review(m, st, "before") is False   # 이 버전은 빌드 기록을 따른다.
     assert run.publish_pending("t90_dummy", "before", "v001",
@@ -258,7 +258,7 @@ def test_old_manifest_requires_reviewer_when_review_state_unknown(sandbox, tmp_p
 
 
 def test_publish_path_returns_exit4_when_unexplained(sandbox):
-    # promote가 성공해도 설명되지 않은 차이가 있으면 반환 코드에는 그 상태가 남아야 한다.
+    # publish가 성공해도 설명되지 않은 차이가 있으면 반환 코드에는 그 상태가 남아야 한다.
     sandbox["state"]["params"]["t90_dummy"] = {"mode": "physical_fail+diff_unexplained"}
     assert run.run("t90_dummy", "before") == run.EXIT_PHYSICAL
     assert run.publish_pending("t90_dummy", "before", "v001",
@@ -266,8 +266,8 @@ def test_publish_path_returns_exit4_when_unexplained(sandbox):
                                reviewed_by="whtnm") == run.EXIT_UNEXPLAINED
     assert paths.latest_version("t90_dummy", "before") == "v001"   # 버전은 확정된다.
     m = manifest.read_manifest(paths.artifact_dir("t90_dummy", "before"))
-    assert m["status"] == "promoted"
-    assert any("promoted_via_promote_unexplained" in n for n in _run_notes())
+    assert m["status"] == "published"
+    assert any("published_via_publish_unexplained" in n for n in _run_notes())
 
 
 def test_publish_ack_records_only_matching_physical_failures(sandbox):
@@ -283,7 +283,7 @@ def test_publish_ack_records_only_matching_physical_failures(sandbox):
 
 
 def test_publish_rechecks_outputs_before_latest_update(sandbox):
-    # build 이후 promote 전에 출력이 바뀌면 promote 직전 해시 검사에서 거부한다.
+    # build 이후 publish 전에 출력이 바뀌면 publish 직전 해시 검사에서 거부한다.
     sandbox["state"]["params"]["t90_dummy"] = {"mode": "physical_fail"}
     assert run.run("t90_dummy", "before") == run.EXIT_PHYSICAL
     vdir = paths.ARTIFACTS / "t90_dummy" / "before" / "v001"
@@ -294,7 +294,7 @@ def test_publish_rechecks_outputs_before_latest_update(sandbox):
     m = manifest.read_manifest(vdir)
     assert m["status"] == "pending"                         # 아직 확정하지 않는다.
     assert not (paths.ARTIFACTS / "t90_dummy" / "before" / "_latest.json").exists()
-    assert any("promote_outputs_corrupt" in n for n in _run_notes())
+    assert any("publish_outputs_changed" in n for n in _run_notes())
 
 
 def test_runs_record_is_written_for_every_result(sandbox):
@@ -312,7 +312,7 @@ def _run_notes(stage="t90_dummy", scope="before"):
 
 
 def test_publish_subcommand_records_run(sandbox):
-    # promote 여부와 관계없이 모든 실행 기록이 남아야 한다.
+    # publish 여부와 관계없이 모든 실행 기록이 남아야 한다.
     sandbox["state"]["params"]["t90_dummy"] = {"mode": "physical_fail"}
     assert run.run("t90_dummy", "before") == run.EXIT_PHYSICAL
     assert run.publish_pending("t90_dummy", "before", "v001",
@@ -320,9 +320,9 @@ def test_publish_subcommand_records_run(sandbox):
     assert run.publish_pending("t90_dummy", "before", "v001",
                                acks=["P-DUM-X-001"], reviewed_by="whtnm") == run.EXIT_OK
     notes = _run_notes()
-    assert len(notes) == 3                                  # run 1 + promote 2
-    assert any("promote_anonymous_ack_refused" in n for n in notes)
-    assert any("promoted_via_promote" in n for n in notes)
+    assert len(notes) == 3                                  # run 1 + publish 2
+    assert any("publish_anonymous_ack_refused" in n for n in notes)
+    assert any("published_via_publish" in n for n in notes)
 
 
 def test_reused_old_input_version_updates_latest(sandbox, tmp_path):
